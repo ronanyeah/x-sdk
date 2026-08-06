@@ -174,10 +174,10 @@ pub async fn activity_stream(configuration: &configuration::Configuration, backf
         req_builder = req_builder.query(&[("backfill_minutes", &param_value.to_string())]);
     }
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
@@ -321,10 +321,10 @@ pub async fn stream_labels_compliance(configuration: &configuration::Configurati
         req_builder = req_builder.query(&[("backfill_minutes", &param_value.to_string())]);
     }
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
@@ -372,10 +372,10 @@ pub async fn stream_likes_compliance(configuration: &configuration::Configuratio
         req_builder = req_builder.query(&[("backfill_minutes", &param_value.to_string())]);
     }
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
@@ -430,10 +430,10 @@ pub async fn stream_likes_firehose(configuration: &configuration::Configuration,
     }
     req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_like_with_tweet_author_fields {
         req_builder = match "csv" {
@@ -518,10 +518,10 @@ pub async fn stream_likes_sample10(configuration: &configuration::Configuration,
     }
     req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_like_with_tweet_author_fields {
         req_builder = match "csv" {
@@ -605,10 +605,10 @@ pub async fn stream_posts(configuration: &configuration::Configuration, backfill
         req_builder = req_builder.query(&[("backfill_minutes", &param_value.to_string())]);
     }
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_tweet_fields {
         req_builder = match "csv" {
@@ -694,10 +694,10 @@ pub async fn stream_posts_compliance(configuration: &configuration::Configuratio
     }
     req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
@@ -789,10 +789,10 @@ pub async fn stream_posts_firehose(configuration: &configuration::Configuration,
     }
     req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
@@ -884,10 +884,10 @@ pub async fn stream_posts_firehose_en(configuration: &configuration::Configurati
     }
     req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
@@ -979,10 +979,10 @@ pub async fn stream_posts_firehose_ja(configuration: &configuration::Configurati
     }
     req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
@@ -1074,10 +1074,10 @@ pub async fn stream_posts_firehose_ko(configuration: &configuration::Configurati
     }
     req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
@@ -1169,10 +1169,10 @@ pub async fn stream_posts_firehose_pt(configuration: &configuration::Configurati
     }
     req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
@@ -1349,10 +1349,10 @@ pub async fn stream_posts_sample10(configuration: &configuration::Configuration,
     }
     req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
@@ -1402,10 +1402,10 @@ pub async fn stream_users_compliance(configuration: &configuration::Configuratio
     }
     req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());

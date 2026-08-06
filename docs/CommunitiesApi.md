@@ -20,7 +20,7 @@ Get Communities by ID
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **id** | **String** |  | [required] |
-**community_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Community fields to display. |  |
+**community_fields** | Option<[**Vec<models::CommunityField>**](Models__CommunityField.md)> | A comma separated list of Community fields to display. |  |
 
 ### Return type
 
@@ -52,7 +52,7 @@ Name | Type | Description  | Required | Notes
 **max_results** | Option<**i32**> |  |  |[default to 10]
 **next_token** | Option<**String**> |  |  |
 **pagination_token** | Option<**String**> |  |  |
-**community_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Community fields to display. |  |
+**community_fields** | Option<[**Vec<models::CommunityField>**](Models__CommunityField.md)> | A comma separated list of Community fields to display. |  |
 
 ### Return type
 

@@ -168,7 +168,7 @@ pub async fn delete_connections_by_uuids(configuration: &configuration::Configur
 }
 
 /// Returns active and historical streaming connections with disconnect reasons for the authenticated application.
-pub async fn get_connection_history(configuration: &configuration::Configuration, status: Option<&str>, endpoints: Option<Vec<String>>, max_results: Option<i32>, pagination_token: Option<&str>, connection_fields: Option<Vec<String>>) -> Result<models::GetConnectionHistoryResponse, Error<GetConnectionHistoryError>> {
+pub async fn get_connection_history(configuration: &configuration::Configuration, status: Option<&str>, endpoints: Option<Vec<String>>, max_results: Option<i32>, pagination_token: Option<&str>, connection_fields: Option<Vec<models::ConnectionField>>) -> Result<models::GetConnectionHistoryResponse, Error<GetConnectionHistoryError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_status = status;
     let p_query_endpoints = endpoints;

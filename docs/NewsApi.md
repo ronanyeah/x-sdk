@@ -22,7 +22,7 @@ Retrieves news story by its ID.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **id** | **String** |  | [required] |
-**news_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of News fields to display. |  |
+**news_fields** | Option<[**Vec<models::NewsField>**](Models__NewsField.md)> | A comma separated list of News fields to display. |  |
 
 ### Return type
 
@@ -53,7 +53,7 @@ Name | Type | Description  | Required | Notes
 **query** | **String** |  | [required] |
 **max_results** | Option<**i32**> |  |  |[default to 10]
 **max_age_hours** | Option<**i32**> |  |  |[default to 168]
-**news_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of News fields to display. |  |
+**news_fields** | Option<[**Vec<models::NewsField>**](Models__NewsField.md)> | A comma separated list of News fields to display. |  |
 
 ### Return type
 

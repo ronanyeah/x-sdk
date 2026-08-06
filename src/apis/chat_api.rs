@@ -509,7 +509,7 @@ pub async fn delete_chat_messages(configuration: &configuration::Configuration, 
 }
 
 /// Returns metadata for a Chat conversation including type, muted status, and group details. Use chat_conversation.fields to select which fields are returned. Use expansions to hydrate member, admin, or participant user objects. Use user.fields to control which profile fields are returned for expanded users.
-pub async fn get_chat_conversation(configuration: &configuration::Configuration, id: &str, chat_conversation_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>) -> Result<models::GetChatConversationResponse, Error<GetChatConversationError>> {
+pub async fn get_chat_conversation(configuration: &configuration::Configuration, id: &str, chat_conversation_fields: Option<Vec<models::ChatConversationField>>, expansions: Option<Vec<models::ChatConversationExpansion>>, user_fields: Option<Vec<models::UserField>>) -> Result<models::GetChatConversationResponse, Error<GetChatConversationError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_chat_conversation_fields = chat_conversation_fields;
@@ -570,7 +570,7 @@ pub async fn get_chat_conversation(configuration: &configuration::Configuration,
 }
 
 /// Retrieves messages and key change events for a specific Chat conversation with pagination support. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
-pub async fn get_chat_conversation_events(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, chat_message_event_fields: Option<Vec<String>>) -> Result<models::GetChatConversationEventsResponse, Error<GetChatConversationEventsError>> {
+pub async fn get_chat_conversation_events(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, chat_message_event_fields: Option<Vec<models::ChatMessageEventField>>) -> Result<models::GetChatConversationEventsResponse, Error<GetChatConversationEventsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -625,7 +625,7 @@ pub async fn get_chat_conversation_events(configuration: &configuration::Configu
 }
 
 /// Retrieves a list of Chat conversations for the authenticated user's inbox.
-pub async fn get_chat_conversations(configuration: &configuration::Configuration, max_results: Option<i32>, pagination_token: Option<&str>, chat_conversation_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>) -> Result<models::GetChatConversationsResponse, Error<GetChatConversationsError>> {
+pub async fn get_chat_conversations(configuration: &configuration::Configuration, max_results: Option<i32>, pagination_token: Option<&str>, chat_conversation_fields: Option<Vec<models::ChatConversationField>>, expansions: Option<Vec<models::ChatConversationExpansion>>, user_fields: Option<Vec<models::UserField>>) -> Result<models::GetChatConversationsResponse, Error<GetChatConversationsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_max_results = max_results;
     let p_query_pagination_token = pagination_token;

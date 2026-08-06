@@ -41,7 +41,7 @@ pub enum GetComplianceJobsByIdError {
 
 
 /// Creates a new Compliance Job for the specified job type.
-pub async fn create_compliance_jobs(configuration: &configuration::Configuration, create_compliance_jobs_request: models::CreateComplianceJobsRequest, compliance_job_fields: Option<Vec<String>>) -> Result<models::CreateComplianceJobsResponse, Error<CreateComplianceJobsError>> {
+pub async fn create_compliance_jobs(configuration: &configuration::Configuration, create_compliance_jobs_request: models::CreateComplianceJobsRequest, compliance_job_fields: Option<Vec<models::ComplianceJobField>>) -> Result<models::CreateComplianceJobsResponse, Error<CreateComplianceJobsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_body_create_compliance_jobs_request = create_compliance_jobs_request;
     let p_query_compliance_job_fields = compliance_job_fields;
@@ -89,7 +89,7 @@ pub async fn create_compliance_jobs(configuration: &configuration::Configuration
 }
 
 /// Retrieves a list of Compliance Jobs filtered by job type and optional status.
-pub async fn get_compliance_jobs(configuration: &configuration::Configuration, r#type: &str, status: Option<&str>, compliance_job_fields: Option<Vec<String>>) -> Result<models::GetComplianceJobsResponse, Error<GetComplianceJobsError>> {
+pub async fn get_compliance_jobs(configuration: &configuration::Configuration, r#type: &str, status: Option<&str>, compliance_job_fields: Option<Vec<models::ComplianceJobField>>) -> Result<models::GetComplianceJobsResponse, Error<GetComplianceJobsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_type = r#type;
     let p_query_status = status;
@@ -141,7 +141,7 @@ pub async fn get_compliance_jobs(configuration: &configuration::Configuration, r
 }
 
 /// Retrieves details of a specific Compliance Job by its ID.
-pub async fn get_compliance_jobs_by_id(configuration: &configuration::Configuration, id: &str, compliance_job_fields: Option<Vec<String>>) -> Result<models::GetComplianceJobsByIdResponse, Error<GetComplianceJobsByIdError>> {
+pub async fn get_compliance_jobs_by_id(configuration: &configuration::Configuration, id: &str, compliance_job_fields: Option<Vec<models::ComplianceJobField>>) -> Result<models::GetComplianceJobsByIdResponse, Error<GetComplianceJobsByIdError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_compliance_job_fields = compliance_job_fields;

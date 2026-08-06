@@ -283,7 +283,7 @@ pub async fn delete_webhooks_stream_link(configuration: &configuration::Configur
 }
 
 /// Get a list of webhook configs associated with a client app.
-pub async fn get_webhooks(configuration: &configuration::Configuration, webhook_config_fields: Option<Vec<String>>) -> Result<models::GetWebhooksResponse, Error<GetWebhooksError>> {
+pub async fn get_webhooks(configuration: &configuration::Configuration, webhook_config_fields: Option<Vec<models::WebhookConfigField>>) -> Result<models::GetWebhooksResponse, Error<GetWebhooksError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_webhook_config_fields = webhook_config_fields;
 

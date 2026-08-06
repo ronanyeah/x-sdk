@@ -10,6 +10,7 @@ Method | HTTP request | Description
 [**get_broadcast**](BroadcastsApi.md#get_broadcast) | **GET** /2/broadcasts/{id} | Get a broadcast
 [**get_scheduled_broadcast**](BroadcastsApi.md#get_scheduled_broadcast) | **GET** /2/broadcasts/scheduled/{id} | Get a scheduled broadcast
 [**go_live_scheduled_broadcast**](BroadcastsApi.md#go_live_scheduled_broadcast) | **POST** /2/broadcasts/scheduled/{id}/live | Go live on a scheduled broadcast
+[**list_broadcasts**](BroadcastsApi.md#list_broadcasts) | **GET** /2/broadcasts | List broadcasts
 [**list_scheduled_broadcasts**](BroadcastsApi.md#list_scheduled_broadcasts) | **GET** /2/broadcasts/scheduled | List scheduled broadcasts
 [**mute_broadcast_chat_user**](BroadcastsApi.md#mute_broadcast_chat_user) | **POST** /2/broadcasts/{id}/chat/mutes | Mute a user in a broadcast chat
 [**send_broadcast_chat**](BroadcastsApi.md#send_broadcast_chat) | **POST** /2/broadcasts/{id}/chat | Send a chat message to a live broadcast
@@ -123,7 +124,7 @@ Returns a broadcast owned by the authenticated user.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **id** | **String** |  | [required] |
-**broadcast_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Broadcast fields to display. |  |
+**broadcast_fields** | Option<[**Vec<models::BroadcastField>**](Models__BroadcastField.md)> | A comma separated list of Broadcast fields to display. |  |
 
 ### Return type
 
@@ -188,6 +189,39 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**models::GoLiveScheduledBroadcastResponse**](GoLiveScheduledBroadcastResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## list_broadcasts
+
+> models::ListBroadcastsResponse list_broadcasts(ids, max_results, pagination_token, broadcast_fields)
+List broadcasts
+
+Returns the authenticated user's live-video broadcasts, or selected owned broadcasts when ids are provided.  At most one of `ids`, `max_results` may be provided. At most one of `ids`, `pagination_token` may be provided.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**ids** | Option<[**Vec<String>**](String.md)> | Comma-separated broadcast IDs to retrieve instead of listing broadcasts. |  |
+**max_results** | Option<**i32**> |  |  |
+**pagination_token** | Option<**String**> |  |  |
+**broadcast_fields** | Option<[**Vec<models::BroadcastField>**](Models__BroadcastField.md)> | A comma separated list of Broadcast fields to display. |  |
+
+### Return type
+
+[**models::ListBroadcastsResponse**](ListBroadcastsResponse.md)
 
 ### Authorization
 

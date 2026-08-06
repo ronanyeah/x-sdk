@@ -209,7 +209,7 @@ pub async fn delete_lists(configuration: &configuration::Configuration, id: &str
     }
 }
 
-pub async fn get_lists_by_id(configuration: &configuration::Configuration, id: &str, list_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>) -> Result<models::GetListsByIdResponse, Error<GetListsByIdError>> {
+pub async fn get_lists_by_id(configuration: &configuration::Configuration, id: &str, list_fields: Option<Vec<models::ListField>>, expansions: Option<Vec<models::ListExpansion>>, user_fields: Option<Vec<models::UserField>>) -> Result<models::GetListsByIdResponse, Error<GetListsByIdError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_list_fields = list_fields;
@@ -272,7 +272,7 @@ pub async fn get_lists_by_id(configuration: &configuration::Configuration, id: &
     }
 }
 
-pub async fn get_lists_followers(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, post_fields: Option<Vec<String>>) -> Result<models::GetListsFollowersResponse, Error<GetListsFollowersError>> {
+pub async fn get_lists_followers(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetListsFollowersResponse, Error<GetListsFollowersError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -343,7 +343,7 @@ pub async fn get_lists_followers(configuration: &configuration::Configuration, i
     }
 }
 
-pub async fn get_lists_members(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, post_fields: Option<Vec<String>>) -> Result<models::GetListsMembersResponse, Error<GetListsMembersError>> {
+pub async fn get_lists_members(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetListsMembersResponse, Error<GetListsMembersError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -414,7 +414,7 @@ pub async fn get_lists_members(configuration: &configuration::Configuration, id:
     }
 }
 
-pub async fn get_lists_posts(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, post_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<models::GetListsPostsResponse, Error<GetListsPostsError>> {
+pub async fn get_lists_posts(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::GetListsPostsResponse, Error<GetListsPostsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;

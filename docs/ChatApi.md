@@ -313,9 +313,9 @@ Returns metadata for a Chat conversation including type, muted status, and group
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **id** | **String** |  | [required] |
-**chat_conversation_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of ChatConversation fields to display. |  |
-**expansions** | Option<[**Vec<String>**](String.md)> | A comma separated list of fields to expand. |  |
-**user_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of User fields to display. |  |
+**chat_conversation_fields** | Option<[**Vec<models::ChatConversationField>**](Models__ChatConversationField.md)> | A comma separated list of ChatConversation fields to display. |  |
+**expansions** | Option<[**Vec<models::ChatConversationExpansion>**](Models__ChatConversationExpansion.md)> | A comma separated list of fields to expand. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
 
 ### Return type
 
@@ -348,7 +348,7 @@ Name | Type | Description  | Required | Notes
 **id** | **String** |  | [required] |
 **max_results** | Option<**i32**> |  |  |[default to 10]
 **pagination_token** | Option<**String**> |  |  |
-**chat_message_event_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of ChatMessageEvent fields to display. |  |
+**chat_message_event_fields** | Option<[**Vec<models::ChatMessageEventField>**](Models__ChatMessageEventField.md)> | A comma separated list of ChatMessageEvent fields to display. |  |
 
 ### Return type
 
@@ -380,9 +380,9 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **max_results** | Option<**i32**> |  |  |[default to 10]
 **pagination_token** | Option<**String**> |  |  |
-**chat_conversation_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of ChatConversation fields to display. |  |
-**expansions** | Option<[**Vec<String>**](String.md)> | A comma separated list of fields to expand. |  |
-**user_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of User fields to display. |  |
+**chat_conversation_fields** | Option<[**Vec<models::ChatConversationField>**](Models__ChatConversationField.md)> | A comma separated list of ChatConversation fields to display. |  |
+**expansions** | Option<[**Vec<models::ChatConversationExpansion>**](Models__ChatConversationExpansion.md)> | A comma separated list of fields to expand. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
 
 ### Return type
 

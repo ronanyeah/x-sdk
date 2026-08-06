@@ -176,7 +176,7 @@ pub async fn evaluate_community_notes(configuration: &configuration::Configurati
     }
 }
 
-pub async fn search_community_notes_written(configuration: &configuration::Configuration, test_mode: bool, max_results: Option<i32>, pagination_token: Option<&str>, note_fields: Option<Vec<String>>) -> Result<models::SearchCommunityNotesWrittenResponse, Error<SearchCommunityNotesWrittenError>> {
+pub async fn search_community_notes_written(configuration: &configuration::Configuration, test_mode: bool, max_results: Option<i32>, pagination_token: Option<&str>, note_fields: Option<Vec<models::NoteField>>) -> Result<models::SearchCommunityNotesWrittenResponse, Error<SearchCommunityNotesWrittenError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_test_mode = test_mode;
     let p_query_max_results = max_results;
@@ -231,7 +231,7 @@ pub async fn search_community_notes_written(configuration: &configuration::Confi
     }
 }
 
-pub async fn search_eligible_posts(configuration: &configuration::Configuration, test_mode: bool, max_results: Option<i32>, pagination_token: Option<&str>, post_selection: Option<&str>, post_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<models::SearchEligiblePostsResponse, Error<SearchEligiblePostsError>> {
+pub async fn search_eligible_posts(configuration: &configuration::Configuration, test_mode: bool, max_results: Option<i32>, pagination_token: Option<&str>, post_selection: Option<&str>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::SearchEligiblePostsResponse, Error<SearchEligiblePostsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_test_mode = test_mode;
     let p_query_max_results = max_results;

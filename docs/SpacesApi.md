@@ -28,9 +28,9 @@ Name | Type | Description  | Required | Notes
 **id** | **String** |  | [required] |
 **max_results** | Option<**i32**> |  |  |[default to 100]
 **pagination_token** | Option<**String**> | A base32hex-encoded pagination token. |  |
-**user_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of User fields to display. |  |
-**expansions** | Option<[**Vec<String>**](String.md)> | A comma separated list of fields to expand. |  |
-**post_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Post fields to display. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
+**expansions** | Option<[**Vec<models::UserExpansion>**](Models__UserExpansion.md)> | A comma separated list of fields to expand. |  |
+**post_fields** | Option<[**Vec<models::PostField>**](Models__PostField.md)> | A comma separated list of Post fields to display. |  |
 
 ### Return type
 
@@ -59,10 +59,10 @@ Get Spaces by Creator IDs
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **user_ids** | [**Vec<String>**](String.md) |  | [required] |
-**space_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Space fields to display. |  |
-**expansions** | Option<[**Vec<String>**](String.md)> | A comma separated list of fields to expand. |  |
-**user_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of User fields to display. |  |
-**topic_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Topic fields to display. |  |
+**space_fields** | Option<[**Vec<models::SpaceField>**](Models__SpaceField.md)> | A comma separated list of Space fields to display. |  |
+**expansions** | Option<[**Vec<models::SpaceExpansion>**](Models__SpaceExpansion.md)> | A comma separated list of fields to expand. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
+**topic_fields** | Option<[**Vec<models::TopicField>**](Models__TopicField.md)> | A comma separated list of Topic fields to display. |  |
 
 ### Return type
 
@@ -91,10 +91,10 @@ Get Spaces by ID
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **id** | **String** |  | [required] |
-**space_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Space fields to display. |  |
-**expansions** | Option<[**Vec<String>**](String.md)> | A comma separated list of fields to expand. |  |
-**user_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of User fields to display. |  |
-**topic_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Topic fields to display. |  |
+**space_fields** | Option<[**Vec<models::SpaceField>**](Models__SpaceField.md)> | A comma separated list of Space fields to display. |  |
+**expansions** | Option<[**Vec<models::SpaceExpansion>**](Models__SpaceExpansion.md)> | A comma separated list of fields to expand. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
+**topic_fields** | Option<[**Vec<models::TopicField>**](Models__TopicField.md)> | A comma separated list of Topic fields to display. |  |
 
 ### Return type
 
@@ -123,10 +123,10 @@ Get Spaces by IDs
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **ids** | [**Vec<String>**](String.md) |  | [required] |
-**space_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Space fields to display. |  |
-**expansions** | Option<[**Vec<String>**](String.md)> | A comma separated list of fields to expand. |  |
-**user_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of User fields to display. |  |
-**topic_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Topic fields to display. |  |
+**space_fields** | Option<[**Vec<models::SpaceField>**](Models__SpaceField.md)> | A comma separated list of Space fields to display. |  |
+**expansions** | Option<[**Vec<models::SpaceExpansion>**](Models__SpaceExpansion.md)> | A comma separated list of fields to expand. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
+**topic_fields** | Option<[**Vec<models::TopicField>**](Models__TopicField.md)> | A comma separated list of Topic fields to display. |  |
 
 ### Return type
 
@@ -159,12 +159,12 @@ Name | Type | Description  | Required | Notes
 **id** | **String** |  | [required] |
 **max_results** | Option<**i32**> |  |  |[default to 100]
 **pagination_token** | Option<**String**> | A base32hex-encoded pagination token. |  |
-**post_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Post fields to display. |  |
-**expansions** | Option<[**Vec<String>**](String.md)> | A comma separated list of fields to expand. |  |
-**user_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of User fields to display. |  |
-**media_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Media fields to display. |  |
-**poll_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Poll fields to display. |  |
-**place_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Place fields to display. |  |
+**post_fields** | Option<[**Vec<models::PostField>**](Models__PostField.md)> | A comma separated list of Post fields to display. |  |
+**expansions** | Option<[**Vec<models::PostExpansion>**](Models__PostExpansion.md)> | A comma separated list of fields to expand. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
+**media_fields** | Option<[**Vec<models::MediaField>**](Models__MediaField.md)> | A comma separated list of Media fields to display. |  |
+**poll_fields** | Option<[**Vec<models::PollField>**](Models__PollField.md)> | A comma separated list of Poll fields to display. |  |
+**place_fields** | Option<[**Vec<models::PlaceField>**](Models__PlaceField.md)> | A comma separated list of Place fields to display. |  |
 
 ### Return type
 
@@ -197,10 +197,10 @@ Name | Type | Description  | Required | Notes
 **query** | **String** |  | [required] |
 **state** | Option<**String**> |  |  |[default to all]
 **max_results** | Option<**i32**> |  |  |[default to 100]
-**space_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Space fields to display. |  |
-**expansions** | Option<[**Vec<String>**](String.md)> | A comma separated list of fields to expand. |  |
-**user_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of User fields to display. |  |
-**topic_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Topic fields to display. |  |
+**space_fields** | Option<[**Vec<models::SpaceField>**](Models__SpaceField.md)> | A comma separated list of Space fields to display. |  |
+**expansions** | Option<[**Vec<models::SpaceExpansion>**](Models__SpaceExpansion.md)> | A comma separated list of fields to expand. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
+**topic_fields** | Option<[**Vec<models::TopicField>**](Models__TopicField.md)> | A comma separated list of Topic fields to display. |  |
 
 ### Return type
 

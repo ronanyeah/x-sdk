@@ -114,7 +114,7 @@ Name | Type | Description  | Required | Notes
 **endpoints** | Option<[**Vec<String>**](String.md)> |  |  |
 **max_results** | Option<**i32**> |  |  |[default to 10]
 **pagination_token** | Option<**String**> |  |  |
-**connection_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Connection fields to display. |  |
+**connection_fields** | Option<[**Vec<models::ConnectionField>**](Models__ConnectionField.md)> | A comma separated list of Connection fields to display. |  |
 
 ### Return type
 

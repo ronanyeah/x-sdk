@@ -65,7 +65,7 @@ pub enum SearchSpacesError {
 
 
 /// Retrieves a list of Users who purchased tickets to a specific Space by its ID.
-pub async fn get_spaces_buyers(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, post_fields: Option<Vec<String>>) -> Result<models::GetSpacesBuyersResponse, Error<GetSpacesBuyersError>> {
+pub async fn get_spaces_buyers(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetSpacesBuyersResponse, Error<GetSpacesBuyersError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -133,7 +133,7 @@ pub async fn get_spaces_buyers(configuration: &configuration::Configuration, id:
     }
 }
 
-pub async fn get_spaces_by_creator_ids(configuration: &configuration::Configuration, user_ids: Vec<String>, space_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, topic_fields: Option<Vec<String>>) -> Result<models::GetSpacesByCreatorIdsResponse, Error<GetSpacesByCreatorIdsError>> {
+pub async fn get_spaces_by_creator_ids(configuration: &configuration::Configuration, user_ids: Vec<String>, space_fields: Option<Vec<models::SpaceField>>, expansions: Option<Vec<models::SpaceExpansion>>, user_fields: Option<Vec<models::UserField>>, topic_fields: Option<Vec<models::TopicField>>) -> Result<models::GetSpacesByCreatorIdsResponse, Error<GetSpacesByCreatorIdsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_user_ids = user_ids;
     let p_query_space_fields = space_fields;
@@ -207,7 +207,7 @@ pub async fn get_spaces_by_creator_ids(configuration: &configuration::Configurat
     }
 }
 
-pub async fn get_spaces_by_id(configuration: &configuration::Configuration, id: &str, space_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, topic_fields: Option<Vec<String>>) -> Result<models::GetSpacesByIdResponse, Error<GetSpacesByIdError>> {
+pub async fn get_spaces_by_id(configuration: &configuration::Configuration, id: &str, space_fields: Option<Vec<models::SpaceField>>, expansions: Option<Vec<models::SpaceExpansion>>, user_fields: Option<Vec<models::UserField>>, topic_fields: Option<Vec<models::TopicField>>) -> Result<models::GetSpacesByIdResponse, Error<GetSpacesByIdError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_space_fields = space_fields;
@@ -277,7 +277,7 @@ pub async fn get_spaces_by_id(configuration: &configuration::Configuration, id: 
     }
 }
 
-pub async fn get_spaces_by_ids(configuration: &configuration::Configuration, ids: Vec<String>, space_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, topic_fields: Option<Vec<String>>) -> Result<models::GetSpacesByIdsResponse, Error<GetSpacesByIdsError>> {
+pub async fn get_spaces_by_ids(configuration: &configuration::Configuration, ids: Vec<String>, space_fields: Option<Vec<models::SpaceField>>, expansions: Option<Vec<models::SpaceExpansion>>, user_fields: Option<Vec<models::UserField>>, topic_fields: Option<Vec<models::TopicField>>) -> Result<models::GetSpacesByIdsResponse, Error<GetSpacesByIdsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_ids = ids;
     let p_query_space_fields = space_fields;
@@ -352,7 +352,7 @@ pub async fn get_spaces_by_ids(configuration: &configuration::Configuration, ids
 }
 
 /// Retrieves a list of Posts shared in a specific Space by its ID.
-pub async fn get_spaces_posts(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, post_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<models::GetSpacesPostsResponse, Error<GetSpacesPostsError>> {
+pub async fn get_spaces_posts(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::GetSpacesPostsResponse, Error<GetSpacesPostsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -445,7 +445,7 @@ pub async fn get_spaces_posts(configuration: &configuration::Configuration, id: 
 }
 
 /// Retrieves a list of Spaces matching the specified search query.
-pub async fn search_spaces(configuration: &configuration::Configuration, query: &str, state: Option<&str>, max_results: Option<i32>, space_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, topic_fields: Option<Vec<String>>) -> Result<models::SearchSpacesResponse, Error<SearchSpacesError>> {
+pub async fn search_spaces(configuration: &configuration::Configuration, query: &str, state: Option<&str>, max_results: Option<i32>, space_fields: Option<Vec<models::SpaceField>>, expansions: Option<Vec<models::SpaceExpansion>>, user_fields: Option<Vec<models::UserField>>, topic_fields: Option<Vec<models::TopicField>>) -> Result<models::SearchSpacesResponse, Error<SearchSpacesError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_query = query;
     let p_query_state = state;

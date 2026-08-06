@@ -22,7 +22,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Account Activity"],
+        "tags": [
+          "Account Activity"
+        ],
         "summary": "Get Account Activity Subscription Count",
         "operationId": "getAccountActivitySubscriptionCount",
         "responses": {
@@ -60,16 +62,18 @@
           {
             "OAuth2UserToken": [
               "dm.read",
-              "users.read",
+              "dm.write",
               "tweet.read",
-              "dm.write"
+              "users.read"
             ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Account Activity"],
+        "tags": [
+          "Account Activity"
+        ],
         "summary": "Validate Account Activity Subscription",
         "operationId": "validateAccountActivitySubscription",
         "parameters": [
@@ -115,17 +119,19 @@
         "security": [
           {
             "OAuth2UserToken": [
-              "dm.read",
-              "users.read",
               "dm.write",
-              "tweet.read"
+              "tweet.read",
+              "dm.read",
+              "users.read"
             ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Account Activity"],
+        "tags": [
+          "Account Activity"
+        ],
         "summary": "Create subscription",
         "description": "Creates an Account Activity subscription for the user and the given webhook.",
         "externalDocs": {
@@ -189,7 +195,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Account Activity"],
+        "tags": [
+          "Account Activity"
+        ],
         "summary": "Get Account Activity Subscriptions",
         "operationId": "getAccountActivitySubscriptions",
         "parameters": [
@@ -239,7 +247,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Account Activity"],
+        "tags": [
+          "Account Activity"
+        ],
         "summary": "Delete subscription",
         "description": "Deletes an Account Activity subscription for the given webhook and user ID.",
         "externalDocs": {
@@ -302,7 +312,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Stream"],
+        "tags": [
+          "Stream"
+        ],
         "summary": "Activity Stream",
         "description": "Stream of X Activities",
         "externalDocs": {
@@ -383,7 +395,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Activity"],
+        "tags": [
+          "Activity"
+        ],
         "summary": "Delete X activity subscriptions by IDs",
         "description": "Deletes multiple subscriptions for X activity events by their IDs",
         "externalDocs": {
@@ -439,7 +453,10 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "like.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "like.read"
+            ]
           },
           {
             "UserToken": []
@@ -448,7 +465,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Activity"],
+        "tags": [
+          "Activity"
+        ],
         "summary": "Get X activity subscriptions",
         "description": "Get a list of active subscriptions for XAA",
         "externalDocs": {
@@ -520,7 +539,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Activity"],
+        "tags": [
+          "Activity"
+        ],
         "summary": "Create X activity subscription",
         "description": "Creates a subscription for an X activity event. OAuth2 user-context tokens must hold the scope matching the requested event_type: dm.read for chat.* and dm.* events, like.read for like.* events, mute.read for mute.* events, block.read for block.* events, and tweet.read for all other event types. Mute and block subscriptions are actor-only: filter.user_id must identify the authenticated user and direction is not supported.",
         "externalDocs": {
@@ -573,7 +594,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Activity"],
+        "tags": [
+          "Activity"
+        ],
         "summary": "Deletes X activity subscription",
         "description": "Deletes a subscription for an X activity event",
         "externalDocs": {
@@ -626,7 +649,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Activity"],
+        "tags": [
+          "Activity"
+        ],
         "summary": "Update X activity subscription",
         "description": "Updates a subscription for an X activity event",
         "externalDocs": {
@@ -688,13 +713,17 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.write"]
+            "OAuth2UserToken": [
+              "tweet.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Articles"],
+        "tags": [
+          "Articles"
+        ],
         "summary": "Create draft Article",
         "description": "Creates a new Article draft that can later be published.",
         "operationId": "articleCreateDraft",
@@ -741,13 +770,17 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.write"]
+            "OAuth2UserToken": [
+              "tweet.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Articles"],
+        "tags": [
+          "Articles"
+        ],
         "summary": "Publish Article",
         "description": "Publishes a draft Article, making it publicly visible.",
         "operationId": "articlePublish",
@@ -792,17 +825,112 @@
         }
       }
     },
-    "/2/broadcasts/scheduled": {
+    "/2/broadcasts": {
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["broadcast.read"]
+            "OAuth2UserToken": [
+              "broadcast.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Broadcasts"],
+        "tags": [
+          "Broadcasts"
+        ],
+        "summary": "List broadcasts",
+        "description": "Returns the authenticated user's live-video broadcasts, or selected owned broadcasts when ids are provided.\n\nAt most one of `ids`, `max_results` may be provided. At most one of `ids`, `pagination_token` may be provided.",
+        "operationId": "listBroadcasts",
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "description": "Comma-separated broadcast IDs to retrieve instead of listing broadcasts.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 100,
+              "items": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9]{1,13}$"
+              }
+            },
+            "explode": false,
+            "style": "form"
+          },
+          {
+            "name": "max_results",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "format": "int32"
+            },
+            "style": "form"
+          },
+          {
+            "name": "pagination_token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "style": "form"
+          },
+          {
+            "$ref": "#/components/parameters/BroadcastFieldsParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListBroadcastsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "The request has failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/2/broadcasts/scheduled": {
+      "get": {
+        "security": [
+          {
+            "OAuth2UserToken": [
+              "broadcast.read"
+            ]
+          },
+          {
+            "UserToken": []
+          }
+        ],
+        "tags": [
+          "Broadcasts"
+        ],
         "summary": "List scheduled broadcasts",
         "description": "Returns scheduled broadcasts owned by the authenticated user.",
         "operationId": "listScheduledBroadcasts",
@@ -878,13 +1006,18 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["broadcast.read", "broadcast.write"]
+            "OAuth2UserToken": [
+              "broadcast.write",
+              "broadcast.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Broadcasts"],
+        "tags": [
+          "Broadcasts"
+        ],
         "summary": "Create a scheduled broadcast",
         "description": "Schedules a one-off or recurring broadcast for the authenticated user. A `source_id` (ingest) is required at create time.",
         "operationId": "createScheduledBroadcast",
@@ -931,13 +1064,18 @@
       "delete": {
         "security": [
           {
-            "OAuth2UserToken": ["broadcast.read", "broadcast.write"]
+            "OAuth2UserToken": [
+              "broadcast.write",
+              "broadcast.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Broadcasts"],
+        "tags": [
+          "Broadcasts"
+        ],
         "summary": "Delete a scheduled broadcast",
         "description": "Deletes a scheduled broadcast by its alphanumeric UBS broadcast id.",
         "operationId": "deleteScheduledBroadcast",
@@ -993,13 +1131,17 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["broadcast.read"]
+            "OAuth2UserToken": [
+              "broadcast.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Broadcasts"],
+        "tags": [
+          "Broadcasts"
+        ],
         "summary": "Get a scheduled broadcast",
         "description": "Returns a single scheduled broadcast by its alphanumeric UBS broadcast id.",
         "operationId": "getScheduledBroadcast",
@@ -1046,13 +1188,18 @@
       "put": {
         "security": [
           {
-            "OAuth2UserToken": ["broadcast.read", "broadcast.write"]
+            "OAuth2UserToken": [
+              "broadcast.read",
+              "broadcast.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Broadcasts"],
+        "tags": [
+          "Broadcasts"
+        ],
         "summary": "Update a scheduled broadcast",
         "description": "Fully replaces schedule fields for a broadcast. Path `:id` is the UBS broadcast id; the body must include `scheduled_broadcast_id` and re-send any fields that should be kept.",
         "operationId": "updateScheduledBroadcast",
@@ -1111,13 +1258,18 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["broadcast.write", "broadcast.read"]
+            "OAuth2UserToken": [
+              "broadcast.write",
+              "broadcast.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Broadcasts"],
+        "tags": [
+          "Broadcasts"
+        ],
         "summary": "Go live on a scheduled broadcast",
         "description": "Publishes a schedule that was created or updated with `manual_publish: true`. Without that flag the coordinator auto-publishes at start and this call is rejected.",
         "operationId": "goLiveScheduledBroadcast",
@@ -1166,13 +1318,17 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["broadcast.read"]
+            "OAuth2UserToken": [
+              "broadcast.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Broadcasts"],
+        "tags": [
+          "Broadcasts"
+        ],
         "summary": "Get a broadcast",
         "description": "Returns a broadcast owned by the authenticated user.",
         "operationId": "getBroadcast",
@@ -1224,13 +1380,18 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["broadcast.write", "broadcast.read"]
+            "OAuth2UserToken": [
+              "broadcast.read",
+              "broadcast.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Broadcasts"],
+        "tags": [
+          "Broadcasts"
+        ],
         "summary": "Send a chat message to a live broadcast",
         "description": "Posts a chat message to a running broadcast, attributed to the authenticated user.",
         "operationId": "sendBroadcastChat",
@@ -1289,13 +1450,18 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["broadcast.write", "broadcast.read"]
+            "OAuth2UserToken": [
+              "broadcast.write",
+              "broadcast.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Broadcasts"],
+        "tags": [
+          "Broadcasts"
+        ],
         "summary": "Mute a user in a broadcast chat",
         "description": "Prevents a user from posting further messages in a running broadcast chat. The authenticated user must own the broadcast.",
         "operationId": "muteBroadcastChatUser",
@@ -1354,13 +1520,18 @@
       "delete": {
         "security": [
           {
-            "OAuth2UserToken": ["broadcast.read", "broadcast.write"]
+            "OAuth2UserToken": [
+              "broadcast.read",
+              "broadcast.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Broadcasts"],
+        "tags": [
+          "Broadcasts"
+        ],
         "summary": "Unmute a user in a broadcast chat",
         "description": "Allows a muted user to post messages in a running broadcast chat again. The authenticated user must own the broadcast.",
         "operationId": "unmuteBroadcastChatUser",
@@ -1420,13 +1591,18 @@
       "delete": {
         "security": [
           {
-            "OAuth2UserToken": ["broadcast.write", "broadcast.read"]
+            "OAuth2UserToken": [
+              "broadcast.read",
+              "broadcast.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Broadcasts"],
+        "tags": [
+          "Broadcasts"
+        ],
         "summary": "Remove a chat message from a live broadcast",
         "description": "Removes a specific chat message from a running broadcast owned by the authenticated user.",
         "operationId": "deleteBroadcastChatMessage",
@@ -1485,13 +1661,18 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["dm.read", "users.read"]
+            "OAuth2UserToken": [
+              "dm.read",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Chat"],
+        "tags": [
+          "Chat"
+        ],
         "summary": "Get Chat Conversations",
         "description": "Retrieves a list of Chat conversations for the authenticated user's inbox.",
         "externalDocs": {
@@ -1564,13 +1745,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "tweet.read", "dm.write"]
+            "OAuth2UserToken": [
+              "dm.write",
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Chat"],
+        "tags": [
+          "Chat"
+        ],
         "summary": "Create Chat Group Conversation",
         "description": "Creates a new encrypted Chat group conversation on behalf of the authenticated user.",
         "externalDocs": {
@@ -1620,13 +1807,17 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["dm.write"]
+            "OAuth2UserToken": [
+              "dm.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Chat"],
+        "tags": [
+          "Chat"
+        ],
         "summary": "Initialize Chat Group",
         "description": "Initializes a new Chat group conversation and returns a unique conversation ID. Use the returned conversation_id in a subsequent POST /chat/conversations/group call to fully create and configure the group.",
         "externalDocs": {
@@ -1666,13 +1857,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read", "dm.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "dm.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Chat"],
+        "tags": [
+          "Chat"
+        ],
         "summary": "Get Chat Conversation",
         "description": "Returns metadata for a Chat conversation including type, muted status, and group details. Use chat_conversation.fields to select which fields are returned. Use expansions to hydrate member, admin, or participant user objects. Use user.fields to control which profile fields are returned for expanded users.",
         "externalDocs": {
@@ -1732,13 +1929,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["dm.read", "users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read",
+              "dm.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Chat"],
+        "tags": [
+          "Chat"
+        ],
         "summary": "Get Chat Conversation Events",
         "description": "Retrieves messages and key change events for a specific Chat conversation with pagination support. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.",
         "externalDocs": {
@@ -1815,13 +2018,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "dm.write", "users.read"]
+            "OAuth2UserToken": [
+              "dm.write",
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Chat"],
+        "tags": [
+          "Chat"
+        ],
         "summary": "Add Conversation Keys",
         "description": "Adds (initializes or rotates) the encryption keys for a Chat conversation. Call this before sending messages in a new 1:1 conversation, and again with a newer key version to rotate the conversation key. For 1:1 conversations, provide the recipient's user ID as the conversation id; the server constructs the canonical conversation ID from the authenticated user and recipient. The request body must contain the conversation key version and participant keys (the conversation key encrypted for each participant using their public key).",
         "externalDocs": {
@@ -1883,13 +2092,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "dm.write", "tweet.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "dm.write",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Chat"],
+        "tags": [
+          "Chat"
+        ],
         "summary": "Add members to a Chat group conversation",
         "description": "Adds one or more members to an existing encrypted Chat group conversation, rotating the conversation key.",
         "externalDocs": {
@@ -1951,13 +2166,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["dm.write", "tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "dm.write",
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Chat"],
+        "tags": [
+          "Chat"
+        ],
         "summary": "Send Chat Message",
         "description": "Sends an encrypted message to a specific Chat conversation. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.",
         "externalDocs": {
@@ -2019,13 +2240,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "tweet.read", "dm.write"]
+            "OAuth2UserToken": [
+              "dm.write",
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Chat"],
+        "tags": [
+          "Chat"
+        ],
         "summary": "Delete Chat messages",
         "description": "Deletes one or more messages from a Chat conversation. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient. Delete for all removes a message you sent (or, in groups you administer, any message) for every participant; delete for self removes any message only from your own view.",
         "externalDocs": {
@@ -2087,13 +2314,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read", "dm.write"]
+            "OAuth2UserToken": [
+              "dm.write",
+              "tweet.read",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Chat"],
+        "tags": [
+          "Chat"
+        ],
         "summary": "Mark Conversation as Read",
         "description": "Marks a specific Chat conversation as read on behalf of the authenticated user. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.",
         "externalDocs": {
@@ -2155,13 +2388,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["dm.write", "users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read",
+              "dm.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Chat"],
+        "tags": [
+          "Chat"
+        ],
         "summary": "Send Typing Indicator",
         "description": "Sends a typing indicator to a specific Chat conversation on behalf of the authenticated user. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.",
         "externalDocs": {
@@ -2213,13 +2452,17 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["media.write"]
+            "OAuth2UserToken": [
+              "media.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Chat"],
+        "tags": [
+          "Chat"
+        ],
         "summary": "Initialize Chat Media Upload",
         "description": "Initializes an XChat media upload session.",
         "externalDocs": {
@@ -2269,13 +2512,17 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["media.write"]
+            "OAuth2UserToken": [
+              "media.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Chat"],
+        "tags": [
+          "Chat"
+        ],
         "summary": "Append Chat Media Upload",
         "description": "Appends media data to an XChat upload session.",
         "externalDocs": {
@@ -2341,13 +2588,17 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["media.write"]
+            "OAuth2UserToken": [
+              "media.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Chat"],
+        "tags": [
+          "Chat"
+        ],
         "summary": "Finalize Chat Media Upload",
         "description": "Finalizes an XChat media upload session.",
         "externalDocs": {
@@ -2409,13 +2660,17 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["media.write"]
+            "OAuth2UserToken": [
+              "media.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Chat"],
+        "tags": [
+          "Chat"
+        ],
         "summary": "Download Chat Media",
         "description": "Downloads encrypted media bytes from an XChat conversation. The response body contains raw binary bytes.",
         "operationId": "chatMediaDownload",
@@ -2475,13 +2730,18 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Communities"],
+        "tags": [
+          "Communities"
+        ],
         "summary": "Search Communities",
         "operationId": "searchCommunities",
         "parameters": [
@@ -2566,7 +2826,11 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "list.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "list.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
@@ -2575,7 +2839,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Communities"],
+        "tags": [
+          "Communities"
+        ],
         "summary": "Get Communities by ID",
         "operationId": "getCommunitiesById",
         "parameters": [
@@ -2628,7 +2894,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Compliance"],
+        "tags": [
+          "Compliance"
+        ],
         "summary": "Get Compliance Jobs",
         "description": "Retrieves a list of Compliance Jobs filtered by job type and optional status.",
         "externalDocs": {
@@ -2642,7 +2910,10 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["tweets", "users"]
+              "enum": [
+                "tweets",
+                "users"
+              ]
             },
             "style": "form"
           },
@@ -2652,7 +2923,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["created", "in_progress", "failed", "complete"]
+              "enum": [
+                "created",
+                "in_progress",
+                "failed",
+                "complete"
+              ]
             },
             "style": "form"
           },
@@ -2694,7 +2970,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Compliance"],
+        "tags": [
+          "Compliance"
+        ],
         "summary": "Create Compliance Job",
         "description": "Creates a new Compliance Job for the specified job type.",
         "externalDocs": {
@@ -2752,7 +3030,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Compliance"],
+        "tags": [
+          "Compliance"
+        ],
         "summary": "Get Compliance Job by ID",
         "description": "Retrieves details of a specific Compliance Job by its ID.",
         "externalDocs": {
@@ -2810,7 +3090,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Connections"],
+        "tags": [
+          "Connections"
+        ],
         "summary": "Terminate multiple connections",
         "description": "Terminates multiple streaming connections by their UUIDs for the authenticated application.",
         "operationId": "deleteConnectionsByUuids",
@@ -2858,7 +3140,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Connections"],
+        "tags": [
+          "Connections"
+        ],
         "summary": "Get Connection History",
         "description": "Returns active and historical streaming connections with disconnect reasons for the authenticated application.",
         "operationId": "getConnectionHistory",
@@ -2869,7 +3153,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["active", "inactive", "all"],
+              "enum": [
+                "active",
+                "inactive",
+                "all"
+              ],
               "default": "active"
             },
             "style": "form"
@@ -2966,7 +3254,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Connections"],
+        "tags": [
+          "Connections"
+        ],
         "summary": "Terminate all connections",
         "description": "Terminates all active streaming connections for the authenticated application.",
         "externalDocs": {
@@ -3009,7 +3299,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Connections"],
+        "tags": [
+          "Connections"
+        ],
         "summary": "Terminate connections by endpoint",
         "description": "Terminates all streaming connections for a specific endpoint ID for the authenticated application.",
         "operationId": "deleteConnectionsByEndpoint",
@@ -3073,13 +3365,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "tweet.read", "dm.write"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read",
+              "dm.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Direct Messages"],
+        "tags": [
+          "Direct Messages"
+        ],
         "summary": "Create DM conversation",
         "description": "Initiates a new direct message conversation with specified participants.",
         "operationId": "createDirectMessagesConversation",
@@ -3126,10 +3424,14 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["dm.read"]
+            "OAuth2UserToken": [
+              "dm.read"
+            ]
           }
         ],
-        "tags": ["Direct Messages"],
+        "tags": [
+          "Direct Messages"
+        ],
         "summary": "Download DM Media",
         "description": "Downloads media attached to a legacy Direct Message. The requesting user must be a participant in the conversation containing the specified DM event. The response body contains raw binary bytes.",
         "operationId": "dmConversationsMediaDownload",
@@ -3196,13 +3498,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "dm.read", "users.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read",
+              "dm.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Direct Messages"],
+        "tags": [
+          "Direct Messages"
+        ],
         "summary": "Get Direct Messages Events by Participant ID",
         "operationId": "getDirectMessagesEventsByParticipantId",
         "parameters": [
@@ -3314,13 +3622,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "dm.write", "users.read"]
+            "OAuth2UserToken": [
+              "dm.write",
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Direct Messages"],
+        "tags": [
+          "Direct Messages"
+        ],
         "summary": "Create DM message by participant ID",
         "description": "Sends a new direct message to a specific participant by their ID.",
         "operationId": "createDirectMessagesByParticipantId",
@@ -3379,13 +3693,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["dm.write", "tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read",
+              "dm.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Direct Messages"],
+        "tags": [
+          "Direct Messages"
+        ],
         "summary": "Create Direct Messages by Conversation ID",
         "operationId": "createDirectMessagesByConversationId",
         "parameters": [
@@ -3442,13 +3762,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "dm.read", "users.read"]
+            "OAuth2UserToken": [
+              "dm.read",
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Direct Messages"],
+        "tags": [
+          "Direct Messages"
+        ],
         "summary": "Get Direct Messages Events by Conversation ID",
         "operationId": "getDirectMessagesEventsByConversationId",
         "parameters": [
@@ -3560,13 +3886,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "tweet.read", "dm.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read",
+              "dm.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Direct Messages"],
+        "tags": [
+          "Direct Messages"
+        ],
         "summary": "Get Direct Messages Events",
         "operationId": "getDirectMessagesEvents",
         "parameters": [
@@ -3668,13 +4000,18 @@
       "delete": {
         "security": [
           {
-            "OAuth2UserToken": ["dm.read", "dm.write"]
+            "OAuth2UserToken": [
+              "dm.write",
+              "dm.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Direct Messages"],
+        "tags": [
+          "Direct Messages"
+        ],
         "summary": "Delete DM event",
         "description": "Deletes a specific direct message event by its ID, if owned by the authenticated user.",
         "operationId": "deleteDirectMessagesEvents",
@@ -3721,13 +4058,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read", "dm.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read",
+              "dm.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Direct Messages"],
+        "tags": [
+          "Direct Messages"
+        ],
         "summary": "Get Direct Messages Events by ID",
         "operationId": "getDirectMessagesEventsById",
         "parameters": [
@@ -3793,7 +4136,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Stream"],
+        "tags": [
+          "Stream"
+        ],
         "summary": "Stream Likes compliance data",
         "description": "Streams all compliance data related to Likes for Users.",
         "operationId": "streamLikesCompliance",
@@ -3871,7 +4216,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Stream"],
+        "tags": [
+          "Stream"
+        ],
         "summary": "Stream all Likes",
         "description": "Streams all public Likes in real-time.",
         "operationId": "streamLikesFirehose",
@@ -4134,7 +4481,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Stream"],
+        "tags": [
+          "Stream"
+        ],
         "summary": "Stream sampled Likes",
         "description": "Streams a 10% sample of public Likes in real-time.",
         "operationId": "streamLikesSample10",
@@ -4405,7 +4754,9 @@
             "UserToken": []
           }
         ],
-        "tags": ["Lists"],
+        "tags": [
+          "Lists"
+        ],
         "summary": "Create Lists",
         "operationId": "createLists",
         "requestBody": {
@@ -4451,13 +4802,19 @@
       "delete": {
         "security": [
           {
-            "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read",
+              "list.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Lists"],
+        "tags": [
+          "Lists"
+        ],
         "summary": "Delete List",
         "description": "Deletes a specific List owned by the authenticated user by its ID.",
         "externalDocs": {
@@ -4506,7 +4863,11 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read", "list.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read",
+              "list.read"
+            ]
           },
           {
             "UserToken": []
@@ -4515,7 +4876,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Lists"],
+        "tags": [
+          "Lists"
+        ],
         "summary": "Get Lists by ID",
         "operationId": "getListsById",
         "parameters": [
@@ -4569,13 +4932,19 @@
       "put": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read", "list.write"]
+            "OAuth2UserToken": [
+              "users.read",
+              "list.write",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Lists"],
+        "tags": [
+          "Lists"
+        ],
         "summary": "Update List",
         "description": "Updates the details of a specific List owned by the authenticated user by its ID.",
         "externalDocs": {
@@ -4636,7 +5005,11 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["list.read", "users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "list.read",
+              "tweet.read",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
@@ -4645,7 +5018,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Lists"],
+        "tags": [
+          "Lists"
+        ],
         "summary": "Get Lists Followers",
         "operationId": "getListsFollowers",
         "parameters": [
@@ -4724,7 +5099,11 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["list.read", "users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read",
+              "list.read"
+            ]
           },
           {
             "UserToken": []
@@ -4733,7 +5112,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Lists"],
+        "tags": [
+          "Lists"
+        ],
         "summary": "Get Lists Members",
         "operationId": "getListsMembers",
         "parameters": [
@@ -4810,13 +5191,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read",
+              "list.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Lists"],
+        "tags": [
+          "Lists"
+        ],
         "summary": "Add Lists Member",
         "operationId": "addListsMember",
         "parameters": [
@@ -4873,13 +5260,19 @@
       "delete": {
         "security": [
           {
-            "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "list.write",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Lists"],
+        "tags": [
+          "Lists"
+        ],
         "summary": "Remove a List member",
         "description": "Removes a User from a List by their ID.",
         "externalDocs": {
@@ -4939,7 +5332,11 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["list.read", "users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "list.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
@@ -4948,7 +5345,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Lists"],
+        "tags": [
+          "Lists"
+        ],
         "summary": "Get Lists Posts",
         "operationId": "getListsPosts",
         "parameters": [
@@ -5037,7 +5436,9 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read"]
+            "OAuth2UserToken": [
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
@@ -5046,7 +5447,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Media"],
+        "tags": [
+          "Media"
+        ],
         "summary": "Get Media by media keys",
         "operationId": "getMediaByMediaKeys",
         "parameters": [
@@ -5103,13 +5506,17 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read"]
+            "OAuth2UserToken": [
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Media"],
+        "tags": [
+          "Media"
+        ],
         "summary": "Get Media analytics",
         "operationId": "getMediaAnalytics",
         "parameters": [
@@ -5155,7 +5562,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["hourly", "daily", "total"],
+              "enum": [
+                "hourly",
+                "daily",
+                "total"
+              ],
               "default": "daily"
             },
             "style": "form"
@@ -5197,13 +5608,17 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["media.write"]
+            "OAuth2UserToken": [
+              "media.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Media"],
+        "tags": [
+          "Media"
+        ],
         "summary": "Create Media metadata",
         "description": "Creates metadata for a Media file.",
         "externalDocs": {
@@ -5253,13 +5668,17 @@
       "delete": {
         "security": [
           {
-            "OAuth2UserToken": ["media.write"]
+            "OAuth2UserToken": [
+              "media.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Media"],
+        "tags": [
+          "Media"
+        ],
         "summary": "Delete Media subtitles",
         "description": "Deletes subtitles for a specific Media file.",
         "externalDocs": {
@@ -5307,13 +5726,17 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["media.write"]
+            "OAuth2UserToken": [
+              "media.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Media"],
+        "tags": [
+          "Media"
+        ],
         "summary": "Create Media subtitles",
         "description": "Creates subtitles for a specific Media file.",
         "externalDocs": {
@@ -5363,13 +5786,17 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["media.write"]
+            "OAuth2UserToken": [
+              "media.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Media"],
+        "tags": [
+          "Media"
+        ],
         "summary": "Get Media upload status",
         "description": "Retrieves the status of a Media upload by its ID.",
         "externalDocs": {
@@ -5392,7 +5819,9 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["STATUS"]
+              "enum": [
+                "STATUS"
+              ]
             },
             "style": "form"
           }
@@ -5428,13 +5857,17 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["media.write"]
+            "OAuth2UserToken": [
+              "media.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Media"],
+        "tags": [
+          "Media"
+        ],
         "summary": "Upload media",
         "description": "Uploads a media file for use in posts or other content.",
         "externalDocs": {
@@ -5489,13 +5922,17 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["media.write"]
+            "OAuth2UserToken": [
+              "media.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Media"],
+        "tags": [
+          "Media"
+        ],
         "summary": "Initialize media upload",
         "description": "Initializes a media upload.",
         "externalDocs": {
@@ -5545,13 +5982,17 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["media.write"]
+            "OAuth2UserToken": [
+              "media.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Media"],
+        "tags": [
+          "Media"
+        ],
         "summary": "Append Media Upload",
         "operationId": "appendMediaUpload",
         "parameters": [
@@ -5614,13 +6055,17 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["media.write"]
+            "OAuth2UserToken": [
+              "media.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Media"],
+        "tags": [
+          "Media"
+        ],
         "summary": "Finalize Media upload",
         "description": "Finalizes a Media upload request.",
         "externalDocs": {
@@ -5672,7 +6117,9 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read"]
+            "OAuth2UserToken": [
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
@@ -5681,7 +6128,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Media"],
+        "tags": [
+          "Media"
+        ],
         "summary": "Get Media by media key",
         "operationId": "getMediaByMediaKey",
         "parameters": [
@@ -5732,7 +6181,10 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
@@ -5741,7 +6193,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["News"],
+        "tags": [
+          "News"
+        ],
         "summary": "Search News",
         "operationId": "searchNews",
         "parameters": [
@@ -5819,7 +6273,10 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
@@ -5828,7 +6285,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["News"],
+        "tags": [
+          "News"
+        ],
         "summary": "Get news stories by ID",
         "description": "Retrieves news story by its ID.",
         "externalDocs": {
@@ -5883,13 +6342,17 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.write"]
+            "OAuth2UserToken": [
+              "tweet.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Community Notes"],
+        "tags": [
+          "Community Notes"
+        ],
         "summary": "Create Community Notes",
         "operationId": "createCommunityNotes",
         "requestBody": {
@@ -5935,13 +6398,17 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.write"]
+            "OAuth2UserToken": [
+              "tweet.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Community Notes"],
+        "tags": [
+          "Community Notes"
+        ],
         "summary": "Evaluate Community Notes",
         "operationId": "evaluateCommunityNotes",
         "requestBody": {
@@ -5987,13 +6454,17 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read"]
+            "OAuth2UserToken": [
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Community Notes"],
+        "tags": [
+          "Community Notes"
+        ],
         "summary": "Search Community Notes Written",
         "operationId": "searchCommunityNotesWritten",
         "parameters": [
@@ -6065,13 +6536,17 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read"]
+            "OAuth2UserToken": [
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Community Notes"],
+        "tags": [
+          "Community Notes"
+        ],
         "summary": "Search Eligible Posts",
         "operationId": "searchEligiblePosts",
         "parameters": [
@@ -6167,13 +6642,17 @@
       "delete": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.write"]
+            "OAuth2UserToken": [
+              "tweet.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Community Notes"],
+        "tags": [
+          "Community Notes"
+        ],
         "summary": "Delete a Community Note",
         "description": "Deletes a community note.",
         "externalDocs": {
@@ -6222,7 +6701,9 @@
     },
     "/2/openapi.json": {
       "get": {
-        "tags": ["General"],
+        "tags": [
+          "General"
+        ],
         "summary": "Get OpenAPI Spec.",
         "description": "Retrieves the full OpenAPI Specification in JSON format. (See https://github.com/OAI/OpenAPI-Specification/blob/master/README.md)",
         "operationId": "getOpenApiSpec",
@@ -6245,13 +6726,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read", "space.read"]
+            "OAuth2UserToken": [
+              "space.read",
+              "tweet.read",
+              "users.read"
+            ]
           },
           {
             "BearerToken": []
           }
         ],
-        "tags": ["Spaces"],
+        "tags": [
+          "Spaces"
+        ],
         "summary": "Get Spaces by IDs",
         "operationId": "getSpacesByIds",
         "parameters": [
@@ -6317,13 +6804,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "space.read", "users.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read",
+              "space.read"
+            ]
           },
           {
             "BearerToken": []
           }
         ],
-        "tags": ["Spaces"],
+        "tags": [
+          "Spaces"
+        ],
         "summary": "Get Spaces by Creator IDs",
         "operationId": "getSpacesByCreatorIds",
         "parameters": [
@@ -6389,13 +6882,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["space.read", "users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read",
+              "space.read"
+            ]
           },
           {
             "BearerToken": []
           }
         ],
-        "tags": ["Spaces"],
+        "tags": [
+          "Spaces"
+        ],
         "summary": "Search Spaces",
         "description": "Retrieves a list of Spaces matching the specified search query.",
         "externalDocs": {
@@ -6420,7 +6919,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["live", "scheduled", "all"],
+              "enum": [
+                "live",
+                "scheduled",
+                "all"
+              ],
               "default": "all"
             },
             "style": "form"
@@ -6484,13 +6987,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read", "space.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "space.read",
+              "users.read"
+            ]
           },
           {
             "BearerToken": []
           }
         ],
-        "tags": ["Spaces"],
+        "tags": [
+          "Spaces"
+        ],
         "summary": "Get Spaces by ID",
         "operationId": "getSpacesById",
         "parameters": [
@@ -6550,10 +7059,16 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read", "space.read"]
+            "OAuth2UserToken": [
+              "space.read",
+              "tweet.read",
+              "users.read"
+            ]
           }
         ],
-        "tags": ["Spaces"],
+        "tags": [
+          "Spaces"
+        ],
         "summary": "Get Space ticket buyers",
         "description": "Retrieves a list of Users who purchased tickets to a specific Space by its ID.",
         "externalDocs": {
@@ -6638,13 +7153,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["space.read", "tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "space.read",
+              "tweet.read",
+              "users.read"
+            ]
           },
           {
             "BearerToken": []
           }
         ],
-        "tags": ["Spaces"],
+        "tags": [
+          "Spaces"
+        ],
         "summary": "Get Space Posts",
         "description": "Retrieves a list of Posts shared in a specific Space by its ID.",
         "externalDocs": {
@@ -6743,7 +7264,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Trends"],
+        "tags": [
+          "Trends"
+        ],
         "summary": "Get Trends by Woeid",
         "operationId": "getTrendsByWoeid",
         "parameters": [
@@ -6807,7 +7330,10 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
@@ -6816,7 +7342,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Posts"],
+        "tags": [
+          "Posts"
+        ],
         "summary": "Get Posts by IDs",
         "operationId": "getPostsByIds",
         "parameters": [
@@ -6885,13 +7413,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "tweet.read", "tweet.write"]
+            "OAuth2UserToken": [
+              "tweet.write",
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Posts"],
+        "tags": [
+          "Posts"
+        ],
         "summary": "Create Posts",
         "operationId": "createPosts",
         "requestBody": {
@@ -6937,13 +7471,18 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Posts"],
+        "tags": [
+          "Posts"
+        ],
         "summary": "Get Posts Analytics",
         "operationId": "getPostsAnalytics",
         "parameters": [
@@ -6988,7 +7527,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["hourly", "weekly", "daily", "total"],
+              "enum": [
+                "hourly",
+                "weekly",
+                "daily",
+                "total"
+              ],
               "default": "total"
             },
             "style": "form"
@@ -7033,7 +7577,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Stream"],
+        "tags": [
+          "Stream"
+        ],
         "summary": "Stream Posts compliance data",
         "description": "Streams all compliance data related to Posts.",
         "operationId": "streamPostsCompliance",
@@ -7124,7 +7670,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Posts"],
+        "tags": [
+          "Posts"
+        ],
         "summary": "Get Posts Counts All",
         "description": "At most one of `pagination_token`, `next_token` may be provided.",
         "operationId": "getPostsCountsAll",
@@ -7208,7 +7756,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["minute", "hour", "day"],
+              "enum": [
+                "minute",
+                "hour",
+                "day"
+              ],
               "default": "hour"
             },
             "style": "form"
@@ -7262,7 +7814,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Posts"],
+        "tags": [
+          "Posts"
+        ],
         "summary": "Get Posts Counts Recent",
         "description": "At most one of `pagination_token`, `next_token` may be provided.",
         "operationId": "getPostsCountsRecent",
@@ -7347,7 +7901,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["minute", "hour", "day"],
+              "enum": [
+                "minute",
+                "hour",
+                "day"
+              ],
               "default": "hour"
             },
             "style": "form"
@@ -7398,7 +7956,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Stream"],
+        "tags": [
+          "Stream"
+        ],
         "summary": "Stream all Posts",
         "description": "Streams all public Posts in real-time.",
         "operationId": "streamPostsFirehose",
@@ -7697,7 +8257,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Stream"],
+        "tags": [
+          "Stream"
+        ],
         "summary": "Stream English Posts",
         "description": "Streams all public English-language Posts in real-time.",
         "operationId": "streamPostsFirehoseEn",
@@ -7996,7 +8558,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Stream"],
+        "tags": [
+          "Stream"
+        ],
         "summary": "Stream Japanese Posts",
         "description": "Streams all public Japanese-language Posts in real-time.",
         "operationId": "streamPostsFirehoseJa",
@@ -8295,7 +8859,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Stream"],
+        "tags": [
+          "Stream"
+        ],
         "summary": "Stream Korean Posts",
         "description": "Streams all public Korean-language Posts in real-time.",
         "operationId": "streamPostsFirehoseKo",
@@ -8594,7 +9160,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Stream"],
+        "tags": [
+          "Stream"
+        ],
         "summary": "Stream Portuguese Posts",
         "description": "Streams all public Portuguese-language Posts in real-time.",
         "operationId": "streamPostsFirehosePt",
@@ -8893,7 +9461,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Stream"],
+        "tags": [
+          "Stream"
+        ],
         "summary": "Stream Post labels",
         "description": "Streams all labeling events applied to Posts.",
         "operationId": "streamLabelsCompliance",
@@ -8971,7 +9541,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Stream"],
+        "tags": [
+          "Stream"
+        ],
         "summary": "Stream sampled Posts",
         "description": "Streams a 1% sample of public Posts in real-time.",
         "externalDocs": {
@@ -9238,7 +9810,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Stream"],
+        "tags": [
+          "Stream"
+        ],
         "summary": "Stream 10% sampled Posts",
         "description": "Streams a 10% sample of public Posts in real-time.",
         "operationId": "streamPostsSample10",
@@ -9537,7 +10111,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Posts"],
+        "tags": [
+          "Posts"
+        ],
         "summary": "Search Posts All",
         "description": "At most one of `start_time`, `since_id` may be provided. At most one of `end_time`, `until_id` may be provided. At most one of `pagination_token`, `next_token` may be provided.",
         "operationId": "searchPostsAll",
@@ -9634,7 +10210,10 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["recency", "relevancy"]
+              "enum": [
+                "recency",
+                "relevancy"
+              ]
             },
             "style": "form"
           },
@@ -9690,7 +10269,10 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
@@ -9699,7 +10281,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Posts"],
+        "tags": [
+          "Posts"
+        ],
         "summary": "Search Posts Recent",
         "description": "At most one of `start_time`, `since_id` may be provided. At most one of `end_time`, `until_id` may be provided. At most one of `pagination_token`, `next_token` may be provided.",
         "operationId": "searchPostsRecent",
@@ -9797,7 +10381,10 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["recency", "relevancy"]
+              "enum": [
+                "recency",
+                "relevancy"
+              ]
             },
             "style": "form"
           },
@@ -9856,7 +10443,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Stream"],
+        "tags": [
+          "Stream"
+        ],
         "summary": "Stream filtered Posts",
         "description": "Streams Posts in real-time matching the active rule set.",
         "externalDocs": {
@@ -10145,7 +10734,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Stream"],
+        "tags": [
+          "Stream"
+        ],
         "summary": "Get filtered-stream rules",
         "description": "Returns the active filtered-stream rules for the authenticated app. Provide `ids` to fetch specific rules; omit it to list all rules.",
         "externalDocs": {
@@ -10228,7 +10819,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Stream"],
+        "tags": [
+          "Stream"
+        ],
         "summary": "Update stream rules",
         "description": "Adds or deletes rules from the active rule set for the filtered stream. Exactly one of `add`, `delete`, or `?delete_all=true` must be specified. Use `?dry_run=true` to validate without committing.",
         "externalDocs": {
@@ -10301,7 +10894,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Stream"],
+        "tags": [
+          "Stream"
+        ],
         "summary": "Get Rule Counts",
         "operationId": "getRuleCounts",
         "parameters": [
@@ -10351,7 +10946,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Webhooks"],
+        "tags": [
+          "Webhooks"
+        ],
         "summary": "Get stream links",
         "description": "Get a list of webhook links associated with a filtered stream ruleset.",
         "externalDocs": {
@@ -10394,7 +10991,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Webhooks"],
+        "tags": [
+          "Webhooks"
+        ],
         "summary": "Delete stream link",
         "description": "Deletes the link delivering FilteredStream events to the given webhook.",
         "externalDocs": {
@@ -10447,7 +11046,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Webhooks"],
+        "tags": [
+          "Webhooks"
+        ],
         "summary": "Create stream link",
         "description": "Creates a link to deliver FilteredStream events to the given webhook.",
         "externalDocs": {
@@ -10499,13 +11100,19 @@
       "delete": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "tweet.write", "tweet.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read",
+              "tweet.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Posts"],
+        "tags": [
+          "Posts"
+        ],
         "summary": "Delete Posts",
         "operationId": "deletePosts",
         "parameters": [
@@ -10550,7 +11157,10 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
@@ -10559,7 +11169,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Posts"],
+        "tags": [
+          "Posts"
+        ],
         "summary": "Get Posts by ID",
         "operationId": "getPostsById",
         "parameters": [
@@ -10624,13 +11236,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["like.read", "tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read",
+              "like.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Posts"],
+        "tags": [
+          "Posts"
+        ],
         "summary": "Get Posts Liking Users",
         "operationId": "getPostsLikingUsers",
         "parameters": [
@@ -10710,7 +11328,10 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
@@ -10719,7 +11340,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Posts"],
+        "tags": [
+          "Posts"
+        ],
         "summary": "Get Posts Quoted Posts",
         "operationId": "getPostsQuotedPosts",
         "parameters": [
@@ -10766,7 +11389,10 @@
               "uniqueItems": true,
               "items": {
                 "type": "string",
-                "enum": ["replies", "retweets"]
+                "enum": [
+                  "replies",
+                  "retweets"
+                ]
               }
             },
             "explode": false,
@@ -10824,7 +11450,10 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
@@ -10833,7 +11462,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Posts"],
+        "tags": [
+          "Posts"
+        ],
         "summary": "Get Posts Reposted by",
         "operationId": "getPostsRepostedBy",
         "parameters": [
@@ -10913,7 +11544,10 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
@@ -10922,7 +11556,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Posts"],
+        "tags": [
+          "Posts"
+        ],
         "summary": "Get Posts Reposts",
         "operationId": "getPostsReposts",
         "parameters": [
@@ -11012,16 +11648,18 @@
         "security": [
           {
             "OAuth2UserToken": [
-              "tweet.moderate.write",
               "users.read",
-              "tweet.read"
+              "tweet.read",
+              "tweet.moderate.write"
             ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Posts"],
+        "tags": [
+          "Posts"
+        ],
         "summary": "Hide reply",
         "description": "Hides or unhides a reply to a conversation owned by the authenticated user.",
         "externalDocs": {
@@ -11085,7 +11723,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Usage"],
+        "tags": [
+          "Usage"
+        ],
         "summary": "Get Usage",
         "operationId": "getUsage",
         "parameters": [
@@ -11139,7 +11779,10 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
@@ -11148,7 +11791,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users by IDs",
         "operationId": "getUsersByIds",
         "parameters": [
@@ -11210,7 +11855,10 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
@@ -11219,7 +11867,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users by Usernames",
         "operationId": "getUsersByUsernames",
         "parameters": [
@@ -11282,7 +11932,10 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
@@ -11291,7 +11944,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users by Username",
         "operationId": "getUsersByUsername",
         "parameters": [
@@ -11351,7 +12006,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Stream"],
+        "tags": [
+          "Stream"
+        ],
         "summary": "Stream Users compliance data",
         "description": "Streams all compliance data related to Users.",
         "operationId": "streamUsersCompliance",
@@ -11439,13 +12096,18 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users Me",
         "operationId": "getUsersMe",
         "parameters": [
@@ -11492,13 +12154,18 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Trends"],
+        "tags": [
+          "Trends"
+        ],
         "summary": "Get Trends Personalized Trends",
         "operationId": "getTrendsPersonalizedTrends",
         "parameters": [
@@ -11539,13 +12206,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read", "dm.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "dm.read",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get public keys",
         "description": "Returns registered public keys for X Chat encryption for the specified users.",
         "externalDocs": {
@@ -11605,13 +12278,18 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["timeline.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "timeline.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users Reposts of Me",
         "operationId": "getUsersRepostsOfMe",
         "parameters": [
@@ -11691,13 +12369,18 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Search Users",
         "operationId": "searchUsers",
         "parameters": [
@@ -11777,7 +12460,10 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
@@ -11786,7 +12472,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users by ID",
         "operationId": "getUsersById",
         "parameters": [
@@ -11842,7 +12530,10 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
@@ -11851,7 +12542,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users Affiliates",
         "operationId": "getUsersAffiliates",
         "parameters": [
@@ -11929,13 +12622,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "tweet.read", "block.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "block.read",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users Blocking",
         "operationId": "getUsersBlocking",
         "parameters": [
@@ -12013,13 +12712,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["bookmark.read", "tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "bookmark.read",
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users Bookmarks",
         "operationId": "getUsersBookmarks",
         "parameters": [
@@ -12105,10 +12810,16 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "bookmark.write", "tweet.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read",
+              "bookmark.write"
+            ]
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Create Users Bookmark",
         "operationId": "createUsersBookmark",
         "parameters": [
@@ -12165,13 +12876,18 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "bookmark.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "bookmark.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users Bookmark Folders",
         "operationId": "getUsersBookmarkFolders",
         "parameters": [
@@ -12239,10 +12955,15 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "bookmark.write"]
+            "OAuth2UserToken": [
+              "bookmark.write",
+              "users.read"
+            ]
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Create Bookmark Folder",
         "description": "Creates a new Bookmark folder for the authenticated user.",
         "operationId": "createUsersBookmarkFolder",
@@ -12300,13 +13021,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["bookmark.read", "users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read",
+              "bookmark.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users Bookmarks by Folder ID",
         "operationId": "getUsersBookmarksByFolderId",
         "parameters": [
@@ -12385,10 +13112,16 @@
       "delete": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "bookmark.write", "users.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read",
+              "bookmark.write"
+            ]
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Delete Bookmark",
         "description": "Removes a Post from the authenticated user's Bookmarks by its ID.",
         "externalDocs": {
@@ -12448,13 +13181,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["dm.write", "users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "dm.write",
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Block Users Dms",
         "operationId": "blockUsersDms",
         "parameters": [
@@ -12501,13 +13240,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "dm.write", "tweet.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "dm.write",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Unblock Users Dms",
         "operationId": "unblockUsersDms",
         "parameters": [
@@ -12554,7 +13299,11 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "list.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "list.read",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
@@ -12563,7 +13312,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users Followed Lists",
         "operationId": "getUsersFollowedLists",
         "parameters": [
@@ -12640,13 +13391,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "list.write", "tweet.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read",
+              "list.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Follow List",
         "operationId": "followList",
         "parameters": [
@@ -12703,13 +13460,19 @@
       "delete": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read", "list.write"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read",
+              "list.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Unfollow a List",
         "description": "Causes the authenticated user to unfollow a List by its ID.",
         "externalDocs": {
@@ -12769,7 +13532,11 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "follows.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "follows.read",
+              "tweet.read",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
@@ -12778,7 +13545,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users Followers",
         "operationId": "getUsersFollowers",
         "parameters": [
@@ -12857,7 +13626,11 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "follows.read", "users.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read",
+              "follows.read"
+            ]
           },
           {
             "UserToken": []
@@ -12866,7 +13639,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users Following",
         "operationId": "getUsersFollowing",
         "parameters": [
@@ -12943,13 +13718,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "follows.write", "tweet.read"]
+            "OAuth2UserToken": [
+              "follows.write",
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Follow User",
         "operationId": "followUser",
         "parameters": [
@@ -13006,13 +13787,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["like.read", "tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read",
+              "like.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users Liked Posts",
         "operationId": "getUsersLikedPosts",
         "parameters": [
@@ -13100,13 +13887,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "tweet.read", "like.write"]
+            "OAuth2UserToken": [
+              "users.read",
+              "like.write",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Like Post",
         "operationId": "likePost",
         "parameters": [
@@ -13163,13 +13956,19 @@
       "delete": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read", "like.write"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read",
+              "like.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Unlike Post",
         "operationId": "unlikePost",
         "parameters": [
@@ -13225,7 +14024,11 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "list.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "list.read",
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
@@ -13234,7 +14037,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users List Memberships",
         "operationId": "getUsersListMemberships",
         "parameters": [
@@ -13312,7 +14117,10 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
@@ -13321,7 +14129,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users Mentions",
         "description": "When both are provided, `start_time` must be earlier than `end_time`. When both are provided, `since_id` must be less than `until_id`.",
         "operationId": "getUsersMentions",
@@ -13452,13 +14262,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["mute.read", "users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read",
+              "mute.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users Muting",
         "operationId": "getUsersMuting",
         "parameters": [
@@ -13534,13 +14350,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "users.read", "mute.write"]
+            "OAuth2UserToken": [
+              "users.read",
+              "mute.write",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Mute User",
         "operationId": "muteUser",
         "parameters": [
@@ -13597,7 +14419,11 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "list.read", "users.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "list.read",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
@@ -13606,7 +14432,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users Owned Lists",
         "operationId": "getUsersOwnedLists",
         "parameters": [
@@ -13685,13 +14513,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "list.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read",
+              "list.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users Pinned Lists",
         "operationId": "getUsersPinnedLists",
         "parameters": [
@@ -13745,13 +14579,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "tweet.read", "list.write"]
+            "OAuth2UserToken": [
+              "list.write",
+              "tweet.read",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Pin List",
         "description": "Causes the authenticated user to pin a specific List by its ID.",
         "externalDocs": {
@@ -13812,13 +14652,19 @@
       "delete": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "list.write", "users.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "list.write",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Unpin a List",
         "description": "Causes the authenticated user to unpin a List by its ID.",
         "externalDocs": {
@@ -13878,13 +14724,19 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "dm.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read",
+              "dm.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get public keys",
         "description": "Returns a user's registered public keys for X Chat encryption.",
         "externalDocs": {
@@ -13936,13 +14788,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.read", "dm.write", "users.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "dm.write",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Chat"],
+        "tags": [
+          "Chat"
+        ],
         "summary": "Add public key",
         "description": "Registers a user's public key for X Chat encryption.",
         "externalDocs": {
@@ -14003,13 +14861,19 @@
       "post": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.write", "tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "tweet.write",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Repost Post",
         "description": "Causes the authenticated user to repost a specific Post by its ID.",
         "externalDocs": {
@@ -14070,13 +14934,19 @@
       "delete": {
         "security": [
           {
-            "OAuth2UserToken": ["tweet.write", "users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "tweet.write",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Unrepost Post",
         "description": "Causes the authenticated user to unrepost a specific Post by its ID.",
         "externalDocs": {
@@ -14137,13 +15007,18 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users Timeline",
         "description": "When both are provided, `start_time` must be earlier than `end_time`. When both are provided, `since_id` must be less than `until_id`.",
         "operationId": "getUsersTimeline",
@@ -14231,7 +15106,10 @@
               "uniqueItems": true,
               "items": {
                 "type": "string",
-                "enum": ["replies", "retweets"]
+                "enum": [
+                  "replies",
+                  "retweets"
+                ]
               }
             },
             "explode": false,
@@ -14289,7 +15167,10 @@
       "get": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "tweet.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read"
+            ]
           },
           {
             "UserToken": []
@@ -14298,7 +15179,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Users Posts",
         "description": "When both are provided, `start_time` must be earlier than `end_time`. When both are provided, `since_id` must be less than `until_id`.",
         "operationId": "getUsersPosts",
@@ -14387,7 +15270,10 @@
               "uniqueItems": true,
               "items": {
                 "type": "string",
-                "enum": ["replies", "retweets"]
+                "enum": [
+                  "replies",
+                  "retweets"
+                ]
               }
             },
             "explode": false,
@@ -14445,13 +15331,19 @@
       "delete": {
         "security": [
           {
-            "OAuth2UserToken": ["follows.write", "tweet.read", "users.read"]
+            "OAuth2UserToken": [
+              "users.read",
+              "tweet.read",
+              "follows.write"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Unfollow User",
         "description": "Causes the authenticated user to unfollow a specific user by their ID.",
         "externalDocs": {
@@ -14511,13 +15403,19 @@
       "delete": {
         "security": [
           {
-            "OAuth2UserToken": ["users.read", "mute.write", "tweet.read"]
+            "OAuth2UserToken": [
+              "tweet.read",
+              "mute.write",
+              "users.read"
+            ]
           },
           {
             "UserToken": []
           }
         ],
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Unmute User",
         "description": "Causes the authenticated user to unmute the target user.",
         "externalDocs": {
@@ -14580,7 +15478,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Webhooks"],
+        "tags": [
+          "Webhooks"
+        ],
         "summary": "Get webhook",
         "description": "Get a list of webhook configs associated with a client app.",
         "externalDocs": {
@@ -14629,7 +15529,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Webhooks"],
+        "tags": [
+          "Webhooks"
+        ],
         "summary": "Create webhook",
         "description": "Creates a new webhook configuration.",
         "externalDocs": {
@@ -14682,7 +15584,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Webhooks"],
+        "tags": [
+          "Webhooks"
+        ],
         "summary": "Create replay job for webhook",
         "description": "Creates a replay job to retrieve events from up to the past 24 hours for all events delivered or attempted to be delivered to the webhook.",
         "externalDocs": {
@@ -14738,7 +15642,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Webhooks"],
+        "tags": [
+          "Webhooks"
+        ],
         "summary": "Delete webhook",
         "description": "Deletes an existing webhook configuration.",
         "externalDocs": {
@@ -14794,7 +15700,9 @@
             "BearerToken": []
           }
         ],
-        "tags": ["Webhooks"],
+        "tags": [
+          "Webhooks"
+        ],
         "summary": "Validate webhook",
         "description": "Triggers a CRC check for a given webhook.",
         "externalDocs": {
@@ -15157,7 +16065,10 @@
           "direction": {
             "type": "string",
             "description": "Optional direction filter for directional events.",
-            "enum": ["inbound", "outbound"]
+            "enum": [
+              "inbound",
+              "outbound"
+            ]
           },
           "keyword": {
             "$ref": "#/components/schemas/Keyword"
@@ -15199,7 +16110,11 @@
       },
       "AddChatGroupMembersActionSignaturesMessageEventSignature": {
         "type": "object",
-        "required": ["signature", "public_key_version", "signature_version"],
+        "required": [
+          "signature",
+          "public_key_version",
+          "signature_version"
+        ],
         "properties": {
           "message_signing_key_info_list": {
             "type": "array",
@@ -15266,7 +16181,9 @@
       },
       "AddChatGroupMembersRequest": {
         "type": "object",
-        "required": ["user_ids"],
+        "required": [
+          "user_ids"
+        ],
         "properties": {
           "action_signatures": {
             "type": "array",
@@ -15348,7 +16265,11 @@
       },
       "AddConversationKeysActionSignaturesMessageEventSignature": {
         "type": "object",
-        "required": ["signature", "public_key_version", "signature_version"],
+        "required": [
+          "signature",
+          "public_key_version",
+          "signature_version"
+        ],
         "properties": {
           "message_signing_key_info_list": {
             "type": "array",
@@ -15473,7 +16394,9 @@
       },
       "AddListsMemberRequest": {
         "type": "object",
-        "required": ["user_id"],
+        "required": [
+          "user_id"
+        ],
         "properties": {
           "user_id": {
             "type": "string",
@@ -15498,7 +16421,9 @@
       },
       "AddListsMemberResponseData": {
         "type": "object",
-        "required": ["is_member"],
+        "required": [
+          "is_member"
+        ],
         "properties": {
           "is_member": {
             "type": "boolean",
@@ -15537,7 +16462,10 @@
       },
       "AddUserPublicKeyRequest": {
         "type": "object",
-        "required": ["public_key", "version"],
+        "required": [
+          "public_key",
+          "version"
+        ],
         "properties": {
           "generate_version": {
             "type": "boolean",
@@ -15782,7 +16710,10 @@
       },
       "AppendMediaUploadRequest": {
         "type": "object",
-        "required": ["media", "segment_index"],
+        "required": [
+          "media",
+          "segment_index"
+        ],
         "properties": {
           "media": {
             "anyOf": [
@@ -15831,7 +16762,10 @@
       },
       "ArticleCreateDraftContentState": {
         "type": "object",
-        "required": ["blocks", "entities"],
+        "required": [
+          "blocks",
+          "entities"
+        ],
         "properties": {
           "blocks": {
             "type": "array",
@@ -15852,7 +16786,10 @@
       },
       "ArticleCreateDraftContentStateBlocks": {
         "type": "object",
-        "required": ["text", "type"],
+        "required": [
+          "text",
+          "type"
+        ],
         "properties": {
           "data": {
             "description": "Block-level metadata for mentions, hashtags, cashtags, and URLs.",
@@ -15933,7 +16870,11 @@
       },
       "ArticleCreateDraftContentStateBlocksDataCashtags": {
         "type": "object",
-        "required": ["from_index", "to_index", "text"],
+        "required": [
+          "from_index",
+          "to_index",
+          "text"
+        ],
         "properties": {
           "from_index": {
             "type": "integer",
@@ -15954,7 +16895,11 @@
       },
       "ArticleCreateDraftContentStateBlocksDataHashtags": {
         "type": "object",
-        "required": ["from_index", "to_index", "text"],
+        "required": [
+          "from_index",
+          "to_index",
+          "text"
+        ],
         "properties": {
           "from_index": {
             "type": "integer",
@@ -15975,7 +16920,11 @@
       },
       "ArticleCreateDraftContentStateBlocksDataMentions": {
         "type": "object",
-        "required": ["from_index", "to_index", "text"],
+        "required": [
+          "from_index",
+          "to_index",
+          "text"
+        ],
         "properties": {
           "from_index": {
             "type": "integer",
@@ -15996,7 +16945,11 @@
       },
       "ArticleCreateDraftContentStateBlocksDataUrls": {
         "type": "object",
-        "required": ["from_index", "to_index", "text"],
+        "required": [
+          "from_index",
+          "to_index",
+          "text"
+        ],
         "properties": {
           "from_index": {
             "type": "integer",
@@ -16017,7 +16970,11 @@
       },
       "ArticleCreateDraftContentStateBlocksEntityRanges": {
         "type": "object",
-        "required": ["key", "offset", "length"],
+        "required": [
+          "key",
+          "offset",
+          "length"
+        ],
         "properties": {
           "key": {
             "type": "integer",
@@ -16039,7 +16996,11 @@
       },
       "ArticleCreateDraftContentStateBlocksInlineStyleRanges": {
         "type": "object",
-        "required": ["offset", "length", "style"],
+        "required": [
+          "offset",
+          "length",
+          "style"
+        ],
         "properties": {
           "length": {
             "type": "integer",
@@ -16054,14 +17015,21 @@
           "style": {
             "type": "string",
             "description": "The inline style.",
-            "enum": ["bold", "italic", "strikethrough"]
+            "enum": [
+              "bold",
+              "italic",
+              "strikethrough"
+            ]
           }
         },
         "additionalProperties": false
       },
       "ArticleCreateDraftContentStateEntities": {
         "type": "object",
-        "required": ["key", "value"],
+        "required": [
+          "key",
+          "value"
+        ],
         "properties": {
           "key": {
             "type": "string",
@@ -16075,7 +17043,11 @@
       },
       "ArticleCreateDraftContentStateEntitiesValue": {
         "type": "object",
-        "required": ["type", "mutability", "data"],
+        "required": [
+          "type",
+          "mutability",
+          "data"
+        ],
         "properties": {
           "data": {
             "description": "Entity payload. Fields depend on the entity type: post_id (post), url (link),          media_items (image), entity_key (emoji and other opaque keys), markdown (markdown /          code blocks / GFM tables). divider and latex use an empty data object; latex source          is the block text; emoji uses block text for the character(s). There is no separate          table entity type in article storage; tables are markdown.",
@@ -16084,7 +17056,11 @@
           "mutability": {
             "type": "string",
             "description": "Whether the entity can be edited. Recommended: immutable for post, image, divider, latex; mutable for link and markdown (matches the in-app Articles composer).",
-            "enum": ["immutable", "mutable", "segmented"]
+            "enum": [
+              "immutable",
+              "mutable",
+              "segmented"
+            ]
           },
           "type": {
             "type": "string",
@@ -16137,7 +17113,10 @@
       },
       "ArticleCreateDraftContentStateEntitiesValueDataMediaItems": {
         "type": "object",
-        "required": ["media_category", "media_id"],
+        "required": [
+          "media_category",
+          "media_id"
+        ],
         "properties": {
           "media_category": {
             "type": "string"
@@ -16150,7 +17129,10 @@
       },
       "ArticleCreateDraftCoverMedia": {
         "type": "object",
-        "required": ["media_category", "media_id"],
+        "required": [
+          "media_category",
+          "media_id"
+        ],
         "properties": {
           "media_category": {
             "type": "string",
@@ -16166,7 +17148,10 @@
       "ArticleCreateDraftRequest": {
         "type": "object",
         "description": "Create a draft Article.",
-        "required": ["title", "content_state"],
+        "required": [
+          "title",
+          "content_state"
+        ],
         "properties": {
           "content_state": {
             "description": "DraftJS content state representing the article body. Special formatting          (markdown/code/tables, dividers, LaTeX, emoji, images, embedded posts) uses atomic          blocks with entity_ranges pointing into entities.",
@@ -16200,7 +17185,10 @@
       },
       "ArticleCreateDraftResponseData": {
         "type": "object",
-        "required": ["id", "title"],
+        "required": [
+          "id",
+          "title"
+        ],
         "properties": {
           "id": {
             "type": "string",
@@ -16229,7 +17217,9 @@
       },
       "ArticlePublishResponseData": {
         "type": "object",
-        "required": ["post_id"],
+        "required": [
+          "post_id"
+        ],
         "properties": {
           "post_id": {
             "type": "string",
@@ -16253,7 +17243,9 @@
       },
       "BlockUsersDmsResponseData": {
         "type": "object",
-        "required": ["blocked"],
+        "required": [
+          "blocked"
+        ],
         "properties": {
           "blocked": {
             "type": "boolean",
@@ -16463,7 +17455,11 @@
       },
       "ChatMediaUploadFinalizeRequest": {
         "type": "object",
-        "required": ["conversation_id", "media_hash_key", "num_parts"],
+        "required": [
+          "conversation_id",
+          "media_hash_key",
+          "num_parts"
+        ],
         "properties": {
           "conversation_id": {
             "type": "string",
@@ -16504,7 +17500,9 @@
       },
       "ChatMediaUploadFinalizeResponseData": {
         "type": "object",
-        "required": ["success"],
+        "required": [
+          "success"
+        ],
         "properties": {
           "success": {
             "type": "boolean",
@@ -16514,7 +17512,10 @@
       },
       "ChatMediaUploadInitializeRequest": {
         "type": "object",
-        "required": ["conversation_id", "total_bytes"],
+        "required": [
+          "conversation_id",
+          "total_bytes"
+        ],
         "properties": {
           "conversation_id": {
             "type": "string",
@@ -16544,7 +17545,11 @@
       },
       "ChatMediaUploadInitializeResponseData": {
         "type": "object",
-        "required": ["session_id", "media_hash_key", "conversation_id"],
+        "required": [
+          "session_id",
+          "media_hash_key",
+          "conversation_id"
+        ],
         "properties": {
           "conversation_id": {
             "type": "string",
@@ -16710,7 +17715,9 @@
       },
       "CreateAccountActivitySubscriptionResponseData": {
         "type": "object",
-        "required": ["subscribed"],
+        "required": [
+          "subscribed"
+        ],
         "properties": {
           "subscribed": {
             "type": "boolean",
@@ -16724,7 +17731,10 @@
           "direction": {
             "type": "string",
             "description": "Optional direction filter for directional events. Not supported for mute.* or block.* events.",
-            "enum": ["inbound", "outbound"]
+            "enum": [
+              "inbound",
+              "outbound"
+            ]
           },
           "keyword": {
             "type": "string",
@@ -16739,7 +17749,10 @@
       },
       "CreateActivitySubscriptionRequest": {
         "type": "object",
-        "required": ["event_type", "filter"],
+        "required": [
+          "event_type",
+          "filter"
+        ],
         "properties": {
           "event_type": {
             "type": "string",
@@ -16906,7 +17919,11 @@
       },
       "CreateChatConversationActionSignaturesMessageEventSignature": {
         "type": "object",
-        "required": ["signature", "public_key_version", "signature_version"],
+        "required": [
+          "signature",
+          "public_key_version",
+          "signature_version"
+        ],
         "properties": {
           "message_signing_key_info_list": {
             "type": "array",
@@ -17054,7 +18071,9 @@
       },
       "CreateChatConversationResponseData": {
         "type": "object",
-        "required": ["conversation_id"],
+        "required": [
+          "conversation_id"
+        ],
         "properties": {
           "conversation_id": {
             "type": "string",
@@ -17078,7 +18097,10 @@
           "classification": {
             "type": "string",
             "description": "Community Note classification.",
-            "enum": ["misinformed_or_potentially_misleading", "not_misleading"]
+            "enum": [
+              "misinformed_or_potentially_misleading",
+              "not_misleading"
+            ]
           },
           "is_media_note": {
             "type": "boolean",
@@ -17114,7 +18136,11 @@
       },
       "CreateCommunityNotesRequest": {
         "type": "object",
-        "required": ["test_mode", "post_id", "info"],
+        "required": [
+          "test_mode",
+          "post_id",
+          "info"
+        ],
         "properties": {
           "info": {
             "description": "The Community Note contents.",
@@ -17148,7 +18174,9 @@
       },
       "CreateCommunityNotesResponseData": {
         "type": "object",
-        "required": ["id"],
+        "required": [
+          "id"
+        ],
         "properties": {
           "id": {
             "type": "string",
@@ -17158,7 +18186,9 @@
       },
       "CreateComplianceJobsRequest": {
         "type": "object",
-        "required": ["type"],
+        "required": [
+          "type"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -17172,7 +18202,10 @@
           "type": {
             "type": "string",
             "description": "Type of compliance job to list.",
-            "enum": ["tweets", "users"]
+            "enum": [
+              "tweets",
+              "users"
+            ]
           }
         },
         "additionalProperties": false
@@ -17193,7 +18226,9 @@
       },
       "CreateDirectMessagesByConversationIdAttachments": {
         "type": "object",
-        "required": ["media_id"],
+        "required": [
+          "media_id"
+        ],
         "properties": {
           "media_id": {
             "type": "string",
@@ -17206,10 +18241,14 @@
       "CreateDirectMessagesByConversationIdRequest": {
         "anyOf": [
           {
-            "required": ["text"]
+            "required": [
+              "text"
+            ]
           },
           {
-            "required": ["attachments"]
+            "required": [
+              "attachments"
+            ]
           }
         ],
         "type": "object",
@@ -17246,7 +18285,10 @@
       },
       "CreateDirectMessagesByConversationIdResponseData": {
         "type": "object",
-        "required": ["dm_conversation_id", "dm_event_id"],
+        "required": [
+          "dm_conversation_id",
+          "dm_event_id"
+        ],
         "properties": {
           "dm_conversation_id": {
             "type": "string",
@@ -17260,7 +18302,9 @@
       },
       "CreateDirectMessagesByParticipantIdAttachments": {
         "type": "object",
-        "required": ["media_id"],
+        "required": [
+          "media_id"
+        ],
         "properties": {
           "media_id": {
             "type": "string",
@@ -17273,10 +18317,14 @@
       "CreateDirectMessagesByParticipantIdRequest": {
         "anyOf": [
           {
-            "required": ["text"]
+            "required": [
+              "text"
+            ]
           },
           {
-            "required": ["attachments"]
+            "required": [
+              "attachments"
+            ]
           }
         ],
         "type": "object",
@@ -17313,7 +18361,10 @@
       },
       "CreateDirectMessagesByParticipantIdResponseData": {
         "type": "object",
-        "required": ["dm_conversation_id", "dm_event_id"],
+        "required": [
+          "dm_conversation_id",
+          "dm_event_id"
+        ],
         "properties": {
           "dm_conversation_id": {
             "type": "string",
@@ -17345,7 +18396,9 @@
       },
       "CreateDirectMessagesConversationMessageAttachments": {
         "type": "object",
-        "required": ["media_id"],
+        "required": [
+          "media_id"
+        ],
         "properties": {
           "media_id": {
             "type": "string",
@@ -17357,12 +18410,18 @@
       },
       "CreateDirectMessagesConversationRequest": {
         "type": "object",
-        "required": ["conversation_type", "participant_ids", "message"],
+        "required": [
+          "conversation_type",
+          "participant_ids",
+          "message"
+        ],
         "properties": {
           "conversation_type": {
             "type": "string",
             "description": "The conversation type to create. Supports `Group` only.",
-            "enum": ["Group"]
+            "enum": [
+              "Group"
+            ]
           },
           "message": {
             "description": "The initial Direct Message to send to the conversation.",
@@ -17397,7 +18456,10 @@
       },
       "CreateDirectMessagesConversationResponseData": {
         "type": "object",
-        "required": ["dm_conversation_id", "dm_event_id"],
+        "required": [
+          "dm_conversation_id",
+          "dm_event_id"
+        ],
         "properties": {
           "dm_conversation_id": {
             "type": "string",
@@ -17411,7 +18473,9 @@
       },
       "CreateListsRequest": {
         "type": "object",
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "properties": {
           "description": {
             "type": "string",
@@ -17447,7 +18511,10 @@
       },
       "CreateListsResponseData": {
         "type": "object",
-        "required": ["id", "name"],
+        "required": [
+          "id",
+          "name"
+        ],
         "properties": {
           "id": {
             "type": "string",
@@ -17513,7 +18580,9 @@
       },
       "CreateMediaMetadataMetadataAltText": {
         "type": "object",
-        "required": ["text"],
+        "required": [
+          "text"
+        ],
         "properties": {
           "text": {
             "type": "string",
@@ -17523,7 +18592,9 @@
       },
       "CreateMediaMetadataMetadataContentExpiration": {
         "type": "object",
-        "required": ["timestamp_sec"],
+        "required": [
+          "timestamp_sec"
+        ],
         "properties": {
           "timestamp_sec": {
             "type": "number"
@@ -17532,7 +18603,9 @@
       },
       "CreateMediaMetadataMetadataDomainRestrictions": {
         "type": "object",
-        "required": ["whitelist"],
+        "required": [
+          "whitelist"
+        ],
         "properties": {
           "whitelist": {
             "type": "array",
@@ -17544,7 +18617,10 @@
       },
       "CreateMediaMetadataMetadataFoundMediaOrigin": {
         "type": "object",
-        "required": ["provider", "id"],
+        "required": [
+          "provider",
+          "id"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -17556,7 +18632,9 @@
       },
       "CreateMediaMetadataMetadataManagementInfo": {
         "type": "object",
-        "required": ["managed"],
+        "required": [
+          "managed"
+        ],
         "properties": {
           "managed": {
             "type": "boolean"
@@ -17565,7 +18643,9 @@
       },
       "CreateMediaMetadataMetadataPreviewImage": {
         "type": "object",
-        "required": ["media_key"],
+        "required": [
+          "media_key"
+        ],
         "properties": {
           "media_key": {
             "type": "object"
@@ -17574,7 +18654,9 @@
       },
       "CreateMediaMetadataMetadataSharedInfo": {
         "type": "object",
-        "required": ["shared"],
+        "required": [
+          "shared"
+        ],
         "properties": {
           "shared": {
             "type": "boolean"
@@ -17583,7 +18665,9 @@
       },
       "CreateMediaMetadataMetadataStickerInfo": {
         "type": "object",
-        "required": ["stickers"],
+        "required": [
+          "stickers"
+        ],
         "properties": {
           "stickers": {
             "type": "array",
@@ -17599,7 +18683,9 @@
       },
       "CreateMediaMetadataMetadataUploadSource": {
         "type": "object",
-        "required": ["upload_source"],
+        "required": [
+          "upload_source"
+        ],
         "properties": {
           "upload_source": {
             "type": "string"
@@ -17608,7 +18694,9 @@
       },
       "CreateMediaMetadataRequest": {
         "type": "object",
-        "required": ["id"],
+        "required": [
+          "id"
+        ],
         "properties": {
           "id": {
             "type": "string",
@@ -17637,7 +18725,9 @@
       },
       "CreateMediaMetadataResponseData": {
         "type": "object",
-        "required": ["id"],
+        "required": [
+          "id"
+        ],
         "properties": {
           "associated_metadata": {
             "type": "object",
@@ -17660,7 +18750,10 @@
           "media_category": {
             "type": "string",
             "description": "The media category of the target media.",
-            "enum": ["AmplifyVideo", "TweetVideo"]
+            "enum": [
+              "AmplifyVideo",
+              "TweetVideo"
+            ]
           },
           "subtitles": {
             "description": "The subtitle tracks to associate with the media.",
@@ -17720,7 +18813,9 @@
       },
       "CreatePostsEditOptions": {
         "type": "object",
-        "required": ["previous_post_id"],
+        "required": [
+          "previous_post_id"
+        ],
         "properties": {
           "previous_post_id": {
             "type": "string",
@@ -17732,7 +18827,9 @@
       },
       "CreatePostsGeo": {
         "type": "object",
-        "required": ["place_id"],
+        "required": [
+          "place_id"
+        ],
         "properties": {
           "place_id": {
             "type": "string",
@@ -17743,7 +18840,9 @@
       },
       "CreatePostsMedia": {
         "type": "object",
-        "required": ["media_ids"],
+        "required": [
+          "media_ids"
+        ],
         "properties": {
           "call_to_actions": {
             "description": "Call-to-action button rendered on the media entity.",
@@ -17826,7 +18925,9 @@
       },
       "CreatePostsMediaCallToActionsVisitSite": {
         "type": "object",
-        "required": ["url"],
+        "required": [
+          "url"
+        ],
         "properties": {
           "url": {
             "type": "string",
@@ -17837,7 +18938,9 @@
       },
       "CreatePostsMediaCallToActionsWatchNow": {
         "type": "object",
-        "required": ["url"],
+        "required": [
+          "url"
+        ],
         "properties": {
           "url": {
             "type": "string",
@@ -17848,7 +18951,10 @@
       },
       "CreatePostsPoll": {
         "type": "object",
-        "required": ["options", "duration_minutes"],
+        "required": [
+          "options",
+          "duration_minutes"
+        ],
         "properties": {
           "duration_minutes": {
             "type": "integer",
@@ -17870,14 +18976,21 @@
           "reply_settings": {
             "type": "string",
             "description": "Who can reply to the poll Tweet. Accepted for compatibility; it carries no backend argument and is dropped before the mutation is issued (see `translate_body`).",
-            "enum": ["following", "mentionedUsers", "subscribers", "verified"]
+            "enum": [
+              "following",
+              "mentionedUsers",
+              "subscribers",
+              "verified"
+            ]
           }
         },
         "additionalProperties": false
       },
       "CreatePostsReply": {
         "type": "object",
-        "required": ["in_reply_to_tweet_id"],
+        "required": [
+          "in_reply_to_tweet_id"
+        ],
         "properties": {
           "auto_populate_reply_metadata": {
             "type": "boolean",
@@ -17958,7 +19071,12 @@
           "reply_settings": {
             "type": "string",
             "description": "Who can reply to this tweet.",
-            "enum": ["following", "mentionedUsers", "subscribers", "verified"]
+            "enum": [
+              "following",
+              "mentionedUsers",
+              "subscribers",
+              "verified"
+            ]
           },
           "share_with_followers": {
             "type": "boolean",
@@ -17988,7 +19106,10 @@
       },
       "CreatePostsResponseData": {
         "type": "object",
-        "required": ["id", "text"],
+        "required": [
+          "id",
+          "text"
+        ],
         "properties": {
           "edit_history_post_ids": {
             "type": "array",
@@ -18010,12 +19131,18 @@
       },
       "CreateScheduledBroadcastRecurrence": {
         "type": "object",
-        "required": ["frequency", "repeats"],
+        "required": [
+          "frequency",
+          "repeats"
+        ],
         "properties": {
           "frequency": {
             "type": "string",
             "description": "Recurrence frequency.",
-            "enum": ["Daily", "Weekly"]
+            "enum": [
+              "Daily",
+              "Weekly"
+            ]
           },
           "repeats": {
             "type": "string",
@@ -18027,7 +19154,11 @@
       },
       "CreateScheduledBroadcastRequest": {
         "type": "object",
-        "required": ["source_id", "scheduled_start_ms", "scheduled_end_ms"],
+        "required": [
+          "source_id",
+          "scheduled_start_ms",
+          "scheduled_end_ms"
+        ],
         "properties": {
           "available_for_replay": {
             "type": "boolean",
@@ -18171,7 +19302,9 @@
       },
       "CreateUsersBookmarkFolderRequest": {
         "type": "object",
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -18198,7 +19331,10 @@
       },
       "CreateUsersBookmarkFolderResponseData": {
         "type": "object",
-        "required": ["id", "name"],
+        "required": [
+          "id",
+          "name"
+        ],
         "properties": {
           "id": {
             "type": "string",
@@ -18212,7 +19348,9 @@
       },
       "CreateUsersBookmarkRequest": {
         "type": "object",
-        "required": ["tweet_id"],
+        "required": [
+          "tweet_id"
+        ],
         "properties": {
           "folder_id": {
             "type": "string",
@@ -18243,7 +19381,9 @@
       },
       "CreateUsersBookmarkResponseData": {
         "type": "object",
-        "required": ["bookmarked"],
+        "required": [
+          "bookmarked"
+        ],
         "properties": {
           "bookmarked": {
             "type": "boolean",
@@ -18253,7 +19393,11 @@
       },
       "CreateWebhookReplayJobRequest": {
         "type": "object",
-        "required": ["webhook_id", "from_date", "to_date"],
+        "required": [
+          "webhook_id",
+          "from_date",
+          "to_date"
+        ],
         "properties": {
           "from_date": {
             "type": "string",
@@ -18288,7 +19432,10 @@
       },
       "CreateWebhookReplayJobResponseData": {
         "type": "object",
-        "required": ["job_id", "created_at"],
+        "required": [
+          "job_id",
+          "created_at"
+        ],
         "properties": {
           "created_at": {
             "type": "string",
@@ -18302,7 +19449,9 @@
       },
       "CreateWebhooksRequest": {
         "type": "object",
-        "required": ["url"],
+        "required": [
+          "url"
+        ],
         "properties": {
           "url": {
             "type": "string",
@@ -18328,7 +19477,12 @@
       },
       "CreateWebhooksResponseData": {
         "type": "object",
-        "required": ["id", "url", "valid", "created_at"],
+        "required": [
+          "id",
+          "url",
+          "valid",
+          "created_at"
+        ],
         "properties": {
           "created_at": {
             "type": "string",
@@ -18364,7 +19518,9 @@
       },
       "CreateWebhooksStreamLinkResponseData": {
         "type": "object",
-        "required": ["provisioned"],
+        "required": [
+          "provisioned"
+        ],
         "properties": {
           "provisioned": {
             "type": "boolean",
@@ -18388,7 +19544,9 @@
       },
       "DeleteAccountActivitySubscriptionResponseData": {
         "type": "object",
-        "required": ["subscribed"],
+        "required": [
+          "subscribed"
+        ],
         "properties": {
           "subscribed": {
             "type": "boolean",
@@ -18412,7 +19570,9 @@
       },
       "DeleteActivitySubscriptionResponseData": {
         "type": "object",
-        "required": ["deleted"],
+        "required": [
+          "deleted"
+        ],
         "properties": {
           "deleted": {
             "type": "boolean",
@@ -18488,7 +19648,10 @@
       },
       "DeleteAllConnectionsResponseData": {
         "type": "object",
-        "required": ["successful_kills", "failed_kills"],
+        "required": [
+          "successful_kills",
+          "failed_kills"
+        ],
         "properties": {
           "failed_kills": {
             "type": "integer",
@@ -18508,7 +19671,10 @@
       },
       "DeleteAllConnectionsResponseDataResults": {
         "type": "object",
-        "required": ["uuid", "success"],
+        "required": [
+          "uuid",
+          "success"
+        ],
         "properties": {
           "error_message": {
             "type": "string"
@@ -18538,7 +19704,9 @@
       },
       "DeleteBroadcastChatMessageResponseData": {
         "type": "object",
-        "required": ["deleted"],
+        "required": [
+          "deleted"
+        ],
         "properties": {
           "deleted": {
             "type": "boolean",
@@ -18577,7 +19745,11 @@
       },
       "DeleteChatMessagesActionSignaturesMessageEventSignature": {
         "type": "object",
-        "required": ["signature", "public_key_version", "signature_version"],
+        "required": [
+          "signature",
+          "public_key_version",
+          "signature_version"
+        ],
         "properties": {
           "message_signing_key_info_list": {
             "type": "array",
@@ -18643,7 +19815,10 @@
           "delete_message_action": {
             "type": "string",
             "description": "delete_for_all removes the messages for every participant; delete_for_self removes them only from the authenticated user's view.",
-            "enum": ["delete_for_all", "delete_for_self"]
+            "enum": [
+              "delete_for_all",
+              "delete_for_self"
+            ]
           },
           "media_hash_keys": {
             "type": "array",
@@ -18678,7 +19853,9 @@
       },
       "DeleteChatMessagesResponseData": {
         "type": "object",
-        "required": ["deleted"],
+        "required": [
+          "deleted"
+        ],
         "properties": {
           "deleted": {
             "type": "boolean",
@@ -18702,7 +19879,9 @@
       },
       "DeleteCommunityNotesResponseData": {
         "type": "object",
-        "required": ["deleted"],
+        "required": [
+          "deleted"
+        ],
         "properties": {
           "deleted": {
             "type": "boolean",
@@ -18726,7 +19905,10 @@
       },
       "DeleteConnectionsByEndpointResponseData": {
         "type": "object",
-        "required": ["successful_kills", "failed_kills"],
+        "required": [
+          "successful_kills",
+          "failed_kills"
+        ],
         "properties": {
           "failed_kills": {
             "type": "integer",
@@ -18746,7 +19928,10 @@
       },
       "DeleteConnectionsByEndpointResponseDataResults": {
         "type": "object",
-        "required": ["uuid", "success"],
+        "required": [
+          "uuid",
+          "success"
+        ],
         "properties": {
           "error_message": {
             "type": "string"
@@ -18762,7 +19947,9 @@
       },
       "DeleteConnectionsByUuidsRequest": {
         "type": "object",
-        "required": ["uuids"],
+        "required": [
+          "uuids"
+        ],
         "properties": {
           "uuids": {
             "type": "array",
@@ -18792,7 +19979,10 @@
       },
       "DeleteConnectionsByUuidsResponseData": {
         "type": "object",
-        "required": ["successful_kills", "failed_kills"],
+        "required": [
+          "successful_kills",
+          "failed_kills"
+        ],
         "properties": {
           "failed_kills": {
             "type": "integer",
@@ -18812,7 +20002,10 @@
       },
       "DeleteConnectionsByUuidsResponseDataResults": {
         "type": "object",
-        "required": ["uuid", "success"],
+        "required": [
+          "uuid",
+          "success"
+        ],
         "properties": {
           "error_message": {
             "type": "string"
@@ -18842,7 +20035,9 @@
       },
       "DeleteDirectMessagesEventsResponseData": {
         "type": "object",
-        "required": ["deleted"],
+        "required": [
+          "deleted"
+        ],
         "properties": {
           "deleted": {
             "type": "boolean",
@@ -18866,7 +20061,9 @@
       },
       "DeleteListsResponseData": {
         "type": "object",
-        "required": ["deleted"],
+        "required": [
+          "deleted"
+        ],
         "properties": {
           "deleted": {
             "type": "boolean",
@@ -18876,7 +20073,11 @@
       },
       "DeleteMediaSubtitlesRequest": {
         "type": "object",
-        "required": ["id", "media_category", "language_code"],
+        "required": [
+          "id",
+          "media_category",
+          "language_code"
+        ],
         "properties": {
           "id": {
             "type": "string",
@@ -18908,7 +20109,9 @@
       },
       "DeleteMediaSubtitlesResponseData": {
         "type": "object",
-        "required": ["deleted"],
+        "required": [
+          "deleted"
+        ],
         "properties": {
           "deleted": {
             "type": "boolean",
@@ -18932,7 +20135,9 @@
       },
       "DeletePostsResponseData": {
         "type": "object",
-        "required": ["deleted"],
+        "required": [
+          "deleted"
+        ],
         "properties": {
           "deleted": {
             "type": "boolean",
@@ -18956,7 +20161,9 @@
       },
       "DeleteScheduledBroadcastResponseData": {
         "type": "object",
-        "required": ["deleted"],
+        "required": [
+          "deleted"
+        ],
         "properties": {
           "deleted": {
             "type": "boolean",
@@ -18980,7 +20187,9 @@
       },
       "DeleteUsersBookmarkResponseData": {
         "type": "object",
-        "required": ["bookmarked"],
+        "required": [
+          "bookmarked"
+        ],
         "properties": {
           "bookmarked": {
             "type": "boolean",
@@ -19004,7 +20213,9 @@
       },
       "DeleteWebhooksResponseData": {
         "type": "object",
-        "required": ["deleted"],
+        "required": [
+          "deleted"
+        ],
         "properties": {
           "deleted": {
             "type": "boolean",
@@ -19028,7 +20239,9 @@
       },
       "DeleteWebhooksStreamLinkResponseData": {
         "type": "object",
-        "required": ["deleted"],
+        "required": [
+          "deleted"
+        ],
         "properties": {
           "deleted": {
             "type": "boolean",
@@ -19038,7 +20251,11 @@
       },
       "DisallowedResourceProblem": {
         "type": "object",
-        "required": ["type", "title", "detail"],
+        "required": [
+          "type",
+          "title",
+          "detail"
+        ],
         "properties": {
           "detail": {
             "type": "string"
@@ -19060,7 +20277,9 @@
           },
           "type": {
             "type": "string",
-            "enum": ["https://api.x.com/2/problems/disallowed-resource"]
+            "enum": [
+              "https://api.x.com/2/problems/disallowed-resource"
+            ]
           }
         }
       },
@@ -19134,7 +20353,11 @@
             "items": {
               "type": "object",
               "description": "A hashtag or cashtag entity.",
-              "required": ["start", "end", "tag"],
+              "required": [
+                "start",
+                "end",
+                "tag"
+              ],
               "properties": {
                 "end": {
                   "type": "integer",
@@ -19158,7 +20381,11 @@
             "items": {
               "type": "object",
               "description": "A hashtag or cashtag entity.",
-              "required": ["start", "end", "tag"],
+              "required": [
+                "start",
+                "end",
+                "tag"
+              ],
               "properties": {
                 "end": {
                   "type": "integer",
@@ -19182,7 +20409,11 @@
             "items": {
               "type": "object",
               "description": "A user mention entity.",
-              "required": ["start", "end", "username"],
+              "required": [
+                "start",
+                "end",
+                "username"
+              ],
               "properties": {
                 "end": {
                   "type": "integer",
@@ -19208,7 +20439,11 @@
             "items": {
               "type": "object",
               "description": "A URL entity.",
-              "required": ["start", "end", "url"],
+              "required": [
+                "start",
+                "end",
+                "url"
+              ],
               "properties": {
                 "display_url": {
                   "type": "string",
@@ -19243,7 +20478,9 @@
         "items": {
           "type": "object",
           "description": "A reference from this event to a Post.",
-          "required": ["id"],
+          "required": [
+            "id"
+          ],
           "properties": {
             "id": {
               "type": "string",
@@ -19254,7 +20491,10 @@
       },
       "Error": {
         "type": "object",
-        "required": ["code", "message"],
+        "required": [
+          "code",
+          "message"
+        ],
         "properties": {
           "code": {
             "type": "integer",
@@ -19267,7 +20507,10 @@
       },
       "EvaluateCommunityNotesRequest": {
         "type": "object",
-        "required": ["post_id", "note_text"],
+        "required": [
+          "post_id",
+          "note_text"
+        ],
         "properties": {
           "note_text": {
             "type": "string",
@@ -19347,7 +20590,12 @@
       },
       "FieldHydrationFailureProblem": {
         "type": "object",
-        "required": ["type", "title", "detail", "field"],
+        "required": [
+          "type",
+          "title",
+          "detail",
+          "field"
+        ],
         "properties": {
           "detail": {
             "type": "string"
@@ -19369,13 +20617,20 @@
           },
           "type": {
             "type": "string",
-            "enum": ["https://api.x.com/2/problems/field-hydration-failure"]
+            "enum": [
+              "https://api.x.com/2/problems/field-hydration-failure"
+            ]
           }
         }
       },
       "FieldUnauthorizedProblem": {
         "type": "object",
-        "required": ["type", "title", "detail", "field"],
+        "required": [
+          "type",
+          "title",
+          "detail",
+          "field"
+        ],
         "properties": {
           "detail": {
             "type": "string"
@@ -19397,7 +20652,9 @@
           },
           "type": {
             "type": "string",
-            "enum": ["https://api.x.com/2/problems/field-unauthorized"]
+            "enum": [
+              "https://api.x.com/2/problems/field-unauthorized"
+            ]
           }
         }
       },
@@ -19417,7 +20674,9 @@
       },
       "FinalizeMediaUploadResponseData": {
         "type": "object",
-        "required": ["id"],
+        "required": [
+          "id"
+        ],
         "properties": {
           "expires_after_secs": {
             "type": "integer",
@@ -19506,7 +20765,9 @@
       },
       "FollowListRequest": {
         "type": "object",
-        "required": ["list_id"],
+        "required": [
+          "list_id"
+        ],
         "properties": {
           "list_id": {
             "type": "string",
@@ -19531,7 +20792,9 @@
       },
       "FollowListResponseData": {
         "type": "object",
-        "required": ["following"],
+        "required": [
+          "following"
+        ],
         "properties": {
           "following": {
             "type": "boolean",
@@ -19541,7 +20804,9 @@
       },
       "FollowUserRequest": {
         "type": "object",
-        "required": ["target_user_id"],
+        "required": [
+          "target_user_id"
+        ],
         "properties": {
           "target_user_id": {
             "type": "string",
@@ -19566,7 +20831,10 @@
       },
       "FollowUserResponseData": {
         "type": "object",
-        "required": ["following", "pending_follow"],
+        "required": [
+          "following",
+          "pending_follow"
+        ],
         "properties": {
           "following": {
             "type": "boolean",
@@ -20250,7 +21518,9 @@
       },
       "GetMediaUploadStatusResponseData": {
         "type": "object",
-        "required": ["id"],
+        "required": [
+          "id"
+        ],
         "properties": {
           "expires_after_secs": {
             "type": "integer",
@@ -20435,7 +21705,11 @@
       },
       "GetPostsCountsAllResponseData": {
         "type": "object",
-        "required": ["start", "end", "post_count"],
+        "required": [
+          "start",
+          "end",
+          "post_count"
+        ],
         "properties": {
           "end": {
             "type": "string",
@@ -20483,7 +21757,11 @@
       },
       "GetPostsCountsRecentResponseData": {
         "type": "object",
-        "required": ["start", "end", "post_count"],
+        "required": [
+          "start",
+          "end",
+          "post_count"
+        ],
         "properties": {
           "end": {
             "type": "string",
@@ -20697,7 +21975,9 @@
       },
       "GetRuleCountsResponseDataAllProjectClientApps": {
         "type": "object",
-        "required": ["rule_count"],
+        "required": [
+          "rule_count"
+        ],
         "properties": {
           "client_app_id": {
             "type": "string",
@@ -20712,7 +21992,9 @@
       },
       "GetRuleCountsResponseDataClientAppRulesCount": {
         "type": "object",
-        "required": ["rule_count"],
+        "required": [
+          "rule_count"
+        ],
         "properties": {
           "client_app_id": {
             "type": "string",
@@ -21138,7 +22420,10 @@
       },
       "GetUsersBookmarkFoldersResponseData": {
         "type": "object",
-        "required": ["id", "name"],
+        "required": [
+          "id",
+          "name"
+        ],
         "properties": {
           "id": {
             "type": "string",
@@ -21158,7 +22443,9 @@
             "description": "The Posts in this bookmark folder, by ID.",
             "items": {
               "type": "object",
-              "required": ["id"],
+              "required": [
+                "id"
+              ],
               "properties": {
                 "id": {
                   "$ref": "#/components/schemas/PostId"
@@ -21966,7 +23253,9 @@
       },
       "HidePostsReplyRequest": {
         "type": "object",
-        "required": ["hidden"],
+        "required": [
+          "hidden"
+        ],
         "properties": {
           "hidden": {
             "type": "boolean",
@@ -22014,7 +23303,9 @@
       },
       "InitializeChatGroupResponseData": {
         "type": "object",
-        "required": ["conversation_id"],
+        "required": [
+          "conversation_id"
+        ],
         "properties": {
           "conversation_id": {
             "type": "string",
@@ -22097,7 +23388,9 @@
       },
       "InitializeMediaUploadResponseData": {
         "type": "object",
-        "required": ["id"],
+        "required": [
+          "id"
+        ],
         "properties": {
           "expires_after_secs": {
             "type": "integer",
@@ -22115,7 +23408,11 @@
       },
       "InternalErrorProblem": {
         "type": "object",
-        "required": ["type", "title", "detail"],
+        "required": [
+          "type",
+          "title",
+          "detail"
+        ],
         "properties": {
           "detail": {
             "type": "string"
@@ -22128,13 +23425,19 @@
           },
           "type": {
             "type": "string",
-            "enum": ["https://api.x.com/2/problems/internal-error"]
+            "enum": [
+              "https://api.x.com/2/problems/internal-error"
+            ]
           }
         }
       },
       "InvalidRequestProblem": {
         "type": "object",
-        "required": ["type", "title", "detail"],
+        "required": [
+          "type",
+          "title",
+          "detail"
+        ],
         "properties": {
           "detail": {
             "type": "string"
@@ -22150,7 +23453,9 @@
           },
           "type": {
             "type": "string",
-            "enum": ["https://api.x.com/2/problems/invalid-request"]
+            "enum": [
+              "https://api.x.com/2/problems/invalid-request"
+            ]
           },
           "value": {
             "type": "string"
@@ -22166,7 +23471,9 @@
       },
       "LikeComplianceSchema": {
         "type": "object",
-        "required": ["delete"],
+        "required": [
+          "delete"
+        ],
         "properties": {
           "delete": {
             "$ref": "#/components/schemas/UnlikeComplianceSchema"
@@ -22181,7 +23488,9 @@
       },
       "LikePostRequest": {
         "type": "object",
-        "required": ["tweet_id"],
+        "required": [
+          "tweet_id"
+        ],
         "properties": {
           "tweet_id": {
             "type": "string",
@@ -22206,7 +23515,9 @@
       },
       "LikePostResponseData": {
         "type": "object",
-        "required": ["liked"],
+        "required": [
+          "liked"
+        ],
         "properties": {
           "liked": {
             "type": "boolean",
@@ -22266,6 +23577,37 @@
           },
           "private": {
             "type": "boolean"
+          }
+        }
+      },
+      "ListBroadcastsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Broadcast"
+            }
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "next_token": {
+                "type": "string",
+                "description": "Pagination token for the next page of results."
+              },
+              "result_count": {
+                "type": "integer",
+                "description": "Number of items in the data array.",
+                "format": "int32"
+              }
+            }
           }
         }
       },
@@ -22369,7 +23711,9 @@
       },
       "MarkChatConversationReadRequest": {
         "type": "object",
-        "required": ["seen_until_sequence_id"],
+        "required": [
+          "seen_until_sequence_id"
+        ],
         "properties": {
           "seen_until_sequence_id": {
             "type": "string",
@@ -22393,7 +23737,9 @@
       },
       "MarkChatConversationReadResponseData": {
         "type": "object",
-        "required": ["success"],
+        "required": [
+          "success"
+        ],
         "properties": {
           "success": {
             "type": "boolean",
@@ -22768,7 +24114,9 @@
       "MediaPublicMetrics": {
         "type": "object",
         "description": "Public engagement metrics for the media at the time of the request.",
-        "required": ["view_count"],
+        "required": [
+          "view_count"
+        ],
         "properties": {
           "view_count": {
             "type": "integer",
@@ -22779,7 +24127,10 @@
       },
       "MediaUploadRequest": {
         "type": "object",
-        "required": ["media", "media_category"],
+        "required": [
+          "media",
+          "media_category"
+        ],
         "properties": {
           "additional_owners": {
             "type": "string",
@@ -22830,7 +24181,9 @@
       },
       "MediaUploadResponseData": {
         "type": "object",
-        "required": ["id"],
+        "required": [
+          "id"
+        ],
         "properties": {
           "expires_after_secs": {
             "type": "integer",
@@ -22933,7 +24286,9 @@
       },
       "MuteBroadcastChatUserRequest": {
         "type": "object",
-        "required": ["user_id"],
+        "required": [
+          "user_id"
+        ],
         "properties": {
           "message_id": {
             "type": "string",
@@ -22964,7 +24319,9 @@
       },
       "MuteBroadcastChatUserResponseData": {
         "type": "object",
-        "required": ["muted"],
+        "required": [
+          "muted"
+        ],
         "properties": {
           "muted": {
             "type": "boolean",
@@ -22974,7 +24331,9 @@
       },
       "MuteUserRequest": {
         "type": "object",
-        "required": ["target_user_id"],
+        "required": [
+          "target_user_id"
+        ],
         "properties": {
           "target_user_id": {
             "type": "string",
@@ -22999,7 +24358,9 @@
       },
       "MuteUserResponseData": {
         "type": "object",
-        "required": ["muting"],
+        "required": [
+          "muting"
+        ],
         "properties": {
           "muting": {
             "type": "boolean",
@@ -23065,7 +24426,9 @@
         "items": {
           "type": "object",
           "description": "A Post belonging to this news story's cluster.",
-          "required": ["post_id"],
+          "required": [
+            "post_id"
+          ],
           "properties": {
             "post_id": {
               "type": "string",
@@ -23076,7 +24439,12 @@
       },
       "NotAuthorizedForFieldProblem": {
         "type": "object",
-        "required": ["type", "title", "detail", "field"],
+        "required": [
+          "type",
+          "title",
+          "detail",
+          "field"
+        ],
         "properties": {
           "detail": {
             "type": "string"
@@ -23104,7 +24472,9 @@
           },
           "type": {
             "type": "string",
-            "enum": ["https://api.x.com/2/problems/not-authorized-for-field"]
+            "enum": [
+              "https://api.x.com/2/problems/not-authorized-for-field"
+            ]
           },
           "value": {
             "type": "string"
@@ -23113,7 +24483,12 @@
       },
       "NotAuthorizedForResourceProblem": {
         "type": "object",
-        "required": ["type", "title", "detail", "resource_type"],
+        "required": [
+          "type",
+          "title",
+          "detail",
+          "resource_type"
+        ],
         "properties": {
           "detail": {
             "type": "string"
@@ -23138,7 +24513,9 @@
           },
           "type": {
             "type": "string",
-            "enum": ["https://api.x.com/2/problems/not-authorized-for-resource"]
+            "enum": [
+              "https://api.x.com/2/problems/not-authorized-for-resource"
+            ]
           },
           "value": {
             "type": "string"
@@ -23433,7 +24810,10 @@
             "items": {
               "type": "object",
               "description": "A single evaluator's outcome for a Community Note.",
-              "required": ["evaluator_type", "evaluator_score_bucket"],
+              "required": [
+                "evaluator_type",
+                "evaluator_score_bucket"
+              ],
               "properties": {
                 "evaluator_score_bucket": {
                   "type": "string",
@@ -23468,7 +24848,9 @@
       },
       "PinListRequest": {
         "type": "object",
-        "required": ["list_id"],
+        "required": [
+          "list_id"
+        ],
         "properties": {
           "list_id": {
             "type": "string",
@@ -23493,7 +24875,9 @@
       },
       "PinListResponseData": {
         "type": "object",
-        "required": ["pinned"],
+        "required": [
+          "pinned"
+        ],
         "properties": {
           "pinned": {
             "type": "boolean",
@@ -23540,7 +24924,11 @@
       "PlaceGeo": {
         "type": "object",
         "description": "The geographic location of this place, expressed as a GeoJSON Feature.",
-        "required": ["type", "bbox", "properties"],
+        "required": [
+          "type",
+          "bbox",
+          "properties"
+        ],
         "properties": {
           "bbox": {
             "type": "array",
@@ -23561,7 +24949,9 @@
             "oneOf": [
               {
                 "type": "string",
-                "enum": ["Feature"]
+                "enum": [
+                  "Feature"
+                ]
               }
             ]
           }
@@ -23593,7 +24983,11 @@
         "items": {
           "type": "object",
           "description": "A single option (choice) available in a poll.",
-          "required": ["position", "label", "votes"],
+          "required": [
+            "position",
+            "label",
+            "votes"
+          ],
           "properties": {
             "label": {
               "type": "string",
@@ -23798,7 +25192,10 @@
       },
       "PostComplianceSchema": {
         "type": "object",
-        "required": ["tweet", "event_at"],
+        "required": [
+          "tweet",
+          "event_at"
+        ],
         "properties": {
           "event_at": {
             "type": "string",
@@ -23811,7 +25208,10 @@
           },
           "tweet": {
             "type": "object",
-            "required": ["id", "author_id"],
+            "required": [
+              "id",
+              "author_id"
+            ],
             "properties": {
               "author_id": {
                 "$ref": "#/components/schemas/UserId"
@@ -23829,7 +25229,10 @@
         "items": {
           "type": "object",
           "description": "A single inferred annotation about the Post (domain and entity context).",
-          "required": ["domain", "entity"],
+          "required": [
+            "domain",
+            "entity"
+          ],
           "properties": {
             "domain": {
               "description": "The domain (broad category) this annotation belongs to.",
@@ -23883,7 +25286,10 @@
       "PostDeleteActivityResponsePayload": {
         "type": "object",
         "description": "The identity of a deleted Post.",
-        "required": ["id", "author_id"],
+        "required": [
+          "id",
+          "author_id"
+        ],
         "properties": {
           "author_id": {
             "$ref": "#/components/schemas/UserId"
@@ -23896,7 +25302,9 @@
       },
       "PostDeleteComplianceSchema": {
         "type": "object",
-        "required": ["delete"],
+        "required": [
+          "delete"
+        ],
         "properties": {
           "delete": {
             "$ref": "#/components/schemas/PostComplianceSchema"
@@ -23915,7 +25323,9 @@
       },
       "PostDropComplianceSchema": {
         "type": "object",
-        "required": ["drop"],
+        "required": [
+          "drop"
+        ],
         "properties": {
           "drop": {
             "$ref": "#/components/schemas/PostComplianceSchema"
@@ -23924,7 +25334,12 @@
       },
       "PostEditComplianceObjectSchema": {
         "type": "object",
-        "required": ["tweet", "event_at", "initial_tweet_id", "edit_tweet_ids"],
+        "required": [
+          "tweet",
+          "event_at",
+          "initial_tweet_id",
+          "edit_tweet_ids"
+        ],
         "properties": {
           "edit_tweet_ids": {
             "type": "array",
@@ -23944,7 +25359,9 @@
           },
           "tweet": {
             "type": "object",
-            "required": ["id"],
+            "required": [
+              "id"
+            ],
             "properties": {
               "id": {
                 "$ref": "#/components/schemas/PostId"
@@ -23955,7 +25372,9 @@
       },
       "PostEditComplianceSchema": {
         "type": "object",
-        "required": ["tweet_edit"],
+        "required": [
+          "tweet_edit"
+        ],
         "properties": {
           "tweet_edit": {
             "$ref": "#/components/schemas/PostEditComplianceObjectSchema"
@@ -23993,7 +25412,11 @@
             "items": {
               "type": "object",
               "description": "A hashtag or cashtag entity.",
-              "required": ["start", "end", "tag"],
+              "required": [
+                "start",
+                "end",
+                "tag"
+              ],
               "properties": {
                 "end": {
                   "type": "integer",
@@ -24017,7 +25440,11 @@
             "items": {
               "type": "object",
               "description": "A hashtag or cashtag entity.",
-              "required": ["start", "end", "tag"],
+              "required": [
+                "start",
+                "end",
+                "tag"
+              ],
               "properties": {
                 "end": {
                   "type": "integer",
@@ -24041,7 +25468,10 @@
             "items": {
               "type": "object",
               "description": "A user mention entity.",
-              "required": ["start", "end"],
+              "required": [
+                "start",
+                "end"
+              ],
               "properties": {
                 "end": {
                   "type": "integer",
@@ -24068,7 +25498,10 @@
             "items": {
               "type": "object",
               "description": "A URL entity found in the Post text, enriched with link metadata.",
-              "required": ["start", "end"],
+              "required": [
+                "start",
+                "end"
+              ],
               "properties": {
                 "description": {
                   "type": "string",
@@ -24155,7 +25588,10 @@
           "coordinates": {
             "type": "object",
             "description": "A GeoJSON Point geometry.",
-            "required": ["type", "coordinates"],
+            "required": [
+              "type",
+              "coordinates"
+            ],
             "properties": {
               "coordinates": {
                 "type": "array",
@@ -24170,7 +25606,9 @@
               "type": {
                 "type": "string",
                 "description": "The GeoJSON geometry type.",
-                "enum": ["Point"]
+                "enum": [
+                  "Point"
+                ]
               }
             },
             "nullable": true
@@ -24252,7 +25690,9 @@
       "PostNotePost": {
         "type": "object",
         "description": "The full content of the Post, including text beyond 280 characters.",
-        "required": ["text"],
+        "required": [
+          "text"
+        ],
         "properties": {
           "entities": {
             "type": "object",
@@ -24263,7 +25703,11 @@
                 "items": {
                   "type": "object",
                   "description": "A hashtag or cashtag entity.",
-                  "required": ["start", "end", "tag"],
+                  "required": [
+                    "start",
+                    "end",
+                    "tag"
+                  ],
                   "properties": {
                     "end": {
                       "type": "integer",
@@ -24287,7 +25731,11 @@
                 "items": {
                   "type": "object",
                   "description": "A hashtag or cashtag entity.",
-                  "required": ["start", "end", "tag"],
+                  "required": [
+                    "start",
+                    "end",
+                    "tag"
+                  ],
                   "properties": {
                     "end": {
                       "type": "integer",
@@ -24311,7 +25759,10 @@
                 "items": {
                   "type": "object",
                   "description": "A user mention entity.",
-                  "required": ["start", "end"],
+                  "required": [
+                    "start",
+                    "end"
+                  ],
                   "properties": {
                     "end": {
                       "type": "integer",
@@ -24338,7 +25789,10 @@
                 "items": {
                   "type": "object",
                   "description": "A URL entity found in note Post text.",
-                  "required": ["start", "end"],
+                  "required": [
+                    "start",
+                    "end"
+                  ],
                   "properties": {
                     "display_url": {
                       "type": "string",
@@ -24400,7 +25854,12 @@
       },
       "PostNotice": {
         "type": "object",
-        "required": ["tweet", "event_type", "event_at", "application"],
+        "required": [
+          "tweet",
+          "event_type",
+          "event_at",
+          "application"
+        ],
         "properties": {
           "application": {
             "type": "string",
@@ -24432,7 +25891,10 @@
           },
           "tweet": {
             "type": "object",
-            "required": ["id", "author_id"],
+            "required": [
+              "id",
+              "author_id"
+            ],
             "properties": {
               "author_id": {
                 "$ref": "#/components/schemas/UserId"
@@ -24446,7 +25908,9 @@
       },
       "PostNoticeSchema": {
         "type": "object",
-        "required": ["public_tweet_notice"],
+        "required": [
+          "public_tweet_notice"
+        ],
         "properties": {
           "public_tweet_notice": {
             "$ref": "#/components/schemas/PostNotice"
@@ -24503,7 +25967,10 @@
         "items": {
           "type": "object",
           "description": "A reference from this Post to another Post (repost, quote, or reply).",
-          "required": ["type", "id"],
+          "required": [
+            "type",
+            "id"
+          ],
           "properties": {
             "id": {
               "type": "string",
@@ -24515,7 +25982,11 @@
                 {
                   "type": "string",
                   "description": "The kind of Post-to-Post reference.",
-                  "enum": ["retweeted", "quoted", "replied_to"]
+                  "enum": [
+                    "retweeted",
+                    "quoted",
+                    "replied_to"
+                  ]
                 }
               ]
             }
@@ -24525,7 +25996,9 @@
       "PostScopes": {
         "type": "object",
         "description": "The scopes for this Post.",
-        "required": ["followers"],
+        "required": [
+          "followers"
+        ],
         "properties": {
           "followers": {
             "type": "boolean",
@@ -24563,7 +26036,11 @@
       },
       "PostTakedownComplianceSchema": {
         "type": "object",
-        "required": ["tweet", "withheld_in_countries", "event_at"],
+        "required": [
+          "tweet",
+          "withheld_in_countries",
+          "event_at"
+        ],
         "properties": {
           "event_at": {
             "type": "string",
@@ -24576,7 +26053,10 @@
           },
           "tweet": {
             "type": "object",
-            "required": ["id", "author_id"],
+            "required": [
+              "id",
+              "author_id"
+            ],
             "properties": {
               "author_id": {
                 "$ref": "#/components/schemas/UserId"
@@ -24597,7 +26077,9 @@
       },
       "PostUndropComplianceSchema": {
         "type": "object",
-        "required": ["undrop"],
+        "required": [
+          "undrop"
+        ],
         "properties": {
           "undrop": {
             "$ref": "#/components/schemas/PostComplianceSchema"
@@ -24606,7 +26088,11 @@
       },
       "PostUnviewable": {
         "type": "object",
-        "required": ["tweet", "event_at", "application"],
+        "required": [
+          "tweet",
+          "event_at",
+          "application"
+        ],
         "properties": {
           "application": {
             "type": "string",
@@ -24621,7 +26107,10 @@
           },
           "tweet": {
             "type": "object",
-            "required": ["id", "author_id"],
+            "required": [
+              "id",
+              "author_id"
+            ],
             "properties": {
               "author_id": {
                 "$ref": "#/components/schemas/UserId"
@@ -24635,7 +26124,9 @@
       },
       "PostUnviewableSchema": {
         "type": "object",
-        "required": ["public_tweet_unviewable"],
+        "required": [
+          "public_tweet_unviewable"
+        ],
         "properties": {
           "public_tweet_unviewable": {
             "$ref": "#/components/schemas/PostUnviewable"
@@ -24645,7 +26136,10 @@
       "PostWithheld": {
         "type": "object",
         "description": "Withholding details for withheld content.",
-        "required": ["copyright", "country_codes"],
+        "required": [
+          "copyright",
+          "country_codes"
+        ],
         "properties": {
           "copyright": {
             "type": "boolean",
@@ -24661,14 +26155,19 @@
           "scope": {
             "type": "string",
             "description": "Whether the withholding applies to a Post or a User.",
-            "enum": ["post", "user"],
+            "enum": [
+              "post",
+              "user"
+            ],
             "nullable": true
           }
         }
       },
       "PostWithheldComplianceSchema": {
         "type": "object",
-        "required": ["withheld"],
+        "required": [
+          "withheld"
+        ],
         "properties": {
           "withheld": {
             "$ref": "#/components/schemas/PostTakedownComplianceSchema"
@@ -24773,7 +26272,9 @@
       },
       "RemoveListsMemberByUserIdResponseData": {
         "type": "object",
-        "required": ["is_member"],
+        "required": [
+          "is_member"
+        ],
         "properties": {
           "is_member": {
             "type": "boolean",
@@ -24783,7 +26284,9 @@
       },
       "RepostPostRequest": {
         "type": "object",
-        "required": ["tweet_id"],
+        "required": [
+          "tweet_id"
+        ],
         "properties": {
           "tweet_id": {
             "type": "string",
@@ -24808,7 +26311,10 @@
       },
       "RepostPostResponseData": {
         "type": "object",
-        "required": ["retweeted", "rest_id"],
+        "required": [
+          "retweeted",
+          "rest_id"
+        ],
         "properties": {
           "rest_id": {
             "type": "string",
@@ -24822,7 +26328,12 @@
       },
       "ResourceNotFoundProblem": {
         "type": "object",
-        "required": ["type", "title", "detail", "resource_type"],
+        "required": [
+          "type",
+          "title",
+          "detail",
+          "resource_type"
+        ],
         "properties": {
           "detail": {
             "type": "string"
@@ -24844,7 +26355,9 @@
           },
           "type": {
             "type": "string",
-            "enum": ["https://api.x.com/2/problems/resource-not-found"]
+            "enum": [
+              "https://api.x.com/2/problems/resource-not-found"
+            ]
           },
           "value": {
             "type": "string"
@@ -24853,7 +26366,12 @@
       },
       "ResourceUnavailableProblem": {
         "type": "object",
-        "required": ["type", "title", "detail", "resource_type"],
+        "required": [
+          "type",
+          "title",
+          "detail",
+          "resource_type"
+        ],
         "properties": {
           "detail": {
             "type": "string"
@@ -24872,7 +26390,9 @@
           },
           "type": {
             "type": "string",
-            "enum": ["https://api.x.com/2/problems/resource-unavailable"]
+            "enum": [
+              "https://api.x.com/2/problems/resource-unavailable"
+            ]
           }
         }
       },
@@ -24912,7 +26432,9 @@
         "items": {
           "type": "object",
           "description": "A count of filtered-stream rules for a single client application.",
-          "required": ["rule_count"],
+          "required": [
+            "rule_count"
+          ],
           "properties": {
             "client_app_id": {
               "type": "string",
@@ -24930,7 +26452,9 @@
       "RulesCountClientAppRulesCount": {
         "type": "object",
         "description": "A count of filtered-stream rules for a single client application.",
-        "required": ["rule_count"],
+        "required": [
+          "rule_count"
+        ],
         "properties": {
           "client_app_id": {
             "type": "string",
@@ -25219,7 +26743,9 @@
       },
       "SendBroadcastChatRequest": {
         "type": "object",
-        "required": ["text"],
+        "required": [
+          "text"
+        ],
         "properties": {
           "reply_to": {
             "type": "string",
@@ -25251,7 +26777,10 @@
       },
       "SendBroadcastChatResponseData": {
         "type": "object",
-        "required": ["success", "timestamp"],
+        "required": [
+          "success",
+          "timestamp"
+        ],
         "properties": {
           "success": {
             "type": "boolean",
@@ -25265,7 +26794,10 @@
       },
       "SendChatMessageRequest": {
         "type": "object",
-        "required": ["message_id", "encoded_message_create_event"],
+        "required": [
+          "message_id",
+          "encoded_message_create_event"
+        ],
         "properties": {
           "conversation_token": {
             "type": "string",
@@ -25301,7 +26833,9 @@
       },
       "SendChatMessageResponseData": {
         "type": "object",
-        "required": ["encoded_message_event"],
+        "required": [
+          "encoded_message_event"
+        ],
         "properties": {
           "encoded_message_event": {
             "type": "string",
@@ -25325,7 +26859,9 @@
       },
       "SendChatTypingIndicatorResponseData": {
         "type": "object",
-        "required": ["success"],
+        "required": [
+          "success"
+        ],
         "properties": {
           "success": {
             "type": "boolean",
@@ -25428,7 +26964,9 @@
           {
             "type": "object",
             "description": "Tweet Label event.",
-            "required": ["data"],
+            "required": [
+              "data"
+            ],
             "properties": {
               "data": {
                 "$ref": "#/components/schemas/PostLabelData"
@@ -25437,7 +26975,9 @@
           },
           {
             "type": "object",
-            "required": ["errors"],
+            "required": [
+              "errors"
+            ],
             "properties": {
               "errors": {
                 "type": "array",
@@ -25456,7 +26996,9 @@
           {
             "type": "object",
             "description": "Compliance event.",
-            "required": ["data"],
+            "required": [
+              "data"
+            ],
             "properties": {
               "data": {
                 "$ref": "#/components/schemas/LikeComplianceSchema"
@@ -25465,7 +27007,9 @@
           },
           {
             "type": "object",
-            "required": ["errors"],
+            "required": [
+              "errors"
+            ],
             "properties": {
               "errors": {
                 "type": "array",
@@ -25520,7 +27064,9 @@
           {
             "type": "object",
             "description": "Compliance event.",
-            "required": ["data"],
+            "required": [
+              "data"
+            ],
             "properties": {
               "data": {
                 "$ref": "#/components/schemas/PostComplianceData"
@@ -25529,7 +27075,9 @@
           },
           {
             "type": "object",
-            "required": ["errors"],
+            "required": [
+              "errors"
+            ],
             "properties": {
               "errors": {
                 "type": "array",
@@ -25654,7 +27202,9 @@
             "description": "The list of rules which matched the Tweet",
             "items": {
               "type": "object",
-              "required": ["id"],
+              "required": [
+                "id"
+              ],
               "properties": {
                 "id": {
                   "$ref": "#/components/schemas/RuleId"
@@ -25709,7 +27259,9 @@
           {
             "type": "object",
             "description": "User compliance event.",
-            "required": ["data"],
+            "required": [
+              "data"
+            ],
             "properties": {
               "data": {
                 "$ref": "#/components/schemas/UserComplianceData"
@@ -25718,7 +27270,9 @@
           },
           {
             "type": "object",
-            "required": ["errors"],
+            "required": [
+              "errors"
+            ],
             "properties": {
               "errors": {
                 "type": "array",
@@ -25772,7 +27326,9 @@
       },
       "UnblockUsersDmsResponseData": {
         "type": "object",
-        "required": ["blocked"],
+        "required": [
+          "blocked"
+        ],
         "properties": {
           "blocked": {
             "type": "boolean",
@@ -25796,7 +27352,9 @@
       },
       "UnfollowListResponseData": {
         "type": "object",
-        "required": ["following"],
+        "required": [
+          "following"
+        ],
         "properties": {
           "following": {
             "type": "boolean",
@@ -25820,7 +27378,9 @@
       },
       "UnfollowUserResponseData": {
         "type": "object",
-        "required": ["following"],
+        "required": [
+          "following"
+        ],
         "properties": {
           "following": {
             "type": "boolean",
@@ -25830,7 +27390,10 @@
       },
       "UnlikeComplianceSchema": {
         "type": "object",
-        "required": ["favorite", "event_at"],
+        "required": [
+          "favorite",
+          "event_at"
+        ],
         "properties": {
           "event_at": {
             "type": "string",
@@ -25840,7 +27403,10 @@
           },
           "favorite": {
             "type": "object",
-            "required": ["id", "user_id"],
+            "required": [
+              "id",
+              "user_id"
+            ],
             "properties": {
               "id": {
                 "$ref": "#/components/schemas/PostId"
@@ -25868,7 +27434,9 @@
       },
       "UnlikePostResponseData": {
         "type": "object",
-        "required": ["liked"],
+        "required": [
+          "liked"
+        ],
         "properties": {
           "liked": {
             "type": "boolean",
@@ -25892,7 +27460,9 @@
       },
       "UnmuteBroadcastChatUserResponseData": {
         "type": "object",
-        "required": ["muted"],
+        "required": [
+          "muted"
+        ],
         "properties": {
           "muted": {
             "type": "boolean",
@@ -25916,7 +27486,9 @@
       },
       "UnmuteUserResponseData": {
         "type": "object",
-        "required": ["muting"],
+        "required": [
+          "muting"
+        ],
         "properties": {
           "muting": {
             "type": "boolean",
@@ -25940,7 +27512,9 @@
       },
       "UnpinListResponseData": {
         "type": "object",
-        "required": ["pinned"],
+        "required": [
+          "pinned"
+        ],
         "properties": {
           "pinned": {
             "type": "boolean",
@@ -25964,7 +27538,9 @@
       },
       "UnrepostPostResponseData": {
         "type": "object",
-        "required": ["retweeted"],
+        "required": [
+          "retweeted"
+        ],
         "properties": {
           "retweeted": {
             "type": "boolean",
@@ -26104,7 +27680,9 @@
       },
       "UpdateListsResponseData": {
         "type": "object",
-        "required": ["updated"],
+        "required": [
+          "updated"
+        ],
         "properties": {
           "updated": {
             "type": "boolean",
@@ -26114,7 +27692,9 @@
       },
       "UpdateRulesAdd": {
         "type": "object",
-        "required": ["value"],
+        "required": [
+          "value"
+        ],
         "properties": {
           "tag": {
             "type": "string",
@@ -26386,7 +27966,9 @@
         "items": {
           "type": "object",
           "description": "Per-client-app daily Post usage entry.",
-          "required": ["usage_result_count"],
+          "required": [
+            "usage_result_count"
+          ],
           "properties": {
             "client_app_id": {
               "type": "string",
@@ -26399,7 +27981,9 @@
               "items": {
                 "type": "object",
                 "description": "A single day's usage entry.",
-                "required": ["date"],
+                "required": [
+                  "date"
+                ],
                 "properties": {
                   "date": {
                     "type": "string",
@@ -26436,7 +28020,9 @@
             "items": {
               "type": "object",
               "description": "A single day's usage entry.",
-              "required": ["date"],
+              "required": [
+                "date"
+              ],
               "properties": {
                 "date": {
                   "type": "string",
@@ -26623,7 +28209,10 @@
       },
       "UserComplianceSchema": {
         "type": "object",
-        "required": ["user", "event_at"],
+        "required": [
+          "user",
+          "event_at"
+        ],
         "properties": {
           "event_at": {
             "type": "string",
@@ -26633,7 +28222,9 @@
           },
           "user": {
             "type": "object",
-            "required": ["id"],
+            "required": [
+              "id"
+            ],
             "properties": {
               "id": {
                 "$ref": "#/components/schemas/UserId"
@@ -26660,7 +28251,9 @@
       },
       "UserDeleteComplianceSchema": {
         "type": "object",
-        "required": ["user_delete"],
+        "required": [
+          "user_delete"
+        ],
         "properties": {
           "user_delete": {
             "$ref": "#/components/schemas/UserComplianceSchema"
@@ -26680,7 +28273,11 @@
                 "items": {
                   "type": "object",
                   "description": "A hashtag or cashtag entity.",
-                  "required": ["start", "end", "tag"],
+                  "required": [
+                    "start",
+                    "end",
+                    "tag"
+                  ],
                   "properties": {
                     "end": {
                       "type": "integer",
@@ -26704,7 +28301,11 @@
                 "items": {
                   "type": "object",
                   "description": "A hashtag or cashtag entity.",
-                  "required": ["start", "end", "tag"],
+                  "required": [
+                    "start",
+                    "end",
+                    "tag"
+                  ],
                   "properties": {
                     "end": {
                       "type": "integer",
@@ -26728,7 +28329,11 @@
                 "items": {
                   "type": "object",
                   "description": "A user mention entity.",
-                  "required": ["start", "end", "username"],
+                  "required": [
+                    "start",
+                    "end",
+                    "username"
+                  ],
                   "properties": {
                     "end": {
                       "type": "integer",
@@ -26754,7 +28359,11 @@
                 "items": {
                   "type": "object",
                   "description": "A URL entity found in profile text.",
-                  "required": ["start", "end", "url"],
+                  "required": [
+                    "start",
+                    "end",
+                    "url"
+                  ],
                   "properties": {
                     "description": {
                       "type": "string",
@@ -26843,7 +28452,11 @@
                 "items": {
                   "type": "object",
                   "description": "A URL entity found in profile text.",
-                  "required": ["start", "end", "url"],
+                  "required": [
+                    "start",
+                    "end",
+                    "url"
+                  ],
                   "properties": {
                     "description": {
                       "type": "string",
@@ -26933,7 +28546,9 @@
       },
       "UserProfileModificationComplianceSchema": {
         "type": "object",
-        "required": ["user_profile_modification"],
+        "required": [
+          "user_profile_modification"
+        ],
         "properties": {
           "user_profile_modification": {
             "$ref": "#/components/schemas/UserProfileModificationObjectSchema"
@@ -26942,7 +28557,12 @@
       },
       "UserProfileModificationObjectSchema": {
         "type": "object",
-        "required": ["user", "profile_field", "new_value", "event_at"],
+        "required": [
+          "user",
+          "profile_field",
+          "new_value",
+          "event_at"
+        ],
         "properties": {
           "event_at": {
             "type": "string",
@@ -26958,7 +28578,9 @@
           },
           "user": {
             "type": "object",
-            "required": ["id"],
+            "required": [
+              "id"
+            ],
             "properties": {
               "id": {
                 "$ref": "#/components/schemas/UserId"
@@ -26969,7 +28591,9 @@
       },
       "UserProtectComplianceSchema": {
         "type": "object",
-        "required": ["user_protect"],
+        "required": [
+          "user_protect"
+        ],
         "properties": {
           "user_protect": {
             "$ref": "#/components/schemas/UserComplianceSchema"
@@ -27022,7 +28646,11 @@
       },
       "UserScrubGeoObjectSchema": {
         "type": "object",
-        "required": ["user", "up_to_tweet_id", "event_at"],
+        "required": [
+          "user",
+          "up_to_tweet_id",
+          "event_at"
+        ],
         "properties": {
           "event_at": {
             "type": "string",
@@ -27035,7 +28663,9 @@
           },
           "user": {
             "type": "object",
-            "required": ["id"],
+            "required": [
+              "id"
+            ],
             "properties": {
               "id": {
                 "$ref": "#/components/schemas/UserId"
@@ -27046,7 +28676,9 @@
       },
       "UserScrubGeoSchema": {
         "type": "object",
-        "required": ["scrub_geo"],
+        "required": [
+          "scrub_geo"
+        ],
         "properties": {
           "scrub_geo": {
             "$ref": "#/components/schemas/UserScrubGeoObjectSchema"
@@ -27056,7 +28688,9 @@
       "UserSubscription": {
         "type": "object",
         "description": "The subscription relationship between this User and you.",
-        "required": ["subscribes_to_you"],
+        "required": [
+          "subscribes_to_you"
+        ],
         "properties": {
           "subscribes_to_you": {
             "type": "boolean",
@@ -27066,7 +28700,9 @@
       },
       "UserSuspendComplianceSchema": {
         "type": "object",
-        "required": ["user_suspend"],
+        "required": [
+          "user_suspend"
+        ],
         "properties": {
           "user_suspend": {
             "$ref": "#/components/schemas/UserComplianceSchema"
@@ -27075,7 +28711,11 @@
       },
       "UserTakedownComplianceSchema": {
         "type": "object",
-        "required": ["user", "withheld_in_countries", "event_at"],
+        "required": [
+          "user",
+          "withheld_in_countries",
+          "event_at"
+        ],
         "properties": {
           "event_at": {
             "type": "string",
@@ -27085,7 +28725,9 @@
           },
           "user": {
             "type": "object",
-            "required": ["id"],
+            "required": [
+              "id"
+            ],
             "properties": {
               "id": {
                 "$ref": "#/components/schemas/UserId"
@@ -27103,7 +28745,9 @@
       },
       "UserUndeleteComplianceSchema": {
         "type": "object",
-        "required": ["user_undelete"],
+        "required": [
+          "user_undelete"
+        ],
         "properties": {
           "user_undelete": {
             "$ref": "#/components/schemas/UserComplianceSchema"
@@ -27112,7 +28756,9 @@
       },
       "UserUnprotectComplianceSchema": {
         "type": "object",
-        "required": ["user_unprotect"],
+        "required": [
+          "user_unprotect"
+        ],
         "properties": {
           "user_unprotect": {
             "$ref": "#/components/schemas/UserComplianceSchema"
@@ -27121,7 +28767,9 @@
       },
       "UserUnsuspendComplianceSchema": {
         "type": "object",
-        "required": ["user_unsuspend"],
+        "required": [
+          "user_unsuspend"
+        ],
         "properties": {
           "user_unsuspend": {
             "$ref": "#/components/schemas/UserComplianceSchema"
@@ -27143,14 +28791,18 @@
           "scope": {
             "type": "string",
             "description": "The scope of the withholding. Only present, with the value \"user\", when the entire User is withheld.",
-            "enum": ["user"],
+            "enum": [
+              "user"
+            ],
             "nullable": true
           }
         }
       },
       "UserWithheldComplianceSchema": {
         "type": "object",
-        "required": ["user_withheld"],
+        "required": [
+          "user_withheld"
+        ],
         "properties": {
           "user_withheld": {
             "$ref": "#/components/schemas/UserTakedownComplianceSchema"
@@ -27173,7 +28825,9 @@
       },
       "ValidateAccountActivitySubscriptionResponseData": {
         "type": "object",
-        "required": ["subscribed"],
+        "required": [
+          "subscribed"
+        ],
         "properties": {
           "subscribed": {
             "type": "boolean",
@@ -27197,7 +28851,9 @@
       },
       "ValidateWebhooksResponseData": {
         "type": "object",
-        "required": ["valid"],
+        "required": [
+          "valid"
+        ],
         "properties": {
           "valid": {
             "type": "boolean",
@@ -27327,7 +28983,11 @@
           "uniqueItems": true,
           "items": {
             "type": "string",
-            "enum": ["admin_ids", "member_ids", "participant_ids"]
+            "enum": [
+              "admin_ids",
+              "member_ids",
+              "participant_ids"
+            ]
           }
         },
         "explode": false,
@@ -27530,7 +29190,9 @@
           "uniqueItems": true,
           "items": {
             "type": "string",
-            "enum": ["owner_id"]
+            "enum": [
+              "owner_id"
+            ]
           }
         },
         "explode": false,
@@ -27670,7 +29332,13 @@
           "uniqueItems": true,
           "items": {
             "type": "string",
-            "enum": ["id", "info", "scoring_status", "status", "test_result"]
+            "enum": [
+              "id",
+              "info",
+              "scoring_status",
+              "status",
+              "test_result"
+            ]
           }
         },
         "explode": false,
@@ -27688,7 +29356,12 @@
           "uniqueItems": true,
           "items": {
             "type": "string",
-            "enum": ["category", "post_count", "trend_name", "trending_since"]
+            "enum": [
+              "category",
+              "post_count",
+              "trend_name",
+              "trending_since"
+            ]
           }
         },
         "explode": false,
@@ -27939,7 +29612,11 @@
           "uniqueItems": true,
           "items": {
             "type": "string",
-            "enum": ["description", "id", "name"]
+            "enum": [
+              "description",
+              "id",
+              "name"
+            ]
           }
         },
         "explode": false,
@@ -27957,7 +29634,10 @@
           "uniqueItems": true,
           "items": {
             "type": "string",
-            "enum": ["trend_name", "tweet_count"]
+            "enum": [
+              "trend_name",
+              "tweet_count"
+            ]
           }
         },
         "explode": false,
@@ -27999,7 +29679,11 @@
           "uniqueItems": true,
           "items": {
             "type": "string",
-            "enum": ["affiliation", "most_recent_post_id", "pinned_post_id"]
+            "enum": [
+              "affiliation",
+              "most_recent_post_id",
+              "pinned_post_id"
+            ]
           }
         },
         "explode": false,
@@ -28060,7 +29744,12 @@
           "uniqueItems": true,
           "items": {
             "type": "string",
-            "enum": ["created_at", "id", "url", "valid"]
+            "enum": [
+              "created_at",
+              "id",
+              "url",
+              "valid"
+            ]
           }
         },
         "explode": false,

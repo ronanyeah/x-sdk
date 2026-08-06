@@ -111,7 +111,7 @@ Name | Type | Description  | Required | Notes
 **test_mode** | **bool** |  | [required] |
 **max_results** | Option<**i32**> |  |  |[default to 10]
 **pagination_token** | Option<**String**> |  |  |
-**note_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Note fields to display. |  |
+**note_fields** | Option<[**Vec<models::NoteField>**](Models__NoteField.md)> | A comma separated list of Note fields to display. |  |
 
 ### Return type
 
@@ -143,12 +143,12 @@ Name | Type | Description  | Required | Notes
 **max_results** | Option<**i32**> |  |  |[default to 10]
 **pagination_token** | Option<**String**> |  |  |
 **post_selection** | Option<**String**> |  |  |
-**post_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Post fields to display. |  |
-**expansions** | Option<[**Vec<String>**](String.md)> | A comma separated list of fields to expand. |  |
-**user_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of User fields to display. |  |
-**media_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Media fields to display. |  |
-**poll_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Poll fields to display. |  |
-**place_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Place fields to display. |  |
+**post_fields** | Option<[**Vec<models::PostField>**](Models__PostField.md)> | A comma separated list of Post fields to display. |  |
+**expansions** | Option<[**Vec<models::PostExpansion>**](Models__PostExpansion.md)> | A comma separated list of fields to expand. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
+**media_fields** | Option<[**Vec<models::MediaField>**](Models__MediaField.md)> | A comma separated list of Media fields to display. |  |
+**poll_fields** | Option<[**Vec<models::PollField>**](Models__PollField.md)> | A comma separated list of Poll fields to display. |  |
+**place_fields** | Option<[**Vec<models::PlaceField>**](Models__PlaceField.md)> | A comma separated list of Place fields to display. |  |
 
 ### Return type
 

@@ -283,7 +283,7 @@ pub async fn dm_conversations_media_download(configuration: &configuration::Conf
     }
 }
 
-pub async fn get_direct_messages_events(configuration: &configuration::Configuration, max_results: Option<i32>, pagination_token: Option<&str>, event_types: Option<Vec<String>>, dm_event_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, post_fields: Option<Vec<String>>, media_fields: Option<Vec<String>>) -> Result<models::GetDirectMessagesEventsResponse, Error<GetDirectMessagesEventsError>> {
+pub async fn get_direct_messages_events(configuration: &configuration::Configuration, max_results: Option<i32>, pagination_token: Option<&str>, event_types: Option<Vec<String>>, dm_event_fields: Option<Vec<models::DmEventField>>, expansions: Option<Vec<models::DmEventExpansion>>, user_fields: Option<Vec<models::UserField>>, post_fields: Option<Vec<models::PostField>>, media_fields: Option<Vec<models::MediaField>>) -> Result<models::GetDirectMessagesEventsResponse, Error<GetDirectMessagesEventsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_max_results = max_results;
     let p_query_pagination_token = pagination_token;
@@ -371,7 +371,7 @@ pub async fn get_direct_messages_events(configuration: &configuration::Configura
     }
 }
 
-pub async fn get_direct_messages_events_by_conversation_id(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, event_types: Option<Vec<String>>, dm_event_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, post_fields: Option<Vec<String>>, media_fields: Option<Vec<String>>) -> Result<models::GetDirectMessagesEventsByConversationIdResponse, Error<GetDirectMessagesEventsByConversationIdError>> {
+pub async fn get_direct_messages_events_by_conversation_id(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, event_types: Option<Vec<String>>, dm_event_fields: Option<Vec<models::DmEventField>>, expansions: Option<Vec<models::DmEventExpansion>>, user_fields: Option<Vec<models::UserField>>, post_fields: Option<Vec<models::PostField>>, media_fields: Option<Vec<models::MediaField>>) -> Result<models::GetDirectMessagesEventsByConversationIdResponse, Error<GetDirectMessagesEventsByConversationIdError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -460,7 +460,7 @@ pub async fn get_direct_messages_events_by_conversation_id(configuration: &confi
     }
 }
 
-pub async fn get_direct_messages_events_by_id(configuration: &configuration::Configuration, event_id: &str, dm_event_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, post_fields: Option<Vec<String>>, media_fields: Option<Vec<String>>) -> Result<models::GetDirectMessagesEventsByIdResponse, Error<GetDirectMessagesEventsByIdError>> {
+pub async fn get_direct_messages_events_by_id(configuration: &configuration::Configuration, event_id: &str, dm_event_fields: Option<Vec<models::DmEventField>>, expansions: Option<Vec<models::DmEventExpansion>>, user_fields: Option<Vec<models::UserField>>, post_fields: Option<Vec<models::PostField>>, media_fields: Option<Vec<models::MediaField>>) -> Result<models::GetDirectMessagesEventsByIdResponse, Error<GetDirectMessagesEventsByIdError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_event_id = event_id;
     let p_query_dm_event_fields = dm_event_fields;
@@ -534,7 +534,7 @@ pub async fn get_direct_messages_events_by_id(configuration: &configuration::Con
     }
 }
 
-pub async fn get_direct_messages_events_by_participant_id(configuration: &configuration::Configuration, participant_id: &str, max_results: Option<i32>, pagination_token: Option<&str>, event_types: Option<Vec<String>>, dm_event_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, post_fields: Option<Vec<String>>, media_fields: Option<Vec<String>>) -> Result<models::GetDirectMessagesEventsByParticipantIdResponse, Error<GetDirectMessagesEventsByParticipantIdError>> {
+pub async fn get_direct_messages_events_by_participant_id(configuration: &configuration::Configuration, participant_id: &str, max_results: Option<i32>, pagination_token: Option<&str>, event_types: Option<Vec<String>>, dm_event_fields: Option<Vec<models::DmEventField>>, expansions: Option<Vec<models::DmEventExpansion>>, user_fields: Option<Vec<models::UserField>>, post_fields: Option<Vec<models::PostField>>, media_fields: Option<Vec<models::MediaField>>) -> Result<models::GetDirectMessagesEventsByParticipantIdResponse, Error<GetDirectMessagesEventsByParticipantIdError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_participant_id = participant_id;
     let p_query_max_results = max_results;

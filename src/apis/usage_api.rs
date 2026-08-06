@@ -24,7 +24,7 @@ pub enum GetUsageError {
 }
 
 
-pub async fn get_usage(configuration: &configuration::Configuration, days: Option<i32>, usage_fields: Option<Vec<String>>) -> Result<models::GetUsageResponse, Error<GetUsageError>> {
+pub async fn get_usage(configuration: &configuration::Configuration, days: Option<i32>, usage_fields: Option<Vec<models::UsageField>>) -> Result<models::GetUsageResponse, Error<GetUsageError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_days = days;
     let p_query_usage_fields = usage_fields;

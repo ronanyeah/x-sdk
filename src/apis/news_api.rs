@@ -33,7 +33,7 @@ pub enum SearchNewsError {
 
 
 /// Retrieves news story by its ID.
-pub async fn get_news(configuration: &configuration::Configuration, id: &str, news_fields: Option<Vec<String>>) -> Result<models::GetNewsResponse, Error<GetNewsError>> {
+pub async fn get_news(configuration: &configuration::Configuration, id: &str, news_fields: Option<Vec<models::NewsField>>) -> Result<models::GetNewsResponse, Error<GetNewsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_news_fields = news_fields;
@@ -82,7 +82,7 @@ pub async fn get_news(configuration: &configuration::Configuration, id: &str, ne
     }
 }
 
-pub async fn search_news(configuration: &configuration::Configuration, query: &str, max_results: Option<i32>, max_age_hours: Option<i32>, news_fields: Option<Vec<String>>) -> Result<models::SearchNewsResponse, Error<SearchNewsError>> {
+pub async fn search_news(configuration: &configuration::Configuration, query: &str, max_results: Option<i32>, max_age_hours: Option<i32>, news_fields: Option<Vec<models::NewsField>>) -> Result<models::SearchNewsResponse, Error<SearchNewsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_query = query;
     let p_query_max_results = max_results;

@@ -32,7 +32,7 @@ pub enum GetTrendsPersonalizedTrendsError {
 }
 
 
-pub async fn get_trends_by_woeid(configuration: &configuration::Configuration, woeid: i32, max_trends: Option<i32>, trend_fields: Option<Vec<String>>) -> Result<models::GetTrendsByWoeidResponse, Error<GetTrendsByWoeidError>> {
+pub async fn get_trends_by_woeid(configuration: &configuration::Configuration, woeid: i32, max_trends: Option<i32>, trend_fields: Option<Vec<models::TrendField>>) -> Result<models::GetTrendsByWoeidResponse, Error<GetTrendsByWoeidError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_woeid = woeid;
     let p_query_max_trends = max_trends;
@@ -85,7 +85,7 @@ pub async fn get_trends_by_woeid(configuration: &configuration::Configuration, w
     }
 }
 
-pub async fn get_trends_personalized_trends(configuration: &configuration::Configuration, personalized_trend_fields: Option<Vec<String>>) -> Result<models::GetTrendsPersonalizedTrendsResponse, Error<GetTrendsPersonalizedTrendsError>> {
+pub async fn get_trends_personalized_trends(configuration: &configuration::Configuration, personalized_trend_fields: Option<Vec<models::PersonalizedTrendField>>) -> Result<models::GetTrendsPersonalizedTrendsResponse, Error<GetTrendsPersonalizedTrendsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_personalized_trend_fields = personalized_trend_fields;
 

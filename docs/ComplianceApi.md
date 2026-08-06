@@ -23,7 +23,7 @@ Creates a new Compliance Job for the specified job type.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **create_compliance_jobs_request** | [**CreateComplianceJobsRequest**](CreateComplianceJobsRequest.md) |  | [required] |
-**compliance_job_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of ComplianceJob fields to display. |  |
+**compliance_job_fields** | Option<[**Vec<models::ComplianceJobField>**](Models__ComplianceJobField.md)> | A comma separated list of ComplianceJob fields to display. |  |
 
 ### Return type
 
@@ -55,7 +55,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **r#type** | **String** |  | [required] |
 **status** | Option<**String**> |  |  |
-**compliance_job_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of ComplianceJob fields to display. |  |
+**compliance_job_fields** | Option<[**Vec<models::ComplianceJobField>**](Models__ComplianceJobField.md)> | A comma separated list of ComplianceJob fields to display. |  |
 
 ### Return type
 
@@ -86,7 +86,7 @@ Retrieves details of a specific Compliance Job by its ID.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **id** | **String** |  | [required] |
-**compliance_job_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of ComplianceJob fields to display. |  |
+**compliance_job_fields** | Option<[**Vec<models::ComplianceJobField>**](Models__ComplianceJobField.md)> | A comma separated list of ComplianceJob fields to display. |  |
 
 ### Return type
 

@@ -308,7 +308,7 @@ pub async fn finalize_media_upload(configuration: &configuration::Configuration,
     }
 }
 
-pub async fn get_media_analytics(configuration: &configuration::Configuration, media_keys: Vec<String>, start_time: chrono::DateTime<chrono::FixedOffset>, end_time: chrono::DateTime<chrono::FixedOffset>, granularity: Option<&str>, media_analytics_fields: Option<Vec<String>>) -> Result<models::GetMediaAnalyticsResponse, Error<GetMediaAnalyticsError>> {
+pub async fn get_media_analytics(configuration: &configuration::Configuration, media_keys: Vec<String>, start_time: chrono::DateTime<chrono::FixedOffset>, end_time: chrono::DateTime<chrono::FixedOffset>, granularity: Option<&str>, media_analytics_fields: Option<Vec<models::MediaAnalyticsField>>) -> Result<models::GetMediaAnalyticsResponse, Error<GetMediaAnalyticsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_media_keys = media_keys;
     let p_query_start_time = start_time;
@@ -323,8 +323,8 @@ pub async fn get_media_analytics(configuration: &configuration::Configuration, m
         "multi" => req_builder.query(&p_query_media_keys.into_iter().map(|p| ("media_keys".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
         _ => req_builder.query(&[("media_keys", &p_query_media_keys.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
     };
-    req_builder = req_builder.query(&[("start_time", &p_query_start_time.to_string())]);
-    req_builder = req_builder.query(&[("end_time", &p_query_end_time.to_string())]);
+    req_builder = req_builder.query(&[("start_time", &p_query_start_time.to_rfc3339())]);
+    req_builder = req_builder.query(&[("end_time", &p_query_end_time.to_rfc3339())]);
     if let Some(ref param_value) = p_query_granularity {
         req_builder = req_builder.query(&[("granularity", &param_value.to_string())]);
     }
@@ -366,7 +366,7 @@ pub async fn get_media_analytics(configuration: &configuration::Configuration, m
     }
 }
 
-pub async fn get_media_by_media_key(configuration: &configuration::Configuration, media_key: &str, media_fields: Option<Vec<String>>) -> Result<models::GetMediaByMediaKeyResponse, Error<GetMediaByMediaKeyError>> {
+pub async fn get_media_by_media_key(configuration: &configuration::Configuration, media_key: &str, media_fields: Option<Vec<models::MediaField>>) -> Result<models::GetMediaByMediaKeyResponse, Error<GetMediaByMediaKeyError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_media_key = media_key;
     let p_query_media_fields = media_fields;
@@ -415,7 +415,7 @@ pub async fn get_media_by_media_key(configuration: &configuration::Configuration
     }
 }
 
-pub async fn get_media_by_media_keys(configuration: &configuration::Configuration, media_keys: Vec<String>, media_fields: Option<Vec<String>>) -> Result<models::GetMediaByMediaKeysResponse, Error<GetMediaByMediaKeysError>> {
+pub async fn get_media_by_media_keys(configuration: &configuration::Configuration, media_keys: Vec<String>, media_fields: Option<Vec<models::MediaField>>) -> Result<models::GetMediaByMediaKeysResponse, Error<GetMediaByMediaKeysError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_media_keys = media_keys;
     let p_query_media_fields = media_fields;

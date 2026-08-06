@@ -32,7 +32,7 @@ pub enum SearchCommunitiesError {
 }
 
 
-pub async fn get_communities_by_id(configuration: &configuration::Configuration, id: &str, community_fields: Option<Vec<String>>) -> Result<models::GetCommunitiesByIdResponse, Error<GetCommunitiesByIdError>> {
+pub async fn get_communities_by_id(configuration: &configuration::Configuration, id: &str, community_fields: Option<Vec<models::CommunityField>>) -> Result<models::GetCommunitiesByIdResponse, Error<GetCommunitiesByIdError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_community_fields = community_fields;
@@ -81,7 +81,7 @@ pub async fn get_communities_by_id(configuration: &configuration::Configuration,
     }
 }
 
-pub async fn search_communities(configuration: &configuration::Configuration, query: &str, max_results: Option<i32>, next_token: Option<&str>, pagination_token: Option<&str>, community_fields: Option<Vec<String>>) -> Result<models::SearchCommunitiesResponse, Error<SearchCommunitiesError>> {
+pub async fn search_communities(configuration: &configuration::Configuration, query: &str, max_results: Option<i32>, next_token: Option<&str>, pagination_token: Option<&str>, community_fields: Option<Vec<models::CommunityField>>) -> Result<models::SearchCommunitiesResponse, Error<SearchCommunitiesError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_query = query;
     let p_query_max_results = max_results;

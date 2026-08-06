@@ -114,9 +114,9 @@ Get Lists by ID
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **id** | **String** |  | [required] |
-**list_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of List fields to display. |  |
-**expansions** | Option<[**Vec<String>**](String.md)> | A comma separated list of fields to expand. |  |
-**user_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of User fields to display. |  |
+**list_fields** | Option<[**Vec<models::ListField>**](Models__ListField.md)> | A comma separated list of List fields to display. |  |
+**expansions** | Option<[**Vec<models::ListExpansion>**](Models__ListExpansion.md)> | A comma separated list of fields to expand. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
 
 ### Return type
 
@@ -147,9 +147,9 @@ Name | Type | Description  | Required | Notes
 **id** | **String** |  | [required] |
 **max_results** | Option<**i32**> |  |  |[default to 100]
 **pagination_token** | Option<**String**> | A 64-bit signed integer. |  |
-**user_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of User fields to display. |  |
-**expansions** | Option<[**Vec<String>**](String.md)> | A comma separated list of fields to expand. |  |
-**post_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Post fields to display. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
+**expansions** | Option<[**Vec<models::UserExpansion>**](Models__UserExpansion.md)> | A comma separated list of fields to expand. |  |
+**post_fields** | Option<[**Vec<models::PostField>**](Models__PostField.md)> | A comma separated list of Post fields to display. |  |
 
 ### Return type
 
@@ -180,9 +180,9 @@ Name | Type | Description  | Required | Notes
 **id** | **String** |  | [required] |
 **max_results** | Option<**i32**> |  |  |[default to 100]
 **pagination_token** | Option<**String**> | A 64-bit signed integer. |  |
-**user_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of User fields to display. |  |
-**expansions** | Option<[**Vec<String>**](String.md)> | A comma separated list of fields to expand. |  |
-**post_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Post fields to display. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
+**expansions** | Option<[**Vec<models::UserExpansion>**](Models__UserExpansion.md)> | A comma separated list of fields to expand. |  |
+**post_fields** | Option<[**Vec<models::PostField>**](Models__PostField.md)> | A comma separated list of Post fields to display. |  |
 
 ### Return type
 
@@ -213,12 +213,12 @@ Name | Type | Description  | Required | Notes
 **id** | **String** |  | [required] |
 **max_results** | Option<**i32**> |  |  |[default to 100]
 **pagination_token** | Option<**String**> | A base32hex-encoded pagination token. |  |
-**post_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Post fields to display. |  |
-**expansions** | Option<[**Vec<String>**](String.md)> | A comma separated list of fields to expand. |  |
-**user_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of User fields to display. |  |
-**media_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Media fields to display. |  |
-**poll_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Poll fields to display. |  |
-**place_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Place fields to display. |  |
+**post_fields** | Option<[**Vec<models::PostField>**](Models__PostField.md)> | A comma separated list of Post fields to display. |  |
+**expansions** | Option<[**Vec<models::PostExpansion>**](Models__PostExpansion.md)> | A comma separated list of fields to expand. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
+**media_fields** | Option<[**Vec<models::MediaField>**](Models__MediaField.md)> | A comma separated list of Media fields to display. |  |
+**poll_fields** | Option<[**Vec<models::PollField>**](Models__PollField.md)> | A comma separated list of Poll fields to display. |  |
+**place_fields** | Option<[**Vec<models::PlaceField>**](Models__PlaceField.md)> | A comma separated list of Place fields to display. |  |
 
 ### Return type
 

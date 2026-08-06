@@ -21,7 +21,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **woeid** | **i32** |  | [required] |
 **max_trends** | Option<**i32**> |  |  |[default to 20]
-**trend_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Trend fields to display. |  |
+**trend_fields** | Option<[**Vec<models::TrendField>**](Models__TrendField.md)> | A comma separated list of Trend fields to display. |  |
 
 ### Return type
 
@@ -49,7 +49,7 @@ Get Trends Personalized Trends
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**personalized_trend_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of PersonalizedTrend fields to display. |  |
+**personalized_trend_fields** | Option<[**Vec<models::PersonalizedTrendField>**](Models__PersonalizedTrendField.md)> | A comma separated list of PersonalizedTrend fields to display. |  |
 
 ### Return type
 

@@ -181,7 +181,7 @@ Name | Type | Description  | Required | Notes
 **start_time** | **chrono::DateTime<chrono::FixedOffset>** |  | [required] |
 **end_time** | **chrono::DateTime<chrono::FixedOffset>** |  | [required] |
 **granularity** | Option<**String**> |  |  |[default to daily]
-**media_analytics_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of MediaAnalytics fields to display. |  |
+**media_analytics_fields** | Option<[**Vec<models::MediaAnalyticsField>**](Models__MediaAnalyticsField.md)> | A comma separated list of MediaAnalytics fields to display. |  |
 
 ### Return type
 
@@ -210,7 +210,7 @@ Get Media by media key
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **media_key** | **String** |  | [required] |
-**media_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Media fields to display. |  |
+**media_fields** | Option<[**Vec<models::MediaField>**](Models__MediaField.md)> | A comma separated list of Media fields to display. |  |
 
 ### Return type
 
@@ -239,7 +239,7 @@ Get Media by media keys
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **media_keys** | [**Vec<String>**](String.md) |  | [required] |
-**media_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Media fields to display. |  |
+**media_fields** | Option<[**Vec<models::MediaField>**](Models__MediaField.md)> | A comma separated list of Media fields to display. |  |
 
 ### Return type
 

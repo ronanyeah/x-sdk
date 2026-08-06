@@ -177,7 +177,7 @@ Get a list of webhook configs associated with a client app.
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**webhook_config_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of WebhookConfig fields to display. |  |
+**webhook_config_fields** | Option<[**Vec<models::WebhookConfigField>**](Models__WebhookConfigField.md)> | A comma separated list of WebhookConfig fields to display. |  |
 
 ### Return type
 

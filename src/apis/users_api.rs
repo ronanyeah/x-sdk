@@ -597,7 +597,7 @@ pub async fn follow_user(configuration: &configuration::Configuration, id: &str,
     }
 }
 
-pub async fn get_users_affiliates(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, post_fields: Option<Vec<String>>) -> Result<models::GetUsersAffiliatesResponse, Error<GetUsersAffiliatesError>> {
+pub async fn get_users_affiliates(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetUsersAffiliatesResponse, Error<GetUsersAffiliatesError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -668,7 +668,7 @@ pub async fn get_users_affiliates(configuration: &configuration::Configuration, 
     }
 }
 
-pub async fn get_users_blocking(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, post_fields: Option<Vec<String>>) -> Result<models::GetUsersBlockingResponse, Error<GetUsersBlockingError>> {
+pub async fn get_users_blocking(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetUsersBlockingResponse, Error<GetUsersBlockingError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -783,7 +783,7 @@ pub async fn get_users_bookmark_folders(configuration: &configuration::Configura
     }
 }
 
-pub async fn get_users_bookmarks(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, post_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<models::GetUsersBookmarksResponse, Error<GetUsersBookmarksError>> {
+pub async fn get_users_bookmarks(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::GetUsersBookmarksResponse, Error<GetUsersBookmarksError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -920,7 +920,7 @@ pub async fn get_users_bookmarks_by_folder_id(configuration: &configuration::Con
     }
 }
 
-pub async fn get_users_by_id(configuration: &configuration::Configuration, id: &str, user_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, post_fields: Option<Vec<String>>) -> Result<models::GetUsersByIdResponse, Error<GetUsersByIdError>> {
+pub async fn get_users_by_id(configuration: &configuration::Configuration, id: &str, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetUsersByIdResponse, Error<GetUsersByIdError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_user_fields = user_fields;
@@ -983,7 +983,7 @@ pub async fn get_users_by_id(configuration: &configuration::Configuration, id: &
     }
 }
 
-pub async fn get_users_by_ids(configuration: &configuration::Configuration, ids: Vec<String>, user_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, post_fields: Option<Vec<String>>) -> Result<models::GetUsersByIdsResponse, Error<GetUsersByIdsError>> {
+pub async fn get_users_by_ids(configuration: &configuration::Configuration, ids: Vec<String>, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetUsersByIdsResponse, Error<GetUsersByIdsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_ids = ids;
     let p_query_user_fields = user_fields;
@@ -1050,7 +1050,7 @@ pub async fn get_users_by_ids(configuration: &configuration::Configuration, ids:
     }
 }
 
-pub async fn get_users_by_username(configuration: &configuration::Configuration, username: &str, user_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, post_fields: Option<Vec<String>>) -> Result<models::GetUsersByUsernameResponse, Error<GetUsersByUsernameError>> {
+pub async fn get_users_by_username(configuration: &configuration::Configuration, username: &str, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetUsersByUsernameResponse, Error<GetUsersByUsernameError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_username = username;
     let p_query_user_fields = user_fields;
@@ -1113,7 +1113,7 @@ pub async fn get_users_by_username(configuration: &configuration::Configuration,
     }
 }
 
-pub async fn get_users_by_usernames(configuration: &configuration::Configuration, usernames: Vec<String>, user_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, post_fields: Option<Vec<String>>) -> Result<models::GetUsersByUsernamesResponse, Error<GetUsersByUsernamesError>> {
+pub async fn get_users_by_usernames(configuration: &configuration::Configuration, usernames: Vec<String>, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetUsersByUsernamesResponse, Error<GetUsersByUsernamesError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_usernames = usernames;
     let p_query_user_fields = user_fields;
@@ -1180,7 +1180,7 @@ pub async fn get_users_by_usernames(configuration: &configuration::Configuration
     }
 }
 
-pub async fn get_users_followed_lists(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, list_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>) -> Result<models::GetUsersFollowedListsResponse, Error<GetUsersFollowedListsError>> {
+pub async fn get_users_followed_lists(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, list_fields: Option<Vec<models::ListField>>, expansions: Option<Vec<models::ListExpansion>>, user_fields: Option<Vec<models::UserField>>) -> Result<models::GetUsersFollowedListsResponse, Error<GetUsersFollowedListsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -1251,7 +1251,7 @@ pub async fn get_users_followed_lists(configuration: &configuration::Configurati
     }
 }
 
-pub async fn get_users_followers(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, post_fields: Option<Vec<String>>) -> Result<models::GetUsersFollowersResponse, Error<GetUsersFollowersError>> {
+pub async fn get_users_followers(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetUsersFollowersResponse, Error<GetUsersFollowersError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -1322,7 +1322,7 @@ pub async fn get_users_followers(configuration: &configuration::Configuration, i
     }
 }
 
-pub async fn get_users_following(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, post_fields: Option<Vec<String>>) -> Result<models::GetUsersFollowingResponse, Error<GetUsersFollowingError>> {
+pub async fn get_users_following(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetUsersFollowingResponse, Error<GetUsersFollowingError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -1393,7 +1393,7 @@ pub async fn get_users_following(configuration: &configuration::Configuration, i
     }
 }
 
-pub async fn get_users_liked_posts(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, post_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<models::GetUsersLikedPostsResponse, Error<GetUsersLikedPostsError>> {
+pub async fn get_users_liked_posts(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::GetUsersLikedPostsResponse, Error<GetUsersLikedPostsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -1482,7 +1482,7 @@ pub async fn get_users_liked_posts(configuration: &configuration::Configuration,
     }
 }
 
-pub async fn get_users_list_memberships(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, list_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>) -> Result<models::GetUsersListMembershipsResponse, Error<GetUsersListMembershipsError>> {
+pub async fn get_users_list_memberships(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, list_fields: Option<Vec<models::ListField>>, expansions: Option<Vec<models::ListExpansion>>, user_fields: Option<Vec<models::UserField>>) -> Result<models::GetUsersListMembershipsResponse, Error<GetUsersListMembershipsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -1553,7 +1553,7 @@ pub async fn get_users_list_memberships(configuration: &configuration::Configura
     }
 }
 
-pub async fn get_users_me(configuration: &configuration::Configuration, user_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, post_fields: Option<Vec<String>>) -> Result<models::GetUsersMeResponse, Error<GetUsersMeError>> {
+pub async fn get_users_me(configuration: &configuration::Configuration, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetUsersMeResponse, Error<GetUsersMeError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_user_fields = user_fields;
     let p_query_expansions = expansions;
@@ -1613,7 +1613,7 @@ pub async fn get_users_me(configuration: &configuration::Configuration, user_fie
 }
 
 /// When both are provided, `start_time` must be earlier than `end_time`. When both are provided, `since_id` must be less than `until_id`.
-pub async fn get_users_mentions(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, since_id: Option<&str>, until_id: Option<&str>, post_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<models::GetUsersMentionsResponse, Error<GetUsersMentionsError>> {
+pub async fn get_users_mentions(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, since_id: Option<&str>, until_id: Option<&str>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::GetUsersMentionsResponse, Error<GetUsersMentionsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -1639,10 +1639,10 @@ pub async fn get_users_mentions(configuration: &configuration::Configuration, id
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_since_id {
         req_builder = req_builder.query(&[("since_id", &param_value.to_string())]);
@@ -1721,7 +1721,7 @@ pub async fn get_users_mentions(configuration: &configuration::Configuration, id
     }
 }
 
-pub async fn get_users_muting(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, post_fields: Option<Vec<String>>) -> Result<models::GetUsersMutingResponse, Error<GetUsersMutingError>> {
+pub async fn get_users_muting(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetUsersMutingResponse, Error<GetUsersMutingError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -1789,7 +1789,7 @@ pub async fn get_users_muting(configuration: &configuration::Configuration, id: 
     }
 }
 
-pub async fn get_users_owned_lists(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, list_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>) -> Result<models::GetUsersOwnedListsResponse, Error<GetUsersOwnedListsError>> {
+pub async fn get_users_owned_lists(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, list_fields: Option<Vec<models::ListField>>, expansions: Option<Vec<models::ListExpansion>>, user_fields: Option<Vec<models::UserField>>) -> Result<models::GetUsersOwnedListsResponse, Error<GetUsersOwnedListsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -1860,7 +1860,7 @@ pub async fn get_users_owned_lists(configuration: &configuration::Configuration,
     }
 }
 
-pub async fn get_users_pinned_lists(configuration: &configuration::Configuration, id: &str, list_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>) -> Result<models::GetUsersPinnedListsResponse, Error<GetUsersPinnedListsError>> {
+pub async fn get_users_pinned_lists(configuration: &configuration::Configuration, id: &str, list_fields: Option<Vec<models::ListField>>, expansions: Option<Vec<models::ListExpansion>>, user_fields: Option<Vec<models::UserField>>) -> Result<models::GetUsersPinnedListsResponse, Error<GetUsersPinnedListsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_list_fields = list_fields;
@@ -1921,7 +1921,7 @@ pub async fn get_users_pinned_lists(configuration: &configuration::Configuration
 }
 
 /// When both are provided, `start_time` must be earlier than `end_time`. When both are provided, `since_id` must be less than `until_id`.
-pub async fn get_users_posts(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, since_id: Option<&str>, until_id: Option<&str>, exclude: Option<Vec<String>>, post_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<models::GetUsersPostsResponse, Error<GetUsersPostsError>> {
+pub async fn get_users_posts(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, since_id: Option<&str>, until_id: Option<&str>, exclude: Option<Vec<String>>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::GetUsersPostsResponse, Error<GetUsersPostsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -1948,10 +1948,10 @@ pub async fn get_users_posts(configuration: &configuration::Configuration, id: &
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_since_id {
         req_builder = req_builder.query(&[("since_id", &param_value.to_string())]);
@@ -2037,7 +2037,7 @@ pub async fn get_users_posts(configuration: &configuration::Configuration, id: &
 }
 
 /// Returns a user's registered public keys for X Chat encryption.
-pub async fn get_users_public_key(configuration: &configuration::Configuration, id: &str, public_key_fields: Option<Vec<String>>) -> Result<models::GetUsersPublicKeyResponse, Error<GetUsersPublicKeyError>> {
+pub async fn get_users_public_key(configuration: &configuration::Configuration, id: &str, public_key_fields: Option<Vec<models::PublicKeyField>>) -> Result<models::GetUsersPublicKeyResponse, Error<GetUsersPublicKeyError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_public_key_fields = public_key_fields;
@@ -2084,7 +2084,7 @@ pub async fn get_users_public_key(configuration: &configuration::Configuration, 
 }
 
 /// Returns registered public keys for X Chat encryption for the specified users.
-pub async fn get_users_public_keys(configuration: &configuration::Configuration, ids: Vec<String>, public_key_fields: Option<Vec<String>>) -> Result<models::GetUsersPublicKeysResponse, Error<GetUsersPublicKeysError>> {
+pub async fn get_users_public_keys(configuration: &configuration::Configuration, ids: Vec<String>, public_key_fields: Option<Vec<models::PublicKeyField>>) -> Result<models::GetUsersPublicKeysResponse, Error<GetUsersPublicKeysError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_ids = ids;
     let p_query_public_key_fields = public_key_fields;
@@ -2134,7 +2134,7 @@ pub async fn get_users_public_keys(configuration: &configuration::Configuration,
     }
 }
 
-pub async fn get_users_reposts_of_me(configuration: &configuration::Configuration, max_results: Option<i32>, pagination_token: Option<&str>, post_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<models::GetUsersRepostsOfMeResponse, Error<GetUsersRepostsOfMeError>> {
+pub async fn get_users_reposts_of_me(configuration: &configuration::Configuration, max_results: Option<i32>, pagination_token: Option<&str>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::GetUsersRepostsOfMeResponse, Error<GetUsersRepostsOfMeError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_max_results = max_results;
     let p_query_pagination_token = pagination_token;
@@ -2223,7 +2223,7 @@ pub async fn get_users_reposts_of_me(configuration: &configuration::Configuratio
 }
 
 /// When both are provided, `start_time` must be earlier than `end_time`. When both are provided, `since_id` must be less than `until_id`.
-pub async fn get_users_timeline(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, since_id: Option<&str>, until_id: Option<&str>, exclude: Option<Vec<String>>, post_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<models::GetUsersTimelineResponse, Error<GetUsersTimelineError>> {
+pub async fn get_users_timeline(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, since_id: Option<&str>, until_id: Option<&str>, exclude: Option<Vec<String>>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::GetUsersTimelineResponse, Error<GetUsersTimelineError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -2250,10 +2250,10 @@ pub async fn get_users_timeline(configuration: &configuration::Configuration, id
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_since_id {
         req_builder = req_builder.query(&[("since_id", &param_value.to_string())]);
@@ -2501,7 +2501,7 @@ pub async fn repost_post(configuration: &configuration::Configuration, id: &str,
     }
 }
 
-pub async fn search_users(configuration: &configuration::Configuration, query: &str, max_results: Option<i32>, next_token: Option<&str>, user_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, post_fields: Option<Vec<String>>) -> Result<models::SearchUsersResponse, Error<SearchUsersError>> {
+pub async fn search_users(configuration: &configuration::Configuration, query: &str, max_results: Option<i32>, next_token: Option<&str>, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::SearchUsersResponse, Error<SearchUsersError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_query = query;
     let p_query_max_results = max_results;

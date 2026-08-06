@@ -63,6 +63,14 @@ pub enum GoLiveScheduledBroadcastError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`list_broadcasts`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ListBroadcastsError {
+    DefaultResponse(models::Error),
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`list_scheduled_broadcasts`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -231,7 +239,7 @@ pub async fn delete_scheduled_broadcast(configuration: &configuration::Configura
 }
 
 /// Returns a broadcast owned by the authenticated user.
-pub async fn get_broadcast(configuration: &configuration::Configuration, id: &str, broadcast_fields: Option<Vec<String>>) -> Result<models::GetBroadcastResponse, Error<GetBroadcastError>> {
+pub async fn get_broadcast(configuration: &configuration::Configuration, id: &str, broadcast_fields: Option<Vec<models::BroadcastField>>) -> Result<models::GetBroadcastResponse, Error<GetBroadcastError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_broadcast_fields = broadcast_fields;
@@ -353,6 +361,67 @@ pub async fn go_live_scheduled_broadcast(configuration: &configuration::Configur
     } else {
         let content = resp.text().await?;
         let entity: Option<GoLiveScheduledBroadcastError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
+/// Returns the authenticated user's live-video broadcasts, or selected owned broadcasts when ids are provided.  At most one of `ids`, `max_results` may be provided. At most one of `ids`, `pagination_token` may be provided.
+pub async fn list_broadcasts(configuration: &configuration::Configuration, ids: Option<Vec<String>>, max_results: Option<i32>, pagination_token: Option<&str>, broadcast_fields: Option<Vec<models::BroadcastField>>) -> Result<models::ListBroadcastsResponse, Error<ListBroadcastsError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_query_ids = ids;
+    let p_query_max_results = max_results;
+    let p_query_pagination_token = pagination_token;
+    let p_query_broadcast_fields = broadcast_fields;
+
+    let uri_str = format!("{}/2/broadcasts", configuration.base_path);
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref param_value) = p_query_ids {
+        req_builder = match "csv" {
+            "multi" => req_builder.query(&param_value.into_iter().map(|p| ("ids".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
+            _ => req_builder.query(&[("ids", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
+        };
+    }
+    if let Some(ref param_value) = p_query_max_results {
+        req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
+    }
+    if let Some(ref param_value) = p_query_pagination_token {
+        req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
+    }
+    if let Some(ref param_value) = p_query_broadcast_fields {
+        req_builder = match "csv" {
+            "multi" => req_builder.query(&param_value.into_iter().map(|p| ("broadcast.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
+            _ => req_builder.query(&[("broadcast.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
+        };
+    }
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.oauth_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::ListBroadcastsResponse`"))),
+            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::ListBroadcastsResponse`")))),
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ListBroadcastsError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }

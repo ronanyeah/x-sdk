@@ -207,7 +207,7 @@ pub async fn delete_posts(configuration: &configuration::Configuration, id: &str
     }
 }
 
-pub async fn get_posts_analytics(configuration: &configuration::Configuration, ids: Vec<String>, start_time: chrono::DateTime<chrono::FixedOffset>, end_time: chrono::DateTime<chrono::FixedOffset>, granularity: Option<&str>, analytics_fields: Option<Vec<String>>) -> Result<models::GetPostsAnalyticsResponse, Error<GetPostsAnalyticsError>> {
+pub async fn get_posts_analytics(configuration: &configuration::Configuration, ids: Vec<String>, start_time: chrono::DateTime<chrono::FixedOffset>, end_time: chrono::DateTime<chrono::FixedOffset>, granularity: Option<&str>, analytics_fields: Option<Vec<models::AnalyticsField>>) -> Result<models::GetPostsAnalyticsResponse, Error<GetPostsAnalyticsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_ids = ids;
     let p_query_start_time = start_time;
@@ -222,8 +222,8 @@ pub async fn get_posts_analytics(configuration: &configuration::Configuration, i
         "multi" => req_builder.query(&p_query_ids.into_iter().map(|p| ("ids".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
         _ => req_builder.query(&[("ids", &p_query_ids.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
     };
-    req_builder = req_builder.query(&[("start_time", &p_query_start_time.to_string())]);
-    req_builder = req_builder.query(&[("end_time", &p_query_end_time.to_string())]);
+    req_builder = req_builder.query(&[("start_time", &p_query_start_time.to_rfc3339())]);
+    req_builder = req_builder.query(&[("end_time", &p_query_end_time.to_rfc3339())]);
     if let Some(ref param_value) = p_query_granularity {
         req_builder = req_builder.query(&[("granularity", &param_value.to_string())]);
     }
@@ -265,7 +265,7 @@ pub async fn get_posts_analytics(configuration: &configuration::Configuration, i
     }
 }
 
-pub async fn get_posts_by_id(configuration: &configuration::Configuration, id: &str, post_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<models::GetPostsByIdResponse, Error<GetPostsByIdError>> {
+pub async fn get_posts_by_id(configuration: &configuration::Configuration, id: &str, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::GetPostsByIdResponse, Error<GetPostsByIdError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_post_fields = post_fields;
@@ -349,7 +349,7 @@ pub async fn get_posts_by_id(configuration: &configuration::Configuration, id: &
     }
 }
 
-pub async fn get_posts_by_ids(configuration: &configuration::Configuration, ids: Vec<String>, post_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<models::GetPostsByIdsResponse, Error<GetPostsByIdsError>> {
+pub async fn get_posts_by_ids(configuration: &configuration::Configuration, ids: Vec<String>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::GetPostsByIdsResponse, Error<GetPostsByIdsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_ids = ids;
     let p_query_post_fields = post_fields;
@@ -455,10 +455,10 @@ pub async fn get_posts_counts_all(configuration: &configuration::Configuration, 
 
     req_builder = req_builder.query(&[("query", &p_query_query.to_string())]);
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_since_id {
         req_builder = req_builder.query(&[("since_id", &param_value.to_string())]);
@@ -528,10 +528,10 @@ pub async fn get_posts_counts_recent(configuration: &configuration::Configuratio
 
     req_builder = req_builder.query(&[("query", &p_query_query.to_string())]);
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_since_id {
         req_builder = req_builder.query(&[("since_id", &param_value.to_string())]);
@@ -586,7 +586,7 @@ pub async fn get_posts_counts_recent(configuration: &configuration::Configuratio
     }
 }
 
-pub async fn get_posts_liking_users(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, post_fields: Option<Vec<String>>) -> Result<models::GetPostsLikingUsersResponse, Error<GetPostsLikingUsersError>> {
+pub async fn get_posts_liking_users(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetPostsLikingUsersResponse, Error<GetPostsLikingUsersError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -654,7 +654,7 @@ pub async fn get_posts_liking_users(configuration: &configuration::Configuration
     }
 }
 
-pub async fn get_posts_quoted_posts(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, exclude: Option<Vec<String>>, post_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<models::GetPostsQuotedPostsResponse, Error<GetPostsQuotedPostsError>> {
+pub async fn get_posts_quoted_posts(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, exclude: Option<Vec<String>>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::GetPostsQuotedPostsResponse, Error<GetPostsQuotedPostsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -753,7 +753,7 @@ pub async fn get_posts_quoted_posts(configuration: &configuration::Configuration
     }
 }
 
-pub async fn get_posts_reposted_by(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, post_fields: Option<Vec<String>>) -> Result<models::GetPostsRepostedByResponse, Error<GetPostsRepostedByError>> {
+pub async fn get_posts_reposted_by(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetPostsRepostedByResponse, Error<GetPostsRepostedByError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -824,7 +824,7 @@ pub async fn get_posts_reposted_by(configuration: &configuration::Configuration,
     }
 }
 
-pub async fn get_posts_reposts(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, post_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<models::GetPostsRepostsResponse, Error<GetPostsRepostsError>> {
+pub async fn get_posts_reposts(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::GetPostsRepostsResponse, Error<GetPostsRepostsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_max_results = max_results;
@@ -959,7 +959,7 @@ pub async fn hide_posts_reply(configuration: &configuration::Configuration, twee
 }
 
 /// At most one of `start_time`, `since_id` may be provided. At most one of `end_time`, `until_id` may be provided. At most one of `pagination_token`, `next_token` may be provided.
-pub async fn search_posts_all(configuration: &configuration::Configuration, query: &str, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, since_id: Option<&str>, until_id: Option<&str>, max_results: Option<i32>, next_token: Option<&str>, pagination_token: Option<&str>, sort_order: Option<&str>, post_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<models::SearchPostsAllResponse, Error<SearchPostsAllError>> {
+pub async fn search_posts_all(configuration: &configuration::Configuration, query: &str, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, since_id: Option<&str>, until_id: Option<&str>, max_results: Option<i32>, next_token: Option<&str>, pagination_token: Option<&str>, sort_order: Option<&str>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::SearchPostsAllResponse, Error<SearchPostsAllError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_query = query;
     let p_query_start_time = start_time;
@@ -982,10 +982,10 @@ pub async fn search_posts_all(configuration: &configuration::Configuration, quer
 
     req_builder = req_builder.query(&[("query", &p_query_query.to_string())]);
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_since_id {
         req_builder = req_builder.query(&[("since_id", &param_value.to_string())]);
@@ -1074,7 +1074,7 @@ pub async fn search_posts_all(configuration: &configuration::Configuration, quer
 }
 
 /// At most one of `start_time`, `since_id` may be provided. At most one of `end_time`, `until_id` may be provided. At most one of `pagination_token`, `next_token` may be provided.
-pub async fn search_posts_recent(configuration: &configuration::Configuration, query: &str, max_results: Option<i32>, next_token: Option<&str>, pagination_token: Option<&str>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, since_id: Option<&str>, until_id: Option<&str>, sort_order: Option<&str>, post_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, user_fields: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<models::SearchPostsRecentResponse, Error<SearchPostsRecentError>> {
+pub async fn search_posts_recent(configuration: &configuration::Configuration, query: &str, max_results: Option<i32>, next_token: Option<&str>, pagination_token: Option<&str>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, since_id: Option<&str>, until_id: Option<&str>, sort_order: Option<&str>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::SearchPostsRecentResponse, Error<SearchPostsRecentError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_query = query;
     let p_query_max_results = max_results;
@@ -1106,10 +1106,10 @@ pub async fn search_posts_recent(configuration: &configuration::Configuration, q
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
     if let Some(ref param_value) = p_query_start_time {
-        req_builder = req_builder.query(&[("start_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_end_time {
-        req_builder = req_builder.query(&[("end_time", &param_value.to_string())]);
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_since_id {
         req_builder = req_builder.query(&[("since_id", &param_value.to_string())]);

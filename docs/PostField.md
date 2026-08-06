@@ -1,0 +1,42 @@
+# PostField
+
+## Enum Variants
+
+| Name | Value |
+|---- | -----|
+| Article | article |
+| ArticleTitle | article_title |
+| Attachments | attachments |
+| CardUri | card_uri |
+| CommunityId | community_id |
+| ContextAnnotations | context_annotations |
+| ConversationId | conversation_id |
+| CreatedAt | created_at |
+| DisplayTextRange | display_text_range |
+| EditControls | edit_controls |
+| Entities | entities |
+| Geo | geo |
+| Id | id |
+| Lang | lang |
+| MatchedMediaNotes | matched_media_notes |
+| MediaMetadata | media_metadata |
+| NonPublicMetrics | non_public_metrics |
+| NotePost | note_post |
+| NoteRequestSuggestions | note_request_suggestions |
+| OrganicMetrics | organic_metrics |
+| PaidPartnership | paid_partnership |
+| PossiblySensitive | possibly_sensitive |
+| PromotedMetrics | promoted_metrics |
+| PublicMetrics | public_metrics |
+| ReplySettings | reply_settings |
+| Scopes | scopes |
+| Source | source |
+| SuggestedSourceLinks | suggested_source_links |
+| SuggestedSourceLinksWithCounts | suggested_source_links_with_counts |
+| Text | text |
+| Withheld | withheld |
+
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

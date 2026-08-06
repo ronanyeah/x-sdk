@@ -181,11 +181,11 @@ Name | Type | Description  | Required | Notes
 **max_results** | Option<**i32**> |  |  |[default to 100]
 **pagination_token** | Option<**String**> | A base32hex-encoded pagination token. |  |
 **event_types** | Option<[**Vec<String>**](String.md)> |  |  |[default to ["MessageCreate","ParticipantsLeave","ParticipantsJoin"]]
-**dm_event_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of DmEvent fields to display. |  |
-**expansions** | Option<[**Vec<String>**](String.md)> | A comma separated list of fields to expand. |  |
-**user_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of User fields to display. |  |
-**post_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Post fields to display. |  |
-**media_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Media fields to display. |  |
+**dm_event_fields** | Option<[**Vec<models::DmEventField>**](Models__DmEventField.md)> | A comma separated list of DmEvent fields to display. |  |
+**expansions** | Option<[**Vec<models::DmEventExpansion>**](Models__DmEventExpansion.md)> | A comma separated list of fields to expand. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
+**post_fields** | Option<[**Vec<models::PostField>**](Models__PostField.md)> | A comma separated list of Post fields to display. |  |
+**media_fields** | Option<[**Vec<models::MediaField>**](Models__MediaField.md)> | A comma separated list of Media fields to display. |  |
 
 ### Return type
 
@@ -217,11 +217,11 @@ Name | Type | Description  | Required | Notes
 **max_results** | Option<**i32**> |  |  |[default to 100]
 **pagination_token** | Option<**String**> | A base32hex-encoded pagination token. |  |
 **event_types** | Option<[**Vec<String>**](String.md)> |  |  |[default to ["MessageCreate","ParticipantsLeave","ParticipantsJoin"]]
-**dm_event_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of DmEvent fields to display. |  |
-**expansions** | Option<[**Vec<String>**](String.md)> | A comma separated list of fields to expand. |  |
-**user_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of User fields to display. |  |
-**post_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Post fields to display. |  |
-**media_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Media fields to display. |  |
+**dm_event_fields** | Option<[**Vec<models::DmEventField>**](Models__DmEventField.md)> | A comma separated list of DmEvent fields to display. |  |
+**expansions** | Option<[**Vec<models::DmEventExpansion>**](Models__DmEventExpansion.md)> | A comma separated list of fields to expand. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
+**post_fields** | Option<[**Vec<models::PostField>**](Models__PostField.md)> | A comma separated list of Post fields to display. |  |
+**media_fields** | Option<[**Vec<models::MediaField>**](Models__MediaField.md)> | A comma separated list of Media fields to display. |  |
 
 ### Return type
 
@@ -250,11 +250,11 @@ Get Direct Messages Events by ID
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **event_id** | **String** |  | [required] |
-**dm_event_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of DmEvent fields to display. |  |
-**expansions** | Option<[**Vec<String>**](String.md)> | A comma separated list of fields to expand. |  |
-**user_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of User fields to display. |  |
-**post_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Post fields to display. |  |
-**media_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Media fields to display. |  |
+**dm_event_fields** | Option<[**Vec<models::DmEventField>**](Models__DmEventField.md)> | A comma separated list of DmEvent fields to display. |  |
+**expansions** | Option<[**Vec<models::DmEventExpansion>**](Models__DmEventExpansion.md)> | A comma separated list of fields to expand. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
+**post_fields** | Option<[**Vec<models::PostField>**](Models__PostField.md)> | A comma separated list of Post fields to display. |  |
+**media_fields** | Option<[**Vec<models::MediaField>**](Models__MediaField.md)> | A comma separated list of Media fields to display. |  |
 
 ### Return type
 
@@ -286,11 +286,11 @@ Name | Type | Description  | Required | Notes
 **max_results** | Option<**i32**> |  |  |[default to 100]
 **pagination_token** | Option<**String**> | A base32hex-encoded pagination token. |  |
 **event_types** | Option<[**Vec<String>**](String.md)> |  |  |[default to ["MessageCreate","ParticipantsLeave","ParticipantsJoin"]]
-**dm_event_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of DmEvent fields to display. |  |
-**expansions** | Option<[**Vec<String>**](String.md)> | A comma separated list of fields to expand. |  |
-**user_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of User fields to display. |  |
-**post_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Post fields to display. |  |
-**media_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Media fields to display. |  |
+**dm_event_fields** | Option<[**Vec<models::DmEventField>**](Models__DmEventField.md)> | A comma separated list of DmEvent fields to display. |  |
+**expansions** | Option<[**Vec<models::DmEventExpansion>**](Models__DmEventExpansion.md)> | A comma separated list of fields to expand. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
+**post_fields** | Option<[**Vec<models::PostField>**](Models__PostField.md)> | A comma separated list of Post fields to display. |  |
+**media_fields** | Option<[**Vec<models::MediaField>**](Models__MediaField.md)> | A comma separated list of Media fields to display. |  |
 
 ### Return type
 

@@ -19,7 +19,7 @@ Get Usage
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **days** | Option<**i32**> |  |  |[default to 7]
-**usage_fields** | Option<[**Vec<String>**](String.md)> | A comma separated list of Usage fields to display. |  |
+**usage_fields** | Option<[**Vec<models::UsageField>**](Models__UsageField.md)> | A comma separated list of Usage fields to display. |  |
 
 ### Return type
 
