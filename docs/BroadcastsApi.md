@@ -8,11 +8,12 @@ Method | HTTP request | Description
 [**delete_broadcast_chat_message**](BroadcastsApi.md#delete_broadcast_chat_message) | **DELETE** /2/broadcasts/{id}/chat/{message_id} | Remove a chat message from a live broadcast
 [**delete_scheduled_broadcast**](BroadcastsApi.md#delete_scheduled_broadcast) | **DELETE** /2/broadcasts/scheduled/{id} | Delete a scheduled broadcast
 [**get_broadcast**](BroadcastsApi.md#get_broadcast) | **GET** /2/broadcasts/{id} | Get a broadcast
+[**get_broadcast_chat**](BroadcastsApi.md#get_broadcast_chat) | **GET** /2/broadcasts/{id}/chat | Get broadcast chat history
 [**get_scheduled_broadcast**](BroadcastsApi.md#get_scheduled_broadcast) | **GET** /2/broadcasts/scheduled/{id} | Get a scheduled broadcast
 [**go_live_scheduled_broadcast**](BroadcastsApi.md#go_live_scheduled_broadcast) | **POST** /2/broadcasts/scheduled/{id}/live | Go live on a scheduled broadcast
 [**list_broadcasts**](BroadcastsApi.md#list_broadcasts) | **GET** /2/broadcasts | List broadcasts
 [**list_scheduled_broadcasts**](BroadcastsApi.md#list_scheduled_broadcasts) | **GET** /2/broadcasts/scheduled | List scheduled broadcasts
-[**mute_broadcast_chat_user**](BroadcastsApi.md#mute_broadcast_chat_user) | **POST** /2/broadcasts/{id}/chat/mutes | Mute a user in a broadcast chat
+[**mute_broadcast_chat_user**](BroadcastsApi.md#mute_broadcast_chat_user) | **POST** /2/broadcasts/{id}/chat/mutes | Mute or time out a user in a broadcast chat
 [**send_broadcast_chat**](BroadcastsApi.md#send_broadcast_chat) | **POST** /2/broadcasts/{id}/chat | Send a chat message to a live broadcast
 [**unmute_broadcast_chat_user**](BroadcastsApi.md#unmute_broadcast_chat_user) | **DELETE** /2/broadcasts/{id}/chat/mutes/{user_id} | Unmute a user in a broadcast chat
 [**update_scheduled_broadcast**](BroadcastsApi.md#update_scheduled_broadcast) | **PUT** /2/broadcasts/scheduled/{id} | Update a scheduled broadcast
@@ -129,6 +130,41 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**models::GetBroadcastResponse**](GetBroadcastResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## get_broadcast_chat
+
+> models::GetBroadcastChatResponse get_broadcast_chat(id, max_results, pagination_token, broadcast_chat_message_fields, expansions, user_fields)
+Get broadcast chat history
+
+Returns newest-first chat messages for a broadcast owned by the authenticated user.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **String** |  | [required] |
+**max_results** | Option<**i32**> |  |  |[default to 100]
+**pagination_token** | Option<**String**> | A 64-bit signed integer. |  |
+**broadcast_chat_message_fields** | Option<[**Vec<models::BroadcastChatMessageField>**](Models__BroadcastChatMessageField.md)> | A comma separated list of BroadcastChatMessage fields to display. |  |
+**expansions** | Option<[**Vec<models::BroadcastChatMessageExpansion>**](Models__BroadcastChatMessageExpansion.md)> | A comma separated list of fields to expand. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
+
+### Return type
+
+[**models::GetBroadcastChatResponse**](GetBroadcastChatResponse.md)
 
 ### Authorization
 
@@ -271,9 +307,9 @@ Name | Type | Description  | Required | Notes
 ## mute_broadcast_chat_user
 
 > models::MuteBroadcastChatUserResponse mute_broadcast_chat_user(id, mute_broadcast_chat_user_request)
-Mute a user in a broadcast chat
+Mute or time out a user in a broadcast chat
 
-Prevents a user from posting further messages in a running broadcast chat. The authenticated user must own the broadcast.
+Prevents a user from posting further messages in a running broadcast chat. When `end_at_ms` is provided, the mute expires at that time. The authenticated user must own the broadcast.
 
 ### Parameters
 

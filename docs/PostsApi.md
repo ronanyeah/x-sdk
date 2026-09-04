@@ -457,7 +457,7 @@ Name | Type | Description  | Required | Notes
 
 ### Authorization
 
-[BearerToken](../README.md#BearerToken)
+[OAuth2UserToken](../README.md#OAuth2UserToken), [BearerToken](../README.md#BearerToken), [UserToken](../README.md#UserToken)
 
 ### HTTP request headers
 

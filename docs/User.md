@@ -22,6 +22,7 @@ Name | Type | Description | Notes
 **protected** | Option<**bool**> | Indicates if this User has chosen to protect their Posts (in other words, if this User's Posts are private). | [optional]
 **public_metrics** | Option<[**models::UserPublicMetrics**](UserPublicMetrics.md)> |  | [optional]
 **receives_your_dm** | Option<**bool**> | Indicates if you can send a DM to this User. | [optional]
+**subscriber_count** | Option<**i32**> | The number of Premium subscribers of this User. | [optional]
 **subscribes_to_you** | Option<**bool**> | Indicates if this User subscribes to you. | [optional]
 **subscription** | Option<[**models::UserSubscription**](UserSubscription.md)> |  | [optional]
 **subscription_type** | Option<**String**> | The X Blue subscription type of the user, e.g.: Basic, Premium, PremiumPlus or None. | [optional]

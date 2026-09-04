@@ -5,6 +5,7 @@ All URIs are relative to *https://api.x.com*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**get_usage**](UsageApi.md#get_usage) | **GET** /2/usage/tweets | Get Usage
+[**get_usage_credits**](UsageApi.md#get_usage_credits) | **GET** /2/usage/credits | Get usage credits
 
 
 
@@ -28,6 +29,33 @@ Name | Type | Description  | Required | Notes
 ### Authorization
 
 [BearerToken](../README.md#BearerToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## get_usage_credits
+
+> models::GetUsageCreditsResponse get_usage_credits()
+Get usage credits
+
+Returns the payer's developer-platform credit balance in USD. total_balance is max(0, prepaid_balance + free_balance); prepaid_balance may be negative.
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**models::GetUsageCreditsResponse**](GetUsageCreditsResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [BearerToken](../README.md#BearerToken)
 
 ### HTTP request headers
 

@@ -17,7 +17,7 @@ Method | HTTP request | Description
 > models::CreateActivitySubscriptionResponse create_activity_subscription(create_activity_subscription_request)
 Create X activity subscription
 
-Creates a subscription for an X activity event. OAuth2 user-context tokens must hold the scope matching the requested event_type: dm.read for chat.* and dm.* events, like.read for like.* events, mute.read for mute.* events, block.read for block.* events, and tweet.read for all other event types. Mute and block subscriptions are actor-only: filter.user_id must identify the authenticated user and direction is not supported.
+Creates a subscription for an X activity event. OAuth2 user-context tokens must hold the scope matching the requested event_type: dm.read for chat.* and dm.* events, like.read for like.* events, mute.read for mute.* events, block.read for block.* events, and tweet.read for all other event types. Mute and block subscriptions are actor-only: filter.user_id must identify the authenticated user and direction is not supported. Optional filter.qualifiers further narrow supported chat, follow, unfollow, and like events.
 
 ### Parameters
 
@@ -62,7 +62,7 @@ Name | Type | Description  | Required | Notes
 
 ### Authorization
 
-[BearerToken](../README.md#BearerToken)
+[OAuth2UserToken](../README.md#OAuth2UserToken), [BearerToken](../README.md#BearerToken), [UserToken](../README.md#UserToken)
 
 ### HTTP request headers
 
@@ -114,7 +114,7 @@ Get a list of active subscriptions for XAA
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**max_results** | Option<**i32**> |  |  |
+**max_results** | Option<**i32**> |  |  |[default to 1000]
 **pagination_token** | Option<**String**> | A base32hex-encoded pagination token. |  |
 
 ### Return type
@@ -154,7 +154,7 @@ Name | Type | Description  | Required | Notes
 
 ### Authorization
 
-[BearerToken](../README.md#BearerToken)
+[OAuth2UserToken](../README.md#OAuth2UserToken), [BearerToken](../README.md#BearerToken), [UserToken](../README.md#UserToken)
 
 ### HTTP request headers
 

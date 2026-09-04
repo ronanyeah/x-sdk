@@ -1,11 +1,11 @@
 # CreateUsersBookmarkResponse
 
-## Properties
+## Enum Variants
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**data** | Option<[**models::CreateUsersBookmarkResponseData**](CreateUsersBookmarkResponseData.md)> |  | [optional]
-**errors** | Option<[**Vec<models::Problem>**](Problem.md)> |  | [optional]
+| Name | Description |
+|---- | -----|
+| CreateUsersBookmarkResponseOneOf |  |
+| CreateUsersBookmarkResponseOneOf1 |  |
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

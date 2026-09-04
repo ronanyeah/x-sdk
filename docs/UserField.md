@@ -19,6 +19,7 @@
 | Protected | protected |
 | PublicMetrics | public_metrics |
 | ReceivesYourDm | receives_your_dm |
+| SubscriberCount | subscriber_count |
 | SubscribesToYou | subscribes_to_you |
 | Subscription | subscription |
 | SubscriptionType | subscription_type |

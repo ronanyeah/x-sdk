@@ -1,5 +1,6 @@
 README.md
 docs/AccountActivityApi.md
+docs/AccountApi.md
 docs/ActivityApi.md
 docs/ActivityStreamResponse.md
 docs/ActivityStreamResponseData.md
@@ -55,7 +56,11 @@ docs/ArticlePublishResponseData.md
 docs/ArticlesApi.md
 docs/BlockUsersDmsResponse.md
 docs/BlockUsersDmsResponseData.md
+docs/BotsApi.md
 docs/Broadcast.md
+docs/BroadcastChatMessage.md
+docs/BroadcastChatMessageExpansion.md
+docs/BroadcastChatMessageField.md
 docs/BroadcastField.md
 docs/BroadcastsApi.md
 docs/ChatApi.md
@@ -92,6 +97,9 @@ docs/CreateActivitySubscriptionResponse.md
 docs/CreateActivitySubscriptionResponseData.md
 docs/CreateActivitySubscriptionResponseDataSubscription.md
 docs/CreateActivitySubscriptionResponseDataSubscriptionFilter.md
+docs/CreateBotRequest.md
+docs/CreateBotResponse.md
+docs/CreateBotResponseData.md
 docs/CreateChatConversationActionSignatures.md
 docs/CreateChatConversationActionSignaturesMessageEventSignature.md
 docs/CreateChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList.md
@@ -160,7 +168,11 @@ docs/CreateUsersBookmarkFolderResponse.md
 docs/CreateUsersBookmarkFolderResponseData.md
 docs/CreateUsersBookmarkRequest.md
 docs/CreateUsersBookmarkResponse.md
-docs/CreateUsersBookmarkResponseData.md
+docs/CreateUsersBookmarkResponseOneOf.md
+docs/CreateUsersBookmarkResponseOneOf1.md
+docs/CreateUsersBookmarkResponseOneOf1DataInner.md
+docs/CreateUsersBookmarkResponseOneOf1ErrorsInner.md
+docs/CreateUsersBookmarkResponseOneOfData.md
 docs/CreateWebhookReplayJobRequest.md
 docs/CreateWebhookReplayJobResponse.md
 docs/CreateWebhookReplayJobResponseData.md
@@ -180,6 +192,8 @@ docs/DeleteActivitySubscriptionsByIdsResponseMeta.md
 docs/DeleteAllConnectionsResponse.md
 docs/DeleteAllConnectionsResponseData.md
 docs/DeleteAllConnectionsResponseDataResults.md
+docs/DeleteBotResponse.md
+docs/DeleteBotResponseData.md
 docs/DeleteBroadcastChatMessageResponse.md
 docs/DeleteBroadcastChatMessageResponseData.md
 docs/DeleteChatMessagesActionSignatures.md
@@ -190,6 +204,7 @@ docs/DeleteChatMessagesResponse.md
 docs/DeleteChatMessagesResponseData.md
 docs/DeleteCommunityNotesResponse.md
 docs/DeleteCommunityNotesResponseData.md
+docs/DeleteComplianceJobsByIdResponse.md
 docs/DeleteConnectionsByEndpointResponse.md
 docs/DeleteConnectionsByEndpointResponseData.md
 docs/DeleteConnectionsByEndpointResponseDataResults.md
@@ -225,6 +240,9 @@ docs/DmEventEntitiesUrlsInner.md
 docs/DmEventExpansion.md
 docs/DmEventField.md
 docs/DmEventReferencedPostsInner.md
+docs/EnsureAccountRequest.md
+docs/EnsureAccountResponse.md
+docs/EnsureAccountResponseData.md
 docs/Error.md
 docs/EvaluateCommunityNotesRequest.md
 docs/EvaluateCommunityNotesResponse.md
@@ -253,6 +271,10 @@ docs/GetAccountActivitySubscriptionsResponseDataSubscriptions.md
 docs/GetActivitySubscriptionsResponse.md
 docs/GetActivitySubscriptionsResponseData.md
 docs/GetActivitySubscriptionsResponseDataFilter.md
+docs/GetBotsResponse.md
+docs/GetBotsResponseMeta.md
+docs/GetBroadcastChatResponse.md
+docs/GetBroadcastChatResponseMeta.md
 docs/GetBroadcastResponse.md
 docs/GetChatConversationEventsResponse.md
 docs/GetChatConversationEventsResponseMeta.md
@@ -264,7 +286,8 @@ docs/GetComplianceJobsByIdResponse.md
 docs/GetComplianceJobsResponse.md
 docs/GetComplianceJobsResponseMeta.md
 docs/GetConnectionHistoryResponse.md
-docs/GetConnectionHistoryResponseMeta.md
+docs/GetDeveloperAccountResponse.md
+docs/GetDeveloperAccountResponseData.md
 docs/GetDirectMessagesEventsByConversationIdResponse.md
 docs/GetDirectMessagesEventsByConversationIdResponseMeta.md
 docs/GetDirectMessagesEventsByIdResponse.md
@@ -310,6 +333,9 @@ docs/GetSpacesByIdsResponse.md
 docs/GetSpacesPostsResponse.md
 docs/GetTrendsByWoeidResponse.md
 docs/GetTrendsPersonalizedTrendsResponse.md
+docs/GetUsageCreditsResponse.md
+docs/GetUsageCreditsResponseData.md
+docs/GetUsageCreditsResponseDataFreeGrants.md
 docs/GetUsageResponse.md
 docs/GetUsersAffiliatesResponse.md
 docs/GetUsersBlockingResponse.md
@@ -474,6 +500,11 @@ docs/RepostPostResponse.md
 docs/RepostPostResponseData.md
 docs/ResourceNotFoundProblem.md
 docs/ResourceUnavailableProblem.md
+docs/RevokeBotTokenResponse.md
+docs/RevokeBotTokenResponseData.md
+docs/RotateBotTokenRequest.md
+docs/RotateBotTokenResponse.md
+docs/RotateBotTokenResponseData.md
 docs/RulesCount.md
 docs/RulesCountAllProjectClientAppsInner.md
 docs/RulesCountClientAppRulesCount.md
@@ -549,6 +580,9 @@ docs/UpdateActivitySubscriptionResponse.md
 docs/UpdateActivitySubscriptionResponseData.md
 docs/UpdateActivitySubscriptionResponseDataSubscription.md
 docs/UpdateActivitySubscriptionResponseDataSubscriptionFilter.md
+docs/UpdateBotRequest.md
+docs/UpdateBotResponse.md
+docs/UpdateBotResponseData.md
 docs/UpdateListsRequest.md
 docs/UpdateListsResponse.md
 docs/UpdateListsResponseData.md
@@ -561,6 +595,8 @@ docs/UpdateRulesResponseMeta.md
 docs/UpdateScheduledBroadcastRequest.md
 docs/UpdateScheduledBroadcastResponse.md
 docs/UpdateScheduledBroadcastResponseData.md
+docs/UploadComplianceJobSubmissionRequest.md
+docs/UploadComplianceJobSubmissionResponse.md
 docs/Usage.md
 docs/UsageApi.md
 docs/UsageDailyClientAppUsageInner.md
@@ -602,8 +638,10 @@ docs/WebhookConfig.md
 docs/WebhookConfigField.md
 docs/WebhooksApi.md
 src/apis/account_activity_api.rs
+src/apis/account_api.rs
 src/apis/activity_api.rs
 src/apis/articles_api.rs
+src/apis/bots_api.rs
 src/apis/broadcasts_api.rs
 src/apis/chat_api.rs
 src/apis/communities_api.rs
@@ -679,6 +717,9 @@ src/models/article_publish_response_data.rs
 src/models/block_users_dms_response.rs
 src/models/block_users_dms_response_data.rs
 src/models/broadcast.rs
+src/models/broadcast_chat_message.rs
+src/models/broadcast_chat_message_expansion.rs
+src/models/broadcast_chat_message_field.rs
 src/models/broadcast_field.rs
 src/models/chat_conversation.rs
 src/models/chat_conversation_expansion.rs
@@ -709,6 +750,9 @@ src/models/create_activity_subscription_response.rs
 src/models/create_activity_subscription_response_data.rs
 src/models/create_activity_subscription_response_data_subscription.rs
 src/models/create_activity_subscription_response_data_subscription_filter.rs
+src/models/create_bot_request.rs
+src/models/create_bot_response.rs
+src/models/create_bot_response_data.rs
 src/models/create_chat_conversation_action_signatures.rs
 src/models/create_chat_conversation_action_signatures_message_event_signature.rs
 src/models/create_chat_conversation_action_signatures_message_event_signature_message_signing_key_info_list.rs
@@ -777,7 +821,11 @@ src/models/create_users_bookmark_folder_response.rs
 src/models/create_users_bookmark_folder_response_data.rs
 src/models/create_users_bookmark_request.rs
 src/models/create_users_bookmark_response.rs
-src/models/create_users_bookmark_response_data.rs
+src/models/create_users_bookmark_response_one_of.rs
+src/models/create_users_bookmark_response_one_of_1.rs
+src/models/create_users_bookmark_response_one_of_1_data_inner.rs
+src/models/create_users_bookmark_response_one_of_1_errors_inner.rs
+src/models/create_users_bookmark_response_one_of_data.rs
 src/models/create_webhook_replay_job_request.rs
 src/models/create_webhook_replay_job_response.rs
 src/models/create_webhook_replay_job_response_data.rs
@@ -797,6 +845,8 @@ src/models/delete_activity_subscriptions_by_ids_response_meta.rs
 src/models/delete_all_connections_response.rs
 src/models/delete_all_connections_response_data.rs
 src/models/delete_all_connections_response_data_results.rs
+src/models/delete_bot_response.rs
+src/models/delete_bot_response_data.rs
 src/models/delete_broadcast_chat_message_response.rs
 src/models/delete_broadcast_chat_message_response_data.rs
 src/models/delete_chat_messages_action_signatures.rs
@@ -807,6 +857,7 @@ src/models/delete_chat_messages_response.rs
 src/models/delete_chat_messages_response_data.rs
 src/models/delete_community_notes_response.rs
 src/models/delete_community_notes_response_data.rs
+src/models/delete_compliance_jobs_by_id_response.rs
 src/models/delete_connections_by_endpoint_response.rs
 src/models/delete_connections_by_endpoint_response_data.rs
 src/models/delete_connections_by_endpoint_response_data_results.rs
@@ -841,6 +892,9 @@ src/models/dm_event_entities_urls_inner.rs
 src/models/dm_event_expansion.rs
 src/models/dm_event_field.rs
 src/models/dm_event_referenced_posts_inner.rs
+src/models/ensure_account_request.rs
+src/models/ensure_account_response.rs
+src/models/ensure_account_response_data.rs
 src/models/error.rs
 src/models/evaluate_community_notes_request.rs
 src/models/evaluate_community_notes_response.rs
@@ -868,6 +922,10 @@ src/models/get_account_activity_subscriptions_response_data_subscriptions.rs
 src/models/get_activity_subscriptions_response.rs
 src/models/get_activity_subscriptions_response_data.rs
 src/models/get_activity_subscriptions_response_data_filter.rs
+src/models/get_bots_response.rs
+src/models/get_bots_response_meta.rs
+src/models/get_broadcast_chat_response.rs
+src/models/get_broadcast_chat_response_meta.rs
 src/models/get_broadcast_response.rs
 src/models/get_chat_conversation_events_response.rs
 src/models/get_chat_conversation_events_response_meta.rs
@@ -879,7 +937,8 @@ src/models/get_compliance_jobs_by_id_response.rs
 src/models/get_compliance_jobs_response.rs
 src/models/get_compliance_jobs_response_meta.rs
 src/models/get_connection_history_response.rs
-src/models/get_connection_history_response_meta.rs
+src/models/get_developer_account_response.rs
+src/models/get_developer_account_response_data.rs
 src/models/get_direct_messages_events_by_conversation_id_response.rs
 src/models/get_direct_messages_events_by_conversation_id_response_meta.rs
 src/models/get_direct_messages_events_by_id_response.rs
@@ -925,6 +984,9 @@ src/models/get_spaces_by_ids_response.rs
 src/models/get_spaces_posts_response.rs
 src/models/get_trends_by_woeid_response.rs
 src/models/get_trends_personalized_trends_response.rs
+src/models/get_usage_credits_response.rs
+src/models/get_usage_credits_response_data.rs
+src/models/get_usage_credits_response_data_free_grants.rs
 src/models/get_usage_response.rs
 src/models/get_users_affiliates_response.rs
 src/models/get_users_blocking_response.rs
@@ -1086,6 +1148,11 @@ src/models/repost_post_response.rs
 src/models/repost_post_response_data.rs
 src/models/resource_not_found_problem.rs
 src/models/resource_unavailable_problem.rs
+src/models/revoke_bot_token_response.rs
+src/models/revoke_bot_token_response_data.rs
+src/models/rotate_bot_token_request.rs
+src/models/rotate_bot_token_response.rs
+src/models/rotate_bot_token_response_data.rs
 src/models/rules_count.rs
 src/models/rules_count_all_project_client_apps_inner.rs
 src/models/rules_count_client_app_rules_count.rs
@@ -1158,6 +1225,9 @@ src/models/update_activity_subscription_response.rs
 src/models/update_activity_subscription_response_data.rs
 src/models/update_activity_subscription_response_data_subscription.rs
 src/models/update_activity_subscription_response_data_subscription_filter.rs
+src/models/update_bot_request.rs
+src/models/update_bot_response.rs
+src/models/update_bot_response_data.rs
 src/models/update_lists_request.rs
 src/models/update_lists_response.rs
 src/models/update_lists_response_data.rs
@@ -1170,6 +1240,8 @@ src/models/update_rules_response_meta.rs
 src/models/update_scheduled_broadcast_request.rs
 src/models/update_scheduled_broadcast_response.rs
 src/models/update_scheduled_broadcast_response_data.rs
+src/models/upload_compliance_job_submission_request.rs
+src/models/upload_compliance_job_submission_response.rs
 src/models/usage.rs
 src/models/usage_daily_client_app_usage_inner.rs
 src/models/usage_daily_client_app_usage_inner_usage_inner.rs

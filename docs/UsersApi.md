@@ -5,7 +5,7 @@ All URIs are relative to *https://api.x.com*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**block_users_dms**](UsersApi.md#block_users_dms) | **POST** /2/users/{id}/dm/block | Block Users Dms
-[**create_users_bookmark**](UsersApi.md#create_users_bookmark) | **POST** /2/users/{id}/bookmarks | Create Users Bookmark
+[**create_users_bookmark**](UsersApi.md#create_users_bookmark) | **POST** /2/users/{id}/bookmarks | Create Bookmark
 [**create_users_bookmark_folder**](UsersApi.md#create_users_bookmark_folder) | **POST** /2/users/{id}/bookmarks/folders | Create Bookmark Folder
 [**delete_users_bookmark**](UsersApi.md#delete_users_bookmark) | **DELETE** /2/users/{id}/bookmarks/{tweet_id} | Delete Bookmark
 [**follow_list**](UsersApi.md#follow_list) | **POST** /2/users/{id}/followed_lists | Follow List
@@ -80,7 +80,9 @@ Name | Type | Description  | Required | Notes
 ## create_users_bookmark
 
 > models::CreateUsersBookmarkResponse create_users_bookmark(id, create_users_bookmark_request)
-Create Users Bookmark
+Create Bookmark
+
+Adds one or more Posts to the authenticated user's Bookmarks. Supply `tweet_id` for a single Post, or `tweet_ids` (at most 25) to bookmark several in one request. Optional `folder_id` applies to every Post in the request. Billing and rate limits still apply per HTTP request.
 
 ### Parameters
 
@@ -88,7 +90,7 @@ Create Users Bookmark
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **id** | **String** |  | [required] |
-**create_users_bookmark_request** | [**CreateUsersBookmarkRequest**](CreateUsersBookmarkRequest.md) |  | [required] |
+**create_users_bookmark_request** | Option<[**CreateUsersBookmarkRequest**](CreateUsersBookmarkRequest.md)> |  | [required] |
 
 ### Return type
 
