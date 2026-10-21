@@ -5,6 +5,7 @@
 | Name | Value |
 |---- | -----|
 | ConversationId | conversation_id |
+| ConversationKeyVersion | conversation_key_version |
 | ConversationToken | conversation_token |
 | CreatedAt | created_at |
 | EncodedEvent | encoded_event |

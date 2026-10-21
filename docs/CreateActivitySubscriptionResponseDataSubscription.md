@@ -6,6 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **created_at** | Option<**String**> | Subscription creation time. | [optional]
 **event_type** | Option<**String**> | Activity event type in dot notation. | [optional]
+**expires_at** | Option<**String**> | Subscription expiration time. | [optional]
 **filter** | Option<[**models::CreateActivitySubscriptionResponseDataSubscriptionFilter**](CreateActivitySubscriptionResponseDataSubscriptionFilter.md)> |  | [optional]
 **subscription_id** | Option<**String**> | Unique identifier of the subscription. | [optional]
 **tag** | Option<**String**> | Optional caller-defined tag. | [optional]

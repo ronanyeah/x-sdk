@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**calls** | Option<[**Vec<models::Call>**](Call.md)> |  | [optional]
 **media** | Option<[**Vec<models::Media>**](Media.md)> |  | [optional]
 **places** | Option<[**Vec<models::Place>**](Place.md)> |  | [optional]
 **polls** | Option<[**Vec<models::Poll>**](Poll.md)> |  | [optional]

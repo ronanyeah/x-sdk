@@ -46,6 +46,8 @@ Method | HTTP request | Description
 [**unmute_user**](UsersApi.md#unmute_user) | **DELETE** /2/users/{source_user_id}/muting/{target_user_id} | Unmute User
 [**unpin_list**](UsersApi.md#unpin_list) | **DELETE** /2/users/{id}/pinned_lists/{list_id} | Unpin a List
 [**unrepost_post**](UsersApi.md#unrepost_post) | **DELETE** /2/users/{id}/retweets/{source_tweet_id} | Unrepost Post
+[**users_id_block**](UsersApi.md#users_id_block) | **POST** /2/users/{id}/blocking | Users ID Block
+[**users_id_unblock**](UsersApi.md#users_id_unblock) | **DELETE** /2/users/{source_user_id}/blocking/{target_user_id} | Unblock User
 
 
 
@@ -1387,6 +1389,66 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**models::UnrepostPostResponse**](UnrepostPostResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## users_id_block
+
+> models::UsersIdBlockResponse users_id_block(id, users_id_block_request)
+Users ID Block
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **String** |  | [required] |
+**users_id_block_request** | [**UsersIdBlockRequest**](UsersIdBlockRequest.md) |  | [required] |
+
+### Return type
+
+[**models::UsersIdBlockResponse**](UsersIdBlockResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## users_id_unblock
+
+> models::UsersIdUnblockResponse users_id_unblock(source_user_id, target_user_id)
+Unblock User
+
+Causes the source User to unblock the target User.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**source_user_id** | **String** |  | [required] |
+**target_user_id** | **String** |  | [required] |
+
+### Return type
+
+[**models::UsersIdUnblockResponse**](UsersIdUnblockResponse.md)
 
 ### Authorization
 

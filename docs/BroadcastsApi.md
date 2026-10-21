@@ -4,20 +4,58 @@ All URIs are relative to *https://api.x.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**add_chat_moderator**](BroadcastsApi.md#add_chat_moderator) | **POST** /2/broadcasts/chat/moderators | Add a chat moderator
 [**create_scheduled_broadcast**](BroadcastsApi.md#create_scheduled_broadcast) | **POST** /2/broadcasts/scheduled | Create a scheduled broadcast
+[**create_source**](BroadcastsApi.md#create_source) | **POST** /2/sources | Create a stream source
 [**delete_broadcast_chat_message**](BroadcastsApi.md#delete_broadcast_chat_message) | **DELETE** /2/broadcasts/{id}/chat/{message_id} | Remove a chat message from a live broadcast
 [**delete_scheduled_broadcast**](BroadcastsApi.md#delete_scheduled_broadcast) | **DELETE** /2/broadcasts/scheduled/{id} | Delete a scheduled broadcast
+[**delete_source**](BroadcastsApi.md#delete_source) | **DELETE** /2/sources/{id} | Delete a stream source
 [**get_broadcast**](BroadcastsApi.md#get_broadcast) | **GET** /2/broadcasts/{id} | Get a broadcast
 [**get_broadcast_chat**](BroadcastsApi.md#get_broadcast_chat) | **GET** /2/broadcasts/{id}/chat | Get broadcast chat history
+[**get_chat_moderators**](BroadcastsApi.md#get_chat_moderators) | **GET** /2/broadcasts/chat/moderators | Get chat moderators
 [**get_scheduled_broadcast**](BroadcastsApi.md#get_scheduled_broadcast) | **GET** /2/broadcasts/scheduled/{id} | Get a scheduled broadcast
+[**get_source**](BroadcastsApi.md#get_source) | **GET** /2/sources/{id} | Get a stream source
 [**go_live_scheduled_broadcast**](BroadcastsApi.md#go_live_scheduled_broadcast) | **POST** /2/broadcasts/scheduled/{id}/live | Go live on a scheduled broadcast
 [**list_broadcasts**](BroadcastsApi.md#list_broadcasts) | **GET** /2/broadcasts | List broadcasts
 [**list_scheduled_broadcasts**](BroadcastsApi.md#list_scheduled_broadcasts) | **GET** /2/broadcasts/scheduled | List scheduled broadcasts
+[**list_sources**](BroadcastsApi.md#list_sources) | **GET** /2/sources | List stream sources
 [**mute_broadcast_chat_user**](BroadcastsApi.md#mute_broadcast_chat_user) | **POST** /2/broadcasts/{id}/chat/mutes | Mute or time out a user in a broadcast chat
+[**remove_chat_moderator**](BroadcastsApi.md#remove_chat_moderator) | **DELETE** /2/broadcasts/chat/moderators/{user_id} | Remove a chat moderator
 [**send_broadcast_chat**](BroadcastsApi.md#send_broadcast_chat) | **POST** /2/broadcasts/{id}/chat | Send a chat message to a live broadcast
 [**unmute_broadcast_chat_user**](BroadcastsApi.md#unmute_broadcast_chat_user) | **DELETE** /2/broadcasts/{id}/chat/mutes/{user_id} | Unmute a user in a broadcast chat
 [**update_scheduled_broadcast**](BroadcastsApi.md#update_scheduled_broadcast) | **PUT** /2/broadcasts/scheduled/{id} | Update a scheduled broadcast
+[**update_source**](BroadcastsApi.md#update_source) | **PUT** /2/sources/{id} | Rename a stream source
 
+
+
+## add_chat_moderator
+
+> models::AddChatModeratorResponse add_chat_moderator(add_chat_moderator_request)
+Add a chat moderator
+
+Adds a moderator to the authenticated broadcaster's persistent list and returns the updated moderator user IDs. The list applies to all current and future broadcast chats.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**add_chat_moderator_request** | [**AddChatModeratorRequest**](AddChatModeratorRequest.md) |  | [required] |
+
+### Return type
+
+[**models::AddChatModeratorResponse**](AddChatModeratorResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
 ## create_scheduled_broadcast
@@ -25,7 +63,7 @@ Method | HTTP request | Description
 > models::CreateScheduledBroadcastResponse create_scheduled_broadcast(create_scheduled_broadcast_request)
 Create a scheduled broadcast
 
-Schedules a one-off or recurring broadcast for the authenticated user. A `source_id` (ingest) is required at create time.
+Schedules a broadcast for the authenticated user. A `source_id` (ingest) is required at create time.
 
 ### Parameters
 
@@ -50,12 +88,42 @@ Name | Type | Description  | Required | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
+## create_source
+
+> models::CreateSourceResponse create_source(create_source_request)
+Create a stream source
+
+Creates a persistent RTMP/RTMPS ingest point for the authenticated user. Push an encoder to `rtmps_url` with the source `id` as the stream key.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**create_source_request** | [**CreateSourceRequest**](CreateSourceRequest.md) |  | [required] |
+
+### Return type
+
+[**models::CreateSourceResponse**](CreateSourceResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
 ## delete_broadcast_chat_message
 
 > models::DeleteBroadcastChatMessageResponse delete_broadcast_chat_message(id, message_id)
 Remove a chat message from a live broadcast
 
-Removes a specific chat message from a running broadcast owned by the authenticated user.
+Removes a specific chat message from a running broadcast where the authenticated user is the host or a moderator.
 
 ### Parameters
 
@@ -86,7 +154,7 @@ Name | Type | Description  | Required | Notes
 > models::DeleteScheduledBroadcastResponse delete_scheduled_broadcast(id, roll_forward)
 Delete a scheduled broadcast
 
-Deletes a scheduled broadcast by its alphanumeric UBS broadcast id.
+Deletes a scheduled broadcast by its alphanumeric broadcast id.
 
 ### Parameters
 
@@ -94,11 +162,41 @@ Deletes a scheduled broadcast by its alphanumeric UBS broadcast id.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **id** | **String** |  | [required] |
-**roll_forward** | Option<**bool**> |  |  |
+**roll_forward** | Option<**bool**> | Deprecated: recurring schedules are being retired and `true` will be rejected. |  |
 
 ### Return type
 
 [**models::DeleteScheduledBroadcastResponse**](DeleteScheduledBroadcastResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## delete_source
+
+> models::DeleteSourceResponse delete_source(id)
+Delete a stream source
+
+Deletes one of the authenticated user's stream sources. Success is an empty object.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **String** |  | [required] |
+
+### Return type
+
+[**models::DeleteSourceResponse**](DeleteSourceResponse.md)
 
 ### Authorization
 
@@ -178,12 +276,44 @@ Name | Type | Description  | Required | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
+## get_chat_moderators
+
+> models::GetChatModeratorsResponse get_chat_moderators(user_fields, expansions, post_fields)
+Get chat moderators
+
+Returns the authenticated broadcaster's persistent moderators as User resources. The list applies to all of their current and future broadcast chats.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
+**expansions** | Option<[**Vec<models::UserExpansion>**](Models__UserExpansion.md)> | A comma separated list of fields to expand. |  |
+**post_fields** | Option<[**Vec<models::PostField>**](Models__PostField.md)> | A comma separated list of Post fields to display. |  |
+
+### Return type
+
+[**models::GetChatModeratorsResponse**](GetChatModeratorsResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
 ## get_scheduled_broadcast
 
 > models::GetScheduledBroadcastResponse get_scheduled_broadcast(id)
 Get a scheduled broadcast
 
-Returns a single scheduled broadcast by its alphanumeric UBS broadcast id.
+Returns a single scheduled broadcast by its alphanumeric broadcast id.
 
 ### Parameters
 
@@ -195,6 +325,36 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**models::GetScheduledBroadcastResponse**](GetScheduledBroadcastResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## get_source
+
+> models::GetSourceResponse get_source(id)
+Get a stream source
+
+Returns one of the authenticated user's stream sources. Poll it after starting an encoder and wait for `is_stream_active` before going live.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **String** |  | [required] |
+
+### Return type
+
+[**models::GetSourceResponse**](GetSourceResponse.md)
 
 ### Authorization
 
@@ -304,12 +464,39 @@ Name | Type | Description  | Required | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
+## list_sources
+
+> models::ListSourcesResponse list_sources()
+List stream sources
+
+Returns the authenticated user's RTMP/RTMPS stream sources (empty array if none). A source's `id` is also its stream key and is the `source_id` a scheduled broadcast binds to.
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**models::ListSourcesResponse**](ListSourcesResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
 ## mute_broadcast_chat_user
 
 > models::MuteBroadcastChatUserResponse mute_broadcast_chat_user(id, mute_broadcast_chat_user_request)
 Mute or time out a user in a broadcast chat
 
-Prevents a user from posting further messages in a running broadcast chat. When `end_at_ms` is provided, the mute expires at that time. The authenticated user must own the broadcast.
+Prevents a user from posting further messages in a running broadcast chat. When `end_at_ms` is provided, the mute expires at that time. The authenticated user must be the broadcast host or a moderator.
 
 ### Parameters
 
@@ -330,6 +517,36 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: application/json
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## remove_chat_moderator
+
+> models::RemoveChatModeratorResponse remove_chat_moderator(user_id)
+Remove a chat moderator
+
+Removes a moderator from the authenticated broadcaster's persistent list and returns the updated moderator user IDs.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**user_id** | **String** | A 64-bit signed integer. | [required] |
+
+### Return type
+
+[**models::RemoveChatModeratorResponse**](RemoveChatModeratorResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
 - **Accept**: application/json, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -371,7 +588,7 @@ Name | Type | Description  | Required | Notes
 > models::UnmuteBroadcastChatUserResponse unmute_broadcast_chat_user(id, user_id)
 Unmute a user in a broadcast chat
 
-Allows a muted user to post messages in a running broadcast chat again. The authenticated user must own the broadcast.
+Allows a muted user to post messages in a running broadcast chat again. The authenticated user must be the broadcast host or a moderator.
 
 ### Parameters
 
@@ -402,7 +619,7 @@ Name | Type | Description  | Required | Notes
 > models::UpdateScheduledBroadcastResponse update_scheduled_broadcast(id, update_scheduled_broadcast_request)
 Update a scheduled broadcast
 
-Fully replaces schedule fields for a broadcast. Path `:id` is the UBS broadcast id; the body must include `scheduled_broadcast_id` and re-send any fields that should be kept.
+Updates a scheduled broadcast. Path `:id` is the broadcast id; the body must include `scheduled_broadcast_id`. Re-send every field that should be kept.
 
 ### Parameters
 
@@ -415,6 +632,37 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**models::UpdateScheduledBroadcastResponse**](UpdateScheduledBroadcastResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## update_source
+
+> models::UpdateSourceResponse update_source(id, update_source_request)
+Rename a stream source
+
+Renames one of the authenticated user's stream sources.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **String** |  | [required] |
+**update_source_request** | [**UpdateSourceRequest**](UpdateSourceRequest.md) |  | [required] |
+
+### Return type
+
+[**models::UpdateSourceResponse**](UpdateSourceResponse.md)
 
 ### Authorization
 

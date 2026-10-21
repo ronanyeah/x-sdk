@@ -117,6 +117,7 @@ pub mod activity_api;
 pub mod articles_api;
 pub mod bots_api;
 pub mod broadcasts_api;
+pub mod calls_api;
 pub mod chat_api;
 pub mod communities_api;
 pub mod community_notes_api;

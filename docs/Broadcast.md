@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **available_for_replay** | Option<**bool**> |  | [optional]
 **broadcast_id** | Option<**String**> |  | [optional]
-**chat_option** | Option<**i32**> |  | [optional]
+**chat_option** | Option<**i32**> | Who can chat: 0 default, 1 chat off, 2 everyone, 3 verified accounts, 4 accounts the host follows, 5 the host's subscribers, 6 accounts followed by an account the host follows. | [optional]
 **created_at_ms** | Option<**String**> |  | [optional]
 **end_ms** | Option<**String**> |  | [optional]
 **height** | Option<**i32**> |  | [optional]

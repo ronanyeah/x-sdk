@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**active_follower_count** | Option<**i32**> | The number of followers who were active on X in the last 24 hours. Returned only for the authenticated user when account analytics is enabled. Omitted for accounts with 50 or fewer followers. An estimate for accounts with at least 20,000 followers. | [optional]
 **affiliation** | Option<[**models::UserAffiliation**](UserAffiliation.md)> |  | [optional]
 **confirmed_email** | Option<**String**> |  | [optional]
 **connection_status** | Option<**Vec<ConnectionStatus>**> | Returns detailed information about the relationship between two users. (enum: blocking, follow_request_received, follow_request_sent, followed_by, following, muting) | [optional]

@@ -4,6 +4,7 @@
 
 | Name | Value |
 |---- | -----|
+| ActiveFollowerCount | active_follower_count |
 | ConfirmedEmail | confirmed_email |
 | ConnectionStatus | connection_status |
 | CreatedAt | created_at |

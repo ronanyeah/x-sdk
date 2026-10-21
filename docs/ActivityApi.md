@@ -17,7 +17,7 @@ Method | HTTP request | Description
 > models::CreateActivitySubscriptionResponse create_activity_subscription(create_activity_subscription_request)
 Create X activity subscription
 
-Creates a subscription for an X activity event. OAuth2 user-context tokens must hold the scope matching the requested event_type: dm.read for chat.* and dm.* events, like.read for like.* events, mute.read for mute.* events, block.read for block.* events, and tweet.read for all other event types. Mute and block subscriptions are actor-only: filter.user_id must identify the authenticated user and direction is not supported. Optional filter.qualifiers further narrow supported chat, follow, unfollow, and like events.
+Creates a subscription for an X activity event. OAuth2 user-context tokens must hold the scope matching the requested event_type: dm.read for chat.* and dm.* events, like.read for like.* events, mute.read for mute.* events, block.read for block.* events, follows.read for subscriptions.* events, and tweet.read for all other event types. Mute and block subscriptions are actor-only: filter.user_id must identify the authenticated user and direction is not supported. subscriptions.* events require a user-context token and filter.user_id must identify the authenticated user. Optional filter.qualifiers further narrow supported chat, follow, unfollow, like, and subscriptions events.
 
 ### Parameters
 
@@ -104,10 +104,10 @@ Name | Type | Description  | Required | Notes
 
 ## get_activity_subscriptions
 
-> models::GetActivitySubscriptionsResponse get_activity_subscriptions(max_results, pagination_token)
+> models::GetActivitySubscriptionsResponse get_activity_subscriptions(max_results, pagination_token, user_id)
 Get X activity subscriptions
 
-Get a list of active subscriptions for XAA
+Get a list of active subscriptions for XAA. Optional user_id narrows the list to subscriptions whose filter.user_id matches; with a user-context token it must identify the authenticated user.
 
 ### Parameters
 
@@ -116,6 +116,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **max_results** | Option<**i32**> |  |  |[default to 1000]
 **pagination_token** | Option<**String**> | A base32hex-encoded pagination token. |  |
+**user_id** | Option<**String**> | Only return subscriptions whose filter.user_id matches. |  |
 
 ### Return type
 
