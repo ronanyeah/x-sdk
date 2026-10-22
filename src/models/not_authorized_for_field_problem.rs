@@ -29,14 +29,12 @@ pub struct NotAuthorizedForFieldProblem {
     pub status: Option<i32>,
     #[serde(rename = "title")]
     pub title: String,
-    #[serde(rename = "type")]
-    pub r#type: Type,
     #[serde(rename = "value", skip_serializing_if = "Option::is_none")]
     pub value: Option<String>,
 }
 
 impl NotAuthorizedForFieldProblem {
-    pub fn new(detail: String, field: String, title: String, r#type: Type) -> NotAuthorizedForFieldProblem {
+    pub fn new(detail: String, field: String, title: String) -> NotAuthorizedForFieldProblem {
         NotAuthorizedForFieldProblem {
             detail,
             field,
@@ -46,21 +44,8 @@ impl NotAuthorizedForFieldProblem {
             section: None,
             status: None,
             title,
-            r#type,
             value: None,
         }
-    }
-}
-/// 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum Type {
-    #[serde(rename = "https://api.x.com/2/problems/not-authorized-for-field")]
-    HttpsColonSlashSlashApiXComSlash2SlashProblemsSlashNotAuthorizedForField,
-}
-
-impl Default for Type {
-    fn default() -> Type {
-        Self::HttpsColonSlashSlashApiXComSlash2SlashProblemsSlashNotAuthorizedForField
     }
 }
 

@@ -41,7 +41,7 @@ pub struct User {
     #[serde(rename = "location", skip_serializing_if = "Option::is_none")]
     pub location: Option<String>,
     /// Unique identifier of this User's most recent Post.
-    #[serde(rename = "most_recent_post_id", skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "most_recent_post_id", alias = "most_recent_tweet_id", skip_serializing_if = "Option::is_none")]
     pub most_recent_post_id: Option<String>,
     /// The friendly name of this User, as shown on their profile.
     #[serde(rename = "name", skip_serializing_if = "Option::is_none")]

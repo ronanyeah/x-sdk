@@ -25,12 +25,10 @@ pub struct DisallowedResourceProblem {
     pub status: Option<i32>,
     #[serde(rename = "title")]
     pub title: String,
-    #[serde(rename = "type")]
-    pub r#type: Type,
 }
 
 impl DisallowedResourceProblem {
-    pub fn new(detail: String, title: String, r#type: Type) -> DisallowedResourceProblem {
+    pub fn new(detail: String, title: String) -> DisallowedResourceProblem {
         DisallowedResourceProblem {
             detail,
             resource_id: None,
@@ -38,20 +36,7 @@ impl DisallowedResourceProblem {
             section: None,
             status: None,
             title,
-            r#type,
         }
-    }
-}
-/// 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum Type {
-    #[serde(rename = "https://api.x.com/2/problems/disallowed-resource")]
-    HttpsColonSlashSlashApiXComSlash2SlashProblemsSlashDisallowedResource,
-}
-
-impl Default for Type {
-    fn default() -> Type {
-        Self::HttpsColonSlashSlashApiXComSlash2SlashProblemsSlashDisallowedResource
     }
 }
 

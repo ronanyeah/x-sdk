@@ -19,30 +19,15 @@ pub struct RecipientNotMessageableProblem {
     pub status: Option<i32>,
     #[serde(rename = "title")]
     pub title: String,
-    #[serde(rename = "type")]
-    pub r#type: Type,
 }
 
 impl RecipientNotMessageableProblem {
-    pub fn new(detail: String, title: String, r#type: Type) -> RecipientNotMessageableProblem {
+    pub fn new(detail: String, title: String) -> RecipientNotMessageableProblem {
         RecipientNotMessageableProblem {
             detail,
             status: None,
             title,
-            r#type,
         }
-    }
-}
-/// 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum Type {
-    #[serde(rename = "https://api.x.com/2/problems/recipient-not-messageable")]
-    HttpsColonSlashSlashApiXComSlash2SlashProblemsSlashRecipientNotMessageable,
-}
-
-impl Default for Type {
-    fn default() -> Type {
-        Self::HttpsColonSlashSlashApiXComSlash2SlashProblemsSlashRecipientNotMessageable
     }
 }
 

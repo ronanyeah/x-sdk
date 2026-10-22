@@ -30,20 +30,24 @@ pub struct UserPublicMetrics {
     #[serde(rename = "media_count", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub media_count: Option<Option<i64>>,
     /// Number of Posts (including Reposts) created by this User.
-    #[serde(rename = "post_count")]
-    pub post_count: i64,
+    #[serde(rename = "post_count", skip_serializing_if = "Option::is_none")]
+    pub post_count: Option<i64>,
+    /// Number of Posts (including Reposts) created by this User. Legacy name for post_count, still sent by the API.
+    #[serde(rename = "tweet_count", skip_serializing_if = "Option::is_none")]
+    pub tweet_count: Option<i64>,
 }
 
 impl UserPublicMetrics {
     /// A list of metrics for this User.
-    pub fn new(followers_count: i64, following_count: i64, listed_count: i64, post_count: i64) -> UserPublicMetrics {
+    pub fn new(followers_count: i64, following_count: i64, listed_count: i64) -> UserPublicMetrics {
         UserPublicMetrics {
             followers_count,
             following_count,
             like_count: None,
             listed_count,
             media_count: None,
-            post_count,
+            post_count: None,
+            tweet_count: None,
         }
     }
 }

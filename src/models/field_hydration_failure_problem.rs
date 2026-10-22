@@ -25,12 +25,10 @@ pub struct FieldHydrationFailureProblem {
     pub status: Option<i32>,
     #[serde(rename = "title")]
     pub title: String,
-    #[serde(rename = "type")]
-    pub r#type: Type,
 }
 
 impl FieldHydrationFailureProblem {
-    pub fn new(detail: String, field: String, title: String, r#type: Type) -> FieldHydrationFailureProblem {
+    pub fn new(detail: String, field: String, title: String) -> FieldHydrationFailureProblem {
         FieldHydrationFailureProblem {
             detail,
             field,
@@ -38,20 +36,7 @@ impl FieldHydrationFailureProblem {
             section: None,
             status: None,
             title,
-            r#type,
         }
-    }
-}
-/// 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum Type {
-    #[serde(rename = "https://api.x.com/2/problems/field-hydration-failure")]
-    HttpsColonSlashSlashApiXComSlash2SlashProblemsSlashFieldHydrationFailure,
-}
-
-impl Default for Type {
-    fn default() -> Type {
-        Self::HttpsColonSlashSlashApiXComSlash2SlashProblemsSlashFieldHydrationFailure
     }
 }
 

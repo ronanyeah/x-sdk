@@ -21,7 +21,7 @@ pub struct Expansions {
     pub places: Option<Vec<models::Place>>,
     #[serde(rename = "polls", skip_serializing_if = "Option::is_none")]
     pub polls: Option<Vec<models::Poll>>,
-    #[serde(rename = "posts", skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "posts", alias = "tweets", skip_serializing_if = "Option::is_none")]
     pub posts: Option<Vec<models::Post>>,
     #[serde(rename = "topics", skip_serializing_if = "Option::is_none")]
     pub topics: Option<Vec<models::Topic>>,

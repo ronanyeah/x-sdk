@@ -19,33 +19,18 @@ pub struct DuplicateRuleProblem {
     pub id: Option<String>,
     #[serde(rename = "title")]
     pub title: String,
-    #[serde(rename = "type")]
-    pub r#type: Type,
     #[serde(rename = "value")]
     pub value: String,
 }
 
 impl DuplicateRuleProblem {
-    pub fn new(title: String, r#type: Type, value: String) -> DuplicateRuleProblem {
+    pub fn new(title: String, value: String) -> DuplicateRuleProblem {
         DuplicateRuleProblem {
             detail: None,
             id: None,
             title,
-            r#type,
             value,
         }
-    }
-}
-/// 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum Type {
-    #[serde(rename = "https://api.twitter.com/2/problems/duplicate-rules")]
-    HttpsColonSlashSlashApiTwitterComSlash2SlashProblemsSlashDuplicateRules,
-}
-
-impl Default for Type {
-    fn default() -> Type {
-        Self::HttpsColonSlashSlashApiTwitterComSlash2SlashProblemsSlashDuplicateRules
     }
 }
 

@@ -19,33 +19,18 @@ pub struct InvalidRuleProblem {
     pub details: Vec<String>,
     #[serde(rename = "title")]
     pub title: String,
-    #[serde(rename = "type")]
-    pub r#type: Type,
     #[serde(rename = "value", skip_serializing_if = "Option::is_none")]
     pub value: Option<String>,
 }
 
 impl InvalidRuleProblem {
-    pub fn new(details: Vec<String>, title: String, r#type: Type) -> InvalidRuleProblem {
+    pub fn new(details: Vec<String>, title: String) -> InvalidRuleProblem {
         InvalidRuleProblem {
             detail: None,
             details,
             title,
-            r#type,
             value: None,
         }
-    }
-}
-/// 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum Type {
-    #[serde(rename = "https://api.twitter.com/2/problems/invalid-rules")]
-    HttpsColonSlashSlashApiTwitterComSlash2SlashProblemsSlashInvalidRules,
-}
-
-impl Default for Type {
-    fn default() -> Type {
-        Self::HttpsColonSlashSlashApiTwitterComSlash2SlashProblemsSlashInvalidRules
     }
 }
 

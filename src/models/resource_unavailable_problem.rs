@@ -23,32 +23,17 @@ pub struct ResourceUnavailableProblem {
     pub status: Option<i32>,
     #[serde(rename = "title")]
     pub title: String,
-    #[serde(rename = "type")]
-    pub r#type: Type,
 }
 
 impl ResourceUnavailableProblem {
-    pub fn new(detail: String, resource_type: String, title: String, r#type: Type) -> ResourceUnavailableProblem {
+    pub fn new(detail: String, resource_type: String, title: String) -> ResourceUnavailableProblem {
         ResourceUnavailableProblem {
             detail,
             resource_id: None,
             resource_type,
             status: None,
             title,
-            r#type,
         }
-    }
-}
-/// 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum Type {
-    #[serde(rename = "https://api.x.com/2/problems/resource-unavailable")]
-    HttpsColonSlashSlashApiXComSlash2SlashProblemsSlashResourceUnavailable,
-}
-
-impl Default for Type {
-    fn default() -> Type {
-        Self::HttpsColonSlashSlashApiXComSlash2SlashProblemsSlashResourceUnavailable
     }
 }
 

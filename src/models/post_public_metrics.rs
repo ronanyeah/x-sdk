@@ -30,20 +30,20 @@ pub struct PostPublicMetrics {
     #[serde(rename = "reply_count")]
     pub reply_count: i64,
     /// Number of times this Post has been reposted.
-    #[serde(rename = "repost_count")]
-    pub repost_count: i64,
+    #[serde(rename = "repost_count", alias = "retweet_count", skip_serializing_if = "Option::is_none")]
+    pub repost_count: Option<i64>,
 }
 
 impl PostPublicMetrics {
     /// Engagement metrics for the Post at the time of the request.
-    pub fn new(bookmark_count: i64, impression_count: i64, like_count: i64, quote_count: i64, reply_count: i64, repost_count: i64) -> PostPublicMetrics {
+    pub fn new(bookmark_count: i64, impression_count: i64, like_count: i64, quote_count: i64, reply_count: i64) -> PostPublicMetrics {
         PostPublicMetrics {
             bookmark_count,
             impression_count,
             like_count,
             quote_count,
             reply_count,
-            repost_count,
+            repost_count: None,
         }
     }
 }

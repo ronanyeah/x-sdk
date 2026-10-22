@@ -25,14 +25,12 @@ pub struct ResourceNotFoundProblem {
     pub status: Option<i32>,
     #[serde(rename = "title")]
     pub title: String,
-    #[serde(rename = "type")]
-    pub r#type: Type,
     #[serde(rename = "value", skip_serializing_if = "Option::is_none")]
     pub value: Option<String>,
 }
 
 impl ResourceNotFoundProblem {
-    pub fn new(detail: String, resource_type: String, title: String, r#type: Type) -> ResourceNotFoundProblem {
+    pub fn new(detail: String, resource_type: String, title: String) -> ResourceNotFoundProblem {
         ResourceNotFoundProblem {
             detail,
             parameter: None,
@@ -40,21 +38,8 @@ impl ResourceNotFoundProblem {
             resource_type,
             status: None,
             title,
-            r#type,
             value: None,
         }
-    }
-}
-/// 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum Type {
-    #[serde(rename = "https://api.x.com/2/problems/resource-not-found")]
-    HttpsColonSlashSlashApiXComSlash2SlashProblemsSlashResourceNotFound,
-}
-
-impl Default for Type {
-    fn default() -> Type {
-        Self::HttpsColonSlashSlashApiXComSlash2SlashProblemsSlashResourceNotFound
     }
 }
 
