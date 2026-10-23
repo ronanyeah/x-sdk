@@ -5,8 +5,11 @@ All URIs are relative to *https://api.x.com*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**cancel_scheduled_call**](CallsApi.md#cancel_scheduled_call) | **DELETE** /2/calls/scheduled/{id} | Cancel a scheduled call
+[**create_call**](CallsApi.md#create_call) | **POST** /2/calls | Create a call
 [**get_call**](CallsApi.md#get_call) | **GET** /2/calls/{id} | Get a call
 [**get_scheduled_call**](CallsApi.md#get_scheduled_call) | **GET** /2/calls/scheduled/{id} | Get a scheduled call
+[**join_call**](CallsApi.md#join_call) | **POST** /2/calls/{id}/join | Join a call
+[**leave_call**](CallsApi.md#leave_call) | **POST** /2/calls/{id}/leave | Leave a call
 [**list_scheduled_calls**](CallsApi.md#list_scheduled_calls) | **GET** /2/calls/scheduled | List scheduled calls
 [**respond_to_scheduled_call**](CallsApi.md#respond_to_scheduled_call) | **POST** /2/calls/scheduled/{id}/rsvp | Respond to a scheduled call
 [**schedule_call**](CallsApi.md#schedule_call) | **POST** /2/calls/scheduled | Schedule a call
@@ -42,6 +45,36 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## create_call
+
+> models::CreateCallResponse create_call(create_call_request)
+Create a call
+
+Starts an X call hosted by the authenticated user (typically a bot). Pass an XChat conversation_id to start the call in that conversation, or omit it for a standalone call anyone can join with the returned join_url (subject to join_policy). The call starts empty: put an agent in it with POST /2/calls/:id/join. When the host joins a conversation call, the other members are rung.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**create_call_request** | [**CreateCallRequest**](CreateCallRequest.md) |  | [required] |
+
+### Return type
+
+[**models::CreateCallResponse**](CreateCallResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -105,6 +138,67 @@ Name | Type | Description  | Required | Notes
 ### Authorization
 
 [OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## join_call
+
+> models::JoinCallResponse join_call(id, join_call_request)
+Join a call
+
+Starts a media session that takes part in the call as the authenticated user. The response carries a media_url and a short-lived media_token: open a WebSocket to media_url with the token as a Bearer credential to exchange PCM16 audio and events with the call; the user enters the call when the WebSocket connects. On a closed or trusted call the session asks the host first (admission: requires_approval).
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **String** |  | [required] |
+**join_call_request** | [**JoinCallRequest**](JoinCallRequest.md) |  | [required] |
+
+### Return type
+
+[**models::JoinCallResponse**](JoinCallResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## leave_call
+
+> models::LeaveCallResponse leave_call(id)
+Leave a call
+
+Ends the authenticated user's media session in the call (its WebSocket receives session.ended with reason left) and removes the user from the call.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **String** |  | [required] |
+
+### Return type
+
+[**models::LeaveCallResponse**](LeaveCallResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken)
 
 ### HTTP request headers
 

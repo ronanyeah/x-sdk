@@ -1700,10 +1700,11 @@ pub async fn initialize_chat_group(configuration: &configuration::Configuration,
     }
 }
 
-/// Marks a specific Chat conversation as read on behalf of the authenticated user. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
-pub async fn mark_chat_conversation_read(configuration: &configuration::Configuration, id: &str) -> Result<models::MarkChatConversationReadResponse, Error<MarkChatConversationReadError>> {
+/// Marks a specific Chat conversation as read on behalf of the authenticated user. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient. Without action_signatures the conversation is marked read up to its newest event and the read receipt is unsigned. With one action signature over a MarkConversationReadEvent, the server sends that signed read receipt, marking the conversation read up to the event it names.
+pub async fn mark_chat_conversation_read(configuration: &configuration::Configuration, id: &str, mark_chat_conversation_read_request: models::MarkChatConversationReadRequest) -> Result<models::MarkChatConversationReadResponse, Error<MarkChatConversationReadError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
+    let p_body_mark_chat_conversation_read_request = mark_chat_conversation_read_request;
 
     let uri_str = format!("{}/2/chat/conversations/{id}/read", configuration.base_path, id=crate::apis::urlencode(p_path_id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -1714,6 +1715,7 @@ pub async fn mark_chat_conversation_read(configuration: &configuration::Configur
     if let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
+    req_builder = req_builder.json(&p_body_mark_chat_conversation_read_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;

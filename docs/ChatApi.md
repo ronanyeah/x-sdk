@@ -961,10 +961,10 @@ This endpoint does not need any parameter.
 
 ## mark_chat_conversation_read
 
-> models::MarkChatConversationReadResponse mark_chat_conversation_read(id)
+> models::MarkChatConversationReadResponse mark_chat_conversation_read(id, mark_chat_conversation_read_request)
 Mark Conversation as Read
 
-Marks a specific Chat conversation as read on behalf of the authenticated user. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
+Marks a specific Chat conversation as read on behalf of the authenticated user. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient. Without action_signatures the conversation is marked read up to its newest event and the read receipt is unsigned. With one action signature over a MarkConversationReadEvent, the server sends that signed read receipt, marking the conversation read up to the event it names.
 
 ### Parameters
 
@@ -972,6 +972,7 @@ Marks a specific Chat conversation as read on behalf of the authenticated user. 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **id** | **String** |  | [required] |
+**mark_chat_conversation_read_request** | [**MarkChatConversationReadRequest**](MarkChatConversationReadRequest.md) |  | [required] |
 
 ### Return type
 
@@ -983,7 +984,7 @@ Name | Type | Description  | Required | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json
 - **Accept**: application/json, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

@@ -69,8 +69,11 @@ Class | Method | HTTP request | Description
 *BroadcastsApi* | [**update_scheduled_broadcast**](docs/BroadcastsApi.md#update_scheduled_broadcast) | **PUT** /2/broadcasts/scheduled/{id} | Update a scheduled broadcast
 *BroadcastsApi* | [**update_source**](docs/BroadcastsApi.md#update_source) | **PUT** /2/sources/{id} | Rename a stream source
 *CallsApi* | [**cancel_scheduled_call**](docs/CallsApi.md#cancel_scheduled_call) | **DELETE** /2/calls/scheduled/{id} | Cancel a scheduled call
+*CallsApi* | [**create_call**](docs/CallsApi.md#create_call) | **POST** /2/calls | Create a call
 *CallsApi* | [**get_call**](docs/CallsApi.md#get_call) | **GET** /2/calls/{id} | Get a call
 *CallsApi* | [**get_scheduled_call**](docs/CallsApi.md#get_scheduled_call) | **GET** /2/calls/scheduled/{id} | Get a scheduled call
+*CallsApi* | [**join_call**](docs/CallsApi.md#join_call) | **POST** /2/calls/{id}/join | Join a call
+*CallsApi* | [**leave_call**](docs/CallsApi.md#leave_call) | **POST** /2/calls/{id}/leave | Leave a call
 *CallsApi* | [**list_scheduled_calls**](docs/CallsApi.md#list_scheduled_calls) | **GET** /2/calls/scheduled | List scheduled calls
 *CallsApi* | [**respond_to_scheduled_call**](docs/CallsApi.md#respond_to_scheduled_call) | **POST** /2/calls/scheduled/{id}/rsvp | Respond to a scheduled call
 *CallsApi* | [**schedule_call**](docs/CallsApi.md#schedule_call) | **POST** /2/calls/scheduled | Schedule a call
@@ -399,6 +402,9 @@ Class | Method | HTTP request | Description
  - [CreateBotRequest](docs/CreateBotRequest.md)
  - [CreateBotResponse](docs/CreateBotResponse.md)
  - [CreateBotResponseData](docs/CreateBotResponseData.md)
+ - [CreateCallRequest](docs/CreateCallRequest.md)
+ - [CreateCallResponse](docs/CreateCallResponse.md)
+ - [CreateCallResponseData](docs/CreateCallResponseData.md)
  - [CreateChatConversationActionSignatures](docs/CreateChatConversationActionSignatures.md)
  - [CreateChatConversationActionSignaturesMessageEventSignature](docs/CreateChatConversationActionSignaturesMessageEventSignature.md)
  - [CreateChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList](docs/CreateChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList.md)
@@ -732,6 +738,14 @@ Class | Method | HTTP request | Description
  - [InternalErrorProblem](docs/InternalErrorProblem.md)
  - [InvalidRequestProblem](docs/InvalidRequestProblem.md)
  - [InvalidRuleProblem](docs/InvalidRuleProblem.md)
+ - [JoinCallMedia](docs/JoinCallMedia.md)
+ - [JoinCallMediaAudio](docs/JoinCallMediaAudio.md)
+ - [JoinCallRequest](docs/JoinCallRequest.md)
+ - [JoinCallResponse](docs/JoinCallResponse.md)
+ - [JoinCallResponseData](docs/JoinCallResponseData.md)
+ - [JoinCallResponseDataCall](docs/JoinCallResponseDataCall.md)
+ - [LeaveCallResponse](docs/LeaveCallResponse.md)
+ - [LeaveCallResponseData](docs/LeaveCallResponseData.md)
  - [LikeComplianceSchema](docs/LikeComplianceSchema.md)
  - [LikePostRequest](docs/LikePostRequest.md)
  - [LikePostResponse](docs/LikePostResponse.md)
@@ -747,6 +761,10 @@ Class | Method | HTTP request | Description
  - [ListSourcesResponse](docs/ListSourcesResponse.md)
  - [ListSourcesResponseData](docs/ListSourcesResponseData.md)
  - [ListSourcesResponseDataSources](docs/ListSourcesResponseDataSources.md)
+ - [MarkChatConversationReadActionSignatures](docs/MarkChatConversationReadActionSignatures.md)
+ - [MarkChatConversationReadActionSignaturesMessageEventSignature](docs/MarkChatConversationReadActionSignaturesMessageEventSignature.md)
+ - [MarkChatConversationReadActionSignaturesMessageEventSignatureMessageSigningKeyInfoList](docs/MarkChatConversationReadActionSignaturesMessageEventSignatureMessageSigningKeyInfoList.md)
+ - [MarkChatConversationReadRequest](docs/MarkChatConversationReadRequest.md)
  - [MarkChatConversationReadResponse](docs/MarkChatConversationReadResponse.md)
  - [MarkChatConversationReadResponseData](docs/MarkChatConversationReadResponseData.md)
  - [MarkChatConversationUnreadResponse](docs/MarkChatConversationUnreadResponse.md)
