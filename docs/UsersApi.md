@@ -25,6 +25,8 @@ Method | HTTP request | Description
 [**get_users_liked_posts**](UsersApi.md#get_users_liked_posts) | **GET** /2/users/{id}/liked_tweets | Get Users Liked Posts
 [**get_users_list_memberships**](UsersApi.md#get_users_list_memberships) | **GET** /2/users/{id}/list_memberships | Get Users List Memberships
 [**get_users_me**](UsersApi.md#get_users_me) | **GET** /2/users/me | Get Users Me
+[**get_users_me_followers**](UsersApi.md#get_users_me_followers) | **GET** /2/users/me/followers | Get the authenticated user's followers
+[**get_users_me_following**](UsersApi.md#get_users_me_following) | **GET** /2/users/me/following | Get the users the authenticated user follows
 [**get_users_mentions**](UsersApi.md#get_users_mentions) | **GET** /2/users/{id}/mentions | Get Users Mentions
 [**get_users_muting**](UsersApi.md#get_users_muting) | **GET** /2/users/{id}/muting | Get Users Muting
 [**get_users_owned_lists**](UsersApi.md#get_users_owned_lists) | **GET** /2/users/{id}/owned_lists | Get Users Owned Lists
@@ -702,6 +704,74 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**models::GetUsersMeResponse**](GetUsersMeResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## get_users_me_followers
+
+> models::GetUsersMeFollowersResponse get_users_me_followers(max_results, pagination_token, user_fields, expansions, post_fields)
+Get the authenticated user's followers
+
+Same results as `GET /2/users/{id}/followers` with the authenticated user's ID.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**max_results** | Option<**i32**> |  |  |
+**pagination_token** | Option<**String**> | A base32hex-encoded pagination token. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
+**expansions** | Option<[**Vec<models::UserExpansion>**](Models__UserExpansion.md)> | A comma separated list of fields to expand. |  |
+**post_fields** | Option<[**Vec<models::PostField>**](Models__PostField.md)> | A comma separated list of Post fields to display. |  |
+
+### Return type
+
+[**models::GetUsersMeFollowersResponse**](GetUsersMeFollowersResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## get_users_me_following
+
+> models::GetUsersMeFollowingResponse get_users_me_following(max_results, pagination_token, user_fields, expansions, post_fields)
+Get the users the authenticated user follows
+
+Same results as `GET /2/users/{id}/following` with the authenticated user's ID.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**max_results** | Option<**i32**> |  |  |
+**pagination_token** | Option<**String**> | A base32hex-encoded pagination token. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
+**expansions** | Option<[**Vec<models::UserExpansion>**](Models__UserExpansion.md)> | A comma separated list of fields to expand. |  |
+**post_fields** | Option<[**Vec<models::PostField>**](Models__PostField.md)> | A comma separated list of Post fields to display. |  |
+
+### Return type
+
+[**models::GetUsersMeFollowingResponse**](GetUsersMeFollowingResponse.md)
 
 ### Authorization
 

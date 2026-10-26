@@ -454,6 +454,8 @@ docs/GetUsersFollowersResponse.md
 docs/GetUsersFollowingResponse.md
 docs/GetUsersLikedPostsResponse.md
 docs/GetUsersListMembershipsResponse.md
+docs/GetUsersMeFollowersResponse.md
+docs/GetUsersMeFollowingResponse.md
 docs/GetUsersMeResponse.md
 docs/GetUsersMentionsResponse.md
 docs/GetUsersMentionsResponseMeta.md
@@ -1329,6 +1331,8 @@ src/models/get_users_followers_response.rs
 src/models/get_users_following_response.rs
 src/models/get_users_liked_posts_response.rs
 src/models/get_users_list_memberships_response.rs
+src/models/get_users_me_followers_response.rs
+src/models/get_users_me_following_response.rs
 src/models/get_users_me_response.rs
 src/models/get_users_mentions_response.rs
 src/models/get_users_mentions_response_meta.rs

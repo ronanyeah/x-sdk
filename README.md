@@ -235,6 +235,8 @@ Class | Method | HTTP request | Description
 *UsersApi* | [**get_users_liked_posts**](docs/UsersApi.md#get_users_liked_posts) | **GET** /2/users/{id}/liked_tweets | Get Users Liked Posts
 *UsersApi* | [**get_users_list_memberships**](docs/UsersApi.md#get_users_list_memberships) | **GET** /2/users/{id}/list_memberships | Get Users List Memberships
 *UsersApi* | [**get_users_me**](docs/UsersApi.md#get_users_me) | **GET** /2/users/me | Get Users Me
+*UsersApi* | [**get_users_me_followers**](docs/UsersApi.md#get_users_me_followers) | **GET** /2/users/me/followers | Get the authenticated user's followers
+*UsersApi* | [**get_users_me_following**](docs/UsersApi.md#get_users_me_following) | **GET** /2/users/me/following | Get the users the authenticated user follows
 *UsersApi* | [**get_users_mentions**](docs/UsersApi.md#get_users_mentions) | **GET** /2/users/{id}/mentions | Get Users Mentions
 *UsersApi* | [**get_users_muting**](docs/UsersApi.md#get_users_muting) | **GET** /2/users/{id}/muting | Get Users Muting
 *UsersApi* | [**get_users_owned_lists**](docs/UsersApi.md#get_users_owned_lists) | **GET** /2/users/{id}/owned_lists | Get Users Owned Lists
@@ -711,6 +713,8 @@ Class | Method | HTTP request | Description
  - [GetUsersFollowingResponse](docs/GetUsersFollowingResponse.md)
  - [GetUsersLikedPostsResponse](docs/GetUsersLikedPostsResponse.md)
  - [GetUsersListMembershipsResponse](docs/GetUsersListMembershipsResponse.md)
+ - [GetUsersMeFollowersResponse](docs/GetUsersMeFollowersResponse.md)
+ - [GetUsersMeFollowingResponse](docs/GetUsersMeFollowingResponse.md)
  - [GetUsersMeResponse](docs/GetUsersMeResponse.md)
  - [GetUsersMentionsResponse](docs/GetUsersMentionsResponse.md)
  - [GetUsersMentionsResponseMeta](docs/GetUsersMentionsResponseMeta.md)
