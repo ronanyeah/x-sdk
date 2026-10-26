@@ -26,7 +26,7 @@ Method | HTTP request | Description
 [**get_chat_conversation**](ChatApi.md#get_chat_conversation) | **GET** /2/chat/conversations/{id} | Get Chat Conversation; unread state via chat_conversation.fields=unread,last_read_event_id,newest_event_id
 [**get_chat_conversation_events**](ChatApi.md#get_chat_conversation_events) | **GET** /2/chat/conversations/{id}/events | Get Chat Conversation Events, newest first; unread ones have an id above last_read_event_id
 [**get_chat_conversation_pinned_messages**](ChatApi.md#get_chat_conversation_pinned_messages) | **GET** /2/chat/conversations/{id}/pinned_messages | Get Chat Conversation Pinned Messages
-[**get_chat_conversations**](ChatApi.md#get_chat_conversations) | **GET** /2/chat/conversations | Get Chat Conversations; unread state via chat_conversation.fields=unread,last_read_event_id,newest_event_id
+[**get_chat_conversations**](ChatApi.md#get_chat_conversations) | **GET** /2/chat/conversations | Get Chat Conversations, newest first. All filters must match (AND). A page can hold fewer than max_results while meta.next_token is set: keep paging. Read state: chat_conversation.fields=unread,last_read_event_id,newest_event_id
 [**get_chat_group_admin_requests**](ChatApi.md#get_chat_group_admin_requests) | **GET** /2/chat/conversations/{id}/admin_requests | Get pending admin requests for a Chat group conversation
 [**get_chat_group_invite**](ChatApi.md#get_chat_group_invite) | **GET** /2/chat/conversations/{id}/invites/{token} | Get a Chat group invite link
 [**get_chat_message_request**](ChatApi.md#get_chat_message_request) | **GET** /2/chat/message_requests/{id} | Get Chat Message Request
@@ -739,19 +739,26 @@ Name | Type | Description  | Required | Notes
 
 ## get_chat_conversations
 
-> models::GetChatConversationsResponse get_chat_conversations(max_results, pagination_token, unread_only, chat_conversation_fields, expansions, user_fields)
-Get Chat Conversations; unread state via chat_conversation.fields=unread,last_read_event_id,newest_event_id
+> models::GetChatConversationsResponse get_chat_conversations(max_results, pagination_token, unread_only, r#type, is_archived, is_muted, participant_ids, participant_query, start_time, end_time, chat_conversation_fields, expansions, user_fields)
+Get Chat Conversations, newest first. All filters must match (AND). A page can hold fewer than max_results while meta.next_token is set: keep paging. Read state: chat_conversation.fields=unread,last_read_event_id,newest_event_id
 
-Retrieves a list of Chat conversations for the authenticated user's inbox. The unread, last_read_event_id and newest_event_id fields give your read state, computed from your latest read receipt and each conversation's latest notifying message. With unread_only=true, only conversations that are unread for you are returned; a page can then hold fewer than max_results, so keep paging while has_more is true.
+Retrieves a list of Chat conversations for the authenticated user's inbox, most recently active first. The unread, last_read_event_id and newest_event_id fields give your read state, computed from your latest read receipt and each conversation's latest notifying message.  The filters unread_only, type, is_archived, is_muted, participant_ids, participant_query, start_time and end_time are optional and combine with AND. participant_query keeps conversations where another participant's username, or a word of their display name, starts with the query, ignoring case and accents; with a leading @ it matches usernames only. It considers the 100 people who best match the query, uses only public profile information, and never matches group names, nicknames or messages. start_time and end_time apply to the time of each conversation's latest message. Each page covers max_results conversations and returns those that match, so a page can hold fewer than max_results, or none, while has_more is true: keep paging with next_token. Once a page reaches a conversation whose latest message is older than start_time, has_more is false.  A pagination_token only works with the same filters as the request that returned it; with other filters, the request fails with a 400.  When both are provided, `start_time` must be earlier than `end_time`.
 
 ### Parameters
 
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**max_results** | Option<**i32**> |  |  |[default to 200]
-**pagination_token** | Option<**String**> |  |  |
+**max_results** | Option<**i32**> | Conversations covered per page (1-1000, default 200). Filtered pages can return fewer. |  |[default to 200]
+**pagination_token** | Option<**String**> | meta.next_token from the previous page. Send the same filters with it, or the request fails. |  |
 **unread_only** | Option<**bool**> | Return only unread conversations. A page can be short; keep paging while has_more. |  |[default to false]
+**r#type** | Option<**String**> | Only direct (1:1) or only group conversations. Omit for both. |  |
+**is_archived** | Option<**bool**> | true: only archived; false: only not archived. Omit for both. |  |
+**is_muted** | Option<**bool**> | true: only muted; false: only not muted. Omit for both. |  |
+**participant_ids** | Option<[**Vec<String>**](String.md)> | Comma-separated numeric user IDs (1-10), all in the chat. Names or @handles: use participant_query. |  |
+**participant_query** | Option<**String**> | Name or @username prefix (1-50 chars); keeps chats where any other participant matches it. |  |
+**start_time** | Option<**chrono::DateTime<chrono::FixedOffset>**> | ISO 8601, e.g. 2026-10-16T00:00:00Z. Chats whose latest message is at or after this time. |  |
+**end_time** | Option<**chrono::DateTime<chrono::FixedOffset>**> | ISO 8601, e.g. 2026-10-17T00:00:00Z. Chats whose latest message is before this time. |  |
 **chat_conversation_fields** | Option<[**Vec<models::ChatConversationField>**](Models__ChatConversationField.md)> | A comma separated list of ChatConversation fields to display. |  |
 **expansions** | Option<[**Vec<models::ChatConversationExpansion>**](Models__ChatConversationExpansion.md)> | A comma separated list of fields to expand. |  |
 **user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
@@ -1150,7 +1157,7 @@ Name | Type | Description  | Required | Notes
 > models::RemoveChatGroupMembersResponse remove_chat_group_members(id, remove_chat_group_members_request)
 Remove members from a Chat group conversation
 
-Removes one or more members from an existing encrypted Chat group conversation. To leave a group, pass your own user ID. Leaving does not delete the conversation for the caller.
+Removes one or more members from an existing encrypted Chat group conversation. To leave a group, pass your own user ID. Leaving does not delete the conversation for the caller. When the removal rotates the conversation key, send group_key_rotation_data and the action signatures for the removal and the key change, in that order.
 
 ### Parameters
 

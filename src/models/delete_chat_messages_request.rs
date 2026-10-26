@@ -13,7 +13,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DeleteChatMessagesRequest {
-    /// Cryptographic signatures for the action.
+    /// Signatures for this action, forwarded in the order they are sent.
     #[serde(rename = "action_signatures")]
     pub action_signatures: Vec<models::DeleteChatMessagesActionSignatures>,
     /// delete_for_all removes the messages for every participant; delete_for_self removes them only from the authenticated user's view.

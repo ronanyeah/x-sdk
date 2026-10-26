@@ -14,7 +14,7 @@ use serde::{Deserialize, Serialize};
 /// UpdateChatGroupAdminSettingsRequest : At least one of `add_member`, `edit_group_info`, `send_message`, `start_call`, `edit_message_ttl`, `block_screen_capture` is required.
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UpdateChatGroupAdminSettingsRequest {
-    /// Cryptographic signatures for the action.
+    /// Signatures for this action, forwarded in the order they are sent.
     #[serde(rename = "action_signatures", skip_serializing_if = "Option::is_none")]
     pub action_signatures: Option<Vec<models::UpdateChatGroupAdminSettingsActionSignatures>>,
     /// When true, only admins can add members.

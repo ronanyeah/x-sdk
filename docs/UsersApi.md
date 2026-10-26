@@ -563,8 +563,8 @@ Get Users Followers
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **id** | **String** |  | [required] |
-**max_results** | Option<**i32**> |  |  |
-**pagination_token** | Option<**String**> | A base32hex-encoded pagination token. |  |
+**max_results** | Option<**i32**> | The maximum number of users to return. |  |
+**pagination_token** | Option<**String**> | The next_token or previous_token from a previous response, to fetch that page. A base32hex-encoded pagination token. |  |
 **user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
 **expansions** | Option<[**Vec<models::UserExpansion>**](Models__UserExpansion.md)> | A comma separated list of fields to expand. |  |
 **post_fields** | Option<[**Vec<models::PostField>**](Models__PostField.md)> | A comma separated list of Post fields to display. |  |
@@ -596,8 +596,8 @@ Get Users Following
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **id** | **String** |  | [required] |
-**max_results** | Option<**i32**> |  |  |
-**pagination_token** | Option<**String**> | A base32hex-encoded pagination token. |  |
+**max_results** | Option<**i32**> | The maximum number of users to return. |  |
+**pagination_token** | Option<**String**> | The next_token or previous_token from a previous response, to fetch that page. A base32hex-encoded pagination token. |  |
 **user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
 **expansions** | Option<[**Vec<models::UserExpansion>**](Models__UserExpansion.md)> | A comma separated list of fields to expand. |  |
 **post_fields** | Option<[**Vec<models::PostField>**](Models__PostField.md)> | A comma separated list of Post fields to display. |  |
@@ -729,8 +729,8 @@ Same results as `GET /2/users/{id}/followers` with the authenticated user's ID.
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**max_results** | Option<**i32**> |  |  |
-**pagination_token** | Option<**String**> | A base32hex-encoded pagination token. |  |
+**max_results** | Option<**i32**> | The maximum number of users to return. |  |
+**pagination_token** | Option<**String**> | The next_token or previous_token from a previous response, to fetch that page. A base32hex-encoded pagination token. |  |
 **user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
 **expansions** | Option<[**Vec<models::UserExpansion>**](Models__UserExpansion.md)> | A comma separated list of fields to expand. |  |
 **post_fields** | Option<[**Vec<models::PostField>**](Models__PostField.md)> | A comma separated list of Post fields to display. |  |
@@ -763,8 +763,8 @@ Same results as `GET /2/users/{id}/following` with the authenticated user's ID.
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**max_results** | Option<**i32**> |  |  |
-**pagination_token** | Option<**String**> | A base32hex-encoded pagination token. |  |
+**max_results** | Option<**i32**> | The maximum number of users to return. |  |
+**pagination_token** | Option<**String**> | The next_token or previous_token from a previous response, to fetch that page. A base32hex-encoded pagination token. |  |
 **user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
 **expansions** | Option<[**Vec<models::UserExpansion>**](Models__UserExpansion.md)> | A comma separated list of fields to expand. |  |
 **post_fields** | Option<[**Vec<models::PostField>**](Models__PostField.md)> | A comma separated list of Post fields to display. |  |

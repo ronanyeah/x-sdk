@@ -17,13 +17,13 @@ pub struct UpdateChatConversationScreenCaptureRequest {
     /// Whether participants are prevented from taking screenshots.
     #[serde(rename = "blocking", skip_serializing_if = "Option::is_none")]
     pub blocking: Option<bool>,
-    /// Cryptographic signatures for the screenshot blocking change.
+    /// Signatures for the screenshot blocking change, forwarded in the order they are sent.
     #[serde(rename = "blocking_action_signatures", skip_serializing_if = "Option::is_none")]
     pub blocking_action_signatures: Option<Vec<models::UpdateChatConversationScreenCaptureBlockingActionSignatures>>,
     /// Whether participants are notified when someone takes a screenshot.
     #[serde(rename = "detection", skip_serializing_if = "Option::is_none")]
     pub detection: Option<bool>,
-    /// Cryptographic signatures for the screenshot detection change.
+    /// Signatures for the screenshot detection change, forwarded in the order they are sent.
     #[serde(rename = "detection_action_signatures", skip_serializing_if = "Option::is_none")]
     pub detection_action_signatures: Option<Vec<models::UpdateChatConversationScreenCaptureDetectionActionSignatures>>,
 }

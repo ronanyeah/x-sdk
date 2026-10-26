@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**action_signatures** | Option<[**Vec<models::CreateChatConversationActionSignatures>**](CreateChatConversationActionSignatures.md)> | Cryptographic signatures for the action. | [optional]
+**action_signatures** | Option<[**Vec<models::CreateChatConversationActionSignatures>**](CreateChatConversationActionSignatures.md)> | Signatures for this action, forwarded in the order they are sent. | [optional]
 **base64_encoded_key_rotation** | Option<**String**> | Base64-encoded key rotation payload. | [optional]
 **conversation_id** | **String** | Client-generated conversation ID. | 
 **conversation_key_version** | **String** | Version of the conversation encryption key. | 

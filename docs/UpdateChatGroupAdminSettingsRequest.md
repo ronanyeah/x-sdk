@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**action_signatures** | Option<[**Vec<models::UpdateChatGroupAdminSettingsActionSignatures>**](UpdateChatGroupAdminSettingsActionSignatures.md)> | Cryptographic signatures for the action. | [optional]
+**action_signatures** | Option<[**Vec<models::UpdateChatGroupAdminSettingsActionSignatures>**](UpdateChatGroupAdminSettingsActionSignatures.md)> | Signatures for this action, forwarded in the order they are sent. | [optional]
 **add_member** | Option<**bool**> | When true, only admins can add members. | [optional]
 **block_screen_capture** | Option<**bool**> | When true, only admins can change screen capture blocking. Through the API, only admins can change screen capture in a group, whatever this setting says. | [optional]
 **edit_group_info** | Option<**bool**> | When true, only admins can edit the group name, avatar, and description. | [optional]

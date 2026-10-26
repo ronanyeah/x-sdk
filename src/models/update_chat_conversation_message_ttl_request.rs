@@ -13,7 +13,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UpdateChatConversationMessageTtlRequest {
-    /// Cryptographic signatures for the action.
+    /// Signatures for this action, forwarded in the order they are sent.
     #[serde(rename = "action_signatures", skip_serializing_if = "Option::is_none")]
     pub action_signatures: Option<Vec<models::UpdateChatConversationMessageTtlActionSignatures>>,
     /// How long new messages last, in milliseconds.

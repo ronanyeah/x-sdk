@@ -56,6 +56,7 @@ Class | Method | HTTP request | Description
 *BroadcastsApi* | [**get_broadcast**](docs/BroadcastsApi.md#get_broadcast) | **GET** /2/broadcasts/{id} | Get a broadcast
 *BroadcastsApi* | [**get_broadcast_chat**](docs/BroadcastsApi.md#get_broadcast_chat) | **GET** /2/broadcasts/{id}/chat | Get broadcast chat history
 *BroadcastsApi* | [**get_chat_moderators**](docs/BroadcastsApi.md#get_chat_moderators) | **GET** /2/broadcasts/chat/moderators | Get chat moderators
+*BroadcastsApi* | [**get_chat_muted_users**](docs/BroadcastsApi.md#get_chat_muted_users) | **GET** /2/broadcasts/chat/mutes | Get muted chat users
 *BroadcastsApi* | [**get_scheduled_broadcast**](docs/BroadcastsApi.md#get_scheduled_broadcast) | **GET** /2/broadcasts/scheduled/{id} | Get a scheduled broadcast
 *BroadcastsApi* | [**get_source**](docs/BroadcastsApi.md#get_source) | **GET** /2/sources/{id} | Get a stream source
 *BroadcastsApi* | [**go_live_scheduled_broadcast**](docs/BroadcastsApi.md#go_live_scheduled_broadcast) | **POST** /2/broadcasts/scheduled/{id}/live | Go live on a scheduled broadcast
@@ -100,7 +101,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**get_chat_conversation**](docs/ChatApi.md#get_chat_conversation) | **GET** /2/chat/conversations/{id} | Get Chat Conversation; unread state via chat_conversation.fields=unread,last_read_event_id,newest_event_id
 *ChatApi* | [**get_chat_conversation_events**](docs/ChatApi.md#get_chat_conversation_events) | **GET** /2/chat/conversations/{id}/events | Get Chat Conversation Events, newest first; unread ones have an id above last_read_event_id
 *ChatApi* | [**get_chat_conversation_pinned_messages**](docs/ChatApi.md#get_chat_conversation_pinned_messages) | **GET** /2/chat/conversations/{id}/pinned_messages | Get Chat Conversation Pinned Messages
-*ChatApi* | [**get_chat_conversations**](docs/ChatApi.md#get_chat_conversations) | **GET** /2/chat/conversations | Get Chat Conversations; unread state via chat_conversation.fields=unread,last_read_event_id,newest_event_id
+*ChatApi* | [**get_chat_conversations**](docs/ChatApi.md#get_chat_conversations) | **GET** /2/chat/conversations | Get Chat Conversations, newest first. All filters must match (AND). A page can hold fewer than max_results while meta.next_token is set: keep paging. Read state: chat_conversation.fields=unread,last_read_event_id,newest_event_id
 *ChatApi* | [**get_chat_group_admin_requests**](docs/ChatApi.md#get_chat_group_admin_requests) | **GET** /2/chat/conversations/{id}/admin_requests | Get pending admin requests for a Chat group conversation
 *ChatApi* | [**get_chat_group_invite**](docs/ChatApi.md#get_chat_group_invite) | **GET** /2/chat/conversations/{id}/invites/{token} | Get a Chat group invite link
 *ChatApi* | [**get_chat_message_request**](docs/ChatApi.md#get_chat_message_request) | **GET** /2/chat/message_requests/{id} | Get Chat Message Request
@@ -352,6 +353,9 @@ Class | Method | HTTP request | Description
  - [BroadcastChatMessage](docs/BroadcastChatMessage.md)
  - [BroadcastChatMessageExpansion](docs/BroadcastChatMessageExpansion.md)
  - [BroadcastChatMessageField](docs/BroadcastChatMessageField.md)
+ - [BroadcastChatMute](docs/BroadcastChatMute.md)
+ - [BroadcastChatMuteExpansion](docs/BroadcastChatMuteExpansion.md)
+ - [BroadcastChatMuteField](docs/BroadcastChatMuteField.md)
  - [BroadcastField](docs/BroadcastField.md)
  - [Call](docs/Call.md)
  - [CallExpansion](docs/CallExpansion.md)
@@ -572,6 +576,15 @@ Class | Method | HTTP request | Description
  - [DisableChatGroupInviteResponse](docs/DisableChatGroupInviteResponse.md)
  - [DisableChatGroupInviteResponseData](docs/DisableChatGroupInviteResponseData.md)
  - [DisallowedResourceProblem](docs/DisallowedResourceProblem.md)
+ - [DmBadAttachmentProblem](docs/DmBadAttachmentProblem.md)
+ - [DmBadCtaProblem](docs/DmBadCtaProblem.md)
+ - [DmBadCustomProfileProblem](docs/DmBadCustomProfileProblem.md)
+ - [DmBadMediaProblem](docs/DmBadMediaProblem.md)
+ - [DmBadQuickReplyProblem](docs/DmBadQuickReplyProblem.md)
+ - [DmBadUrlProblem](docs/DmBadUrlProblem.md)
+ - [DmConversationNameTooLongProblem](docs/DmConversationNameTooLongProblem.md)
+ - [DmConversationNotFoundProblem](docs/DmConversationNotFoundProblem.md)
+ - [DmDuplicateProblem](docs/DmDuplicateProblem.md)
  - [DmEvent](docs/DmEvent.md)
  - [DmEventAttachments](docs/DmEventAttachments.md)
  - [DmEventEntities](docs/DmEventEntities.md)
@@ -581,6 +594,40 @@ Class | Method | HTTP request | Description
  - [DmEventExpansion](docs/DmEventExpansion.md)
  - [DmEventField](docs/DmEventField.md)
  - [DmEventReferencedPostsInner](docs/DmEventReferencedPostsInner.md)
+ - [DmInactiveDeviceProblem](docs/DmInactiveDeviceProblem.md)
+ - [DmNotDeliveredProblem](docs/DmNotDeliveredProblem.md)
+ - [DmNotFoundProblem](docs/DmNotFoundProblem.md)
+ - [DmNotOwnerProblem](docs/DmNotOwnerProblem.md)
+ - [DmParticipantNotAddedProblem](docs/DmParticipantNotAddedProblem.md)
+ - [DmParticipantNotFoundProblem](docs/DmParticipantNotFoundProblem.md)
+ - [DmParticipantRestrictedProblem](docs/DmParticipantRestrictedProblem.md)
+ - [DmParticipantUnavailableProblem](docs/DmParticipantUnavailableProblem.md)
+ - [DmRateLimitedProblem](docs/DmRateLimitedProblem.md)
+ - [DmRecipientBlocksSenderProblem](docs/DmRecipientBlocksSenderProblem.md)
+ - [DmRecipientCannotReceiveProblem](docs/DmRecipientCannotReceiveProblem.md)
+ - [DmRecipientEncryptedUnavailableProblem](docs/DmRecipientEncryptedUnavailableProblem.md)
+ - [DmRecipientNotAcceptingProblem](docs/DmRecipientNotAcceptingProblem.md)
+ - [DmRecipientNotFoundProblem](docs/DmRecipientNotFoundProblem.md)
+ - [DmRecipientRestrictsGroupsProblem](docs/DmRecipientRestrictsGroupsProblem.md)
+ - [DmRecipientUnavailableProblem](docs/DmRecipientUnavailableProblem.md)
+ - [DmRequestInProgressProblem](docs/DmRequestInProgressProblem.md)
+ - [DmSafetyLimitedProblem](docs/DmSafetyLimitedProblem.md)
+ - [DmSafetyRejectedProblem](docs/DmSafetyRejectedProblem.md)
+ - [DmSenderBlocksRecipientProblem](docs/DmSenderBlocksRecipientProblem.md)
+ - [DmSenderDeclinedDmsProblem](docs/DmSenderDeclinedDmsProblem.md)
+ - [DmSenderDmsClosedProblem](docs/DmSenderDmsClosedProblem.md)
+ - [DmSenderEncryptedUnavailableProblem](docs/DmSenderEncryptedUnavailableProblem.md)
+ - [DmSenderNotInConversationProblem](docs/DmSenderNotInConversationProblem.md)
+ - [DmSenderNotPermittedProblem](docs/DmSenderNotPermittedProblem.md)
+ - [DmSenderNotVerifiedProblem](docs/DmSenderNotVerifiedProblem.md)
+ - [DmSenderPhoneRequiredProblem](docs/DmSenderPhoneRequiredProblem.md)
+ - [DmSenderReadOnlyProblem](docs/DmSenderReadOnlyProblem.md)
+ - [DmSenderUnavailableProblem](docs/DmSenderUnavailableProblem.md)
+ - [DmTextEmptyProblem](docs/DmTextEmptyProblem.md)
+ - [DmTextTooLongProblem](docs/DmTextTooLongProblem.md)
+ - [DmTooFewParticipantsProblem](docs/DmTooFewParticipantsProblem.md)
+ - [DmTooManyParticipantsProblem](docs/DmTooManyParticipantsProblem.md)
+ - [DmUnsupportedMessageProblem](docs/DmUnsupportedMessageProblem.md)
  - [DuplicateRuleProblem](docs/DuplicateRuleProblem.md)
  - [EnableChatGroupInviteActionSignatures](docs/EnableChatGroupInviteActionSignatures.md)
  - [EnableChatGroupInviteActionSignaturesMessageEventSignature](docs/EnableChatGroupInviteActionSignaturesMessageEventSignature.md)
@@ -637,6 +684,7 @@ Class | Method | HTTP request | Description
  - [GetChatMessageRequestsResponse](docs/GetChatMessageRequestsResponse.md)
  - [GetChatModeratorsResponse](docs/GetChatModeratorsResponse.md)
  - [GetChatModeratorsResponseMeta](docs/GetChatModeratorsResponseMeta.md)
+ - [GetChatMutedUsersResponse](docs/GetChatMutedUsersResponse.md)
  - [GetChatSettingsResponse](docs/GetChatSettingsResponse.md)
  - [GetCommunitiesByIdResponse](docs/GetCommunitiesByIdResponse.md)
  - [GetComplianceJobsByIdResponse](docs/GetComplianceJobsByIdResponse.md)
@@ -897,6 +945,9 @@ Class | Method | HTTP request | Description
  - [RemoveChatGroupMembersActionSignatures](docs/RemoveChatGroupMembersActionSignatures.md)
  - [RemoveChatGroupMembersActionSignaturesMessageEventSignature](docs/RemoveChatGroupMembersActionSignaturesMessageEventSignature.md)
  - [RemoveChatGroupMembersActionSignaturesMessageEventSignatureMessageSigningKeyInfoList](docs/RemoveChatGroupMembersActionSignaturesMessageEventSignatureMessageSigningKeyInfoList.md)
+ - [RemoveChatGroupMembersGroupKeyRotationData](docs/RemoveChatGroupMembersGroupKeyRotationData.md)
+ - [RemoveChatGroupMembersGroupKeyRotationDataConversationParticipantKeys](docs/RemoveChatGroupMembersGroupKeyRotationDataConversationParticipantKeys.md)
+ - [RemoveChatGroupMembersGroupKeyRotationDataRotatedPmkBundle](docs/RemoveChatGroupMembersGroupKeyRotationDataRotatedPmkBundle.md)
  - [RemoveChatGroupMembersRequest](docs/RemoveChatGroupMembersRequest.md)
  - [RemoveChatGroupMembersResponse](docs/RemoveChatGroupMembersResponse.md)
  - [RemoveChatGroupMembersResponseData](docs/RemoveChatGroupMembersResponseData.md)

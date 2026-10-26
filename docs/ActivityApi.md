@@ -115,7 +115,7 @@ Get a list of active subscriptions for XAA. Optional user_id narrows the list to
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **max_results** | Option<**i32**> |  |  |[default to 1000]
-**pagination_token** | Option<**String**> | A base32hex-encoded pagination token. |  |
+**pagination_token** | Option<**String**> | A base32hex-encoded pagination token that decodes to 9 bytes. |  |
 **user_id** | Option<**String**> | Only return subscriptions whose filter.user_id matches. |  |
 
 ### Return type

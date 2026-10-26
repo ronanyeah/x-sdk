@@ -13,7 +13,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UpdateChatGroupAdminSettingsActionSignatures {
-    /// Base64-encoded message event detail.
+    /// Base64-encoded Thrift MessageEventDetail for the signed action.
     #[serde(rename = "encoded_message_event_detail")]
     pub encoded_message_event_detail: String,
     #[serde(rename = "message_event_signature")]

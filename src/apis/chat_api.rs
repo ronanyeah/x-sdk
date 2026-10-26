@@ -1326,12 +1326,19 @@ pub async fn get_chat_conversation_pinned_messages(configuration: &configuration
     }
 }
 
-/// Retrieves a list of Chat conversations for the authenticated user's inbox. The unread, last_read_event_id and newest_event_id fields give your read state, computed from your latest read receipt and each conversation's latest notifying message. With unread_only=true, only conversations that are unread for you are returned; a page can then hold fewer than max_results, so keep paging while has_more is true.
-pub async fn get_chat_conversations(configuration: &configuration::Configuration, max_results: Option<i32>, pagination_token: Option<&str>, unread_only: Option<bool>, chat_conversation_fields: Option<Vec<models::ChatConversationField>>, expansions: Option<Vec<models::ChatConversationExpansion>>, user_fields: Option<Vec<models::UserField>>) -> Result<models::GetChatConversationsResponse, Error<GetChatConversationsError>> {
+/// Retrieves a list of Chat conversations for the authenticated user's inbox, most recently active first. The unread, last_read_event_id and newest_event_id fields give your read state, computed from your latest read receipt and each conversation's latest notifying message.  The filters unread_only, type, is_archived, is_muted, participant_ids, participant_query, start_time and end_time are optional and combine with AND. participant_query keeps conversations where another participant's username, or a word of their display name, starts with the query, ignoring case and accents; with a leading @ it matches usernames only. It considers the 100 people who best match the query, uses only public profile information, and never matches group names, nicknames or messages. start_time and end_time apply to the time of each conversation's latest message. Each page covers max_results conversations and returns those that match, so a page can hold fewer than max_results, or none, while has_more is true: keep paging with next_token. Once a page reaches a conversation whose latest message is older than start_time, has_more is false.  A pagination_token only works with the same filters as the request that returned it; with other filters, the request fails with a 400.  When both are provided, `start_time` must be earlier than `end_time`.
+pub async fn get_chat_conversations(configuration: &configuration::Configuration, max_results: Option<i32>, pagination_token: Option<&str>, unread_only: Option<bool>, r#type: Option<&str>, is_archived: Option<bool>, is_muted: Option<bool>, participant_ids: Option<Vec<String>>, participant_query: Option<&str>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, chat_conversation_fields: Option<Vec<models::ChatConversationField>>, expansions: Option<Vec<models::ChatConversationExpansion>>, user_fields: Option<Vec<models::UserField>>) -> Result<models::GetChatConversationsResponse, Error<GetChatConversationsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_max_results = max_results;
     let p_query_pagination_token = pagination_token;
     let p_query_unread_only = unread_only;
+    let p_query_type = r#type;
+    let p_query_is_archived = is_archived;
+    let p_query_is_muted = is_muted;
+    let p_query_participant_ids = participant_ids;
+    let p_query_participant_query = participant_query;
+    let p_query_start_time = start_time;
+    let p_query_end_time = end_time;
     let p_query_chat_conversation_fields = chat_conversation_fields;
     let p_query_expansions = expansions;
     let p_query_user_fields = user_fields;
@@ -1347,6 +1354,30 @@ pub async fn get_chat_conversations(configuration: &configuration::Configuration
     }
     if let Some(ref param_value) = p_query_unread_only {
         req_builder = req_builder.query(&[("unread_only", &param_value.to_string())]);
+    }
+    if let Some(ref param_value) = p_query_type {
+        req_builder = req_builder.query(&[("type", &param_value.to_string())]);
+    }
+    if let Some(ref param_value) = p_query_is_archived {
+        req_builder = req_builder.query(&[("is_archived", &param_value.to_string())]);
+    }
+    if let Some(ref param_value) = p_query_is_muted {
+        req_builder = req_builder.query(&[("is_muted", &param_value.to_string())]);
+    }
+    if let Some(ref param_value) = p_query_participant_ids {
+        req_builder = match "csv" {
+            "multi" => req_builder.query(&param_value.into_iter().map(|p| ("participant_ids".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
+            _ => req_builder.query(&[("participant_ids", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
+        };
+    }
+    if let Some(ref param_value) = p_query_participant_query {
+        req_builder = req_builder.query(&[("participant_query", &param_value.to_string())]);
+    }
+    if let Some(ref param_value) = p_query_start_time {
+        req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
+    }
+    if let Some(ref param_value) = p_query_end_time {
+        req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref param_value) = p_query_chat_conversation_fields {
         req_builder = match "csv" {
@@ -1951,7 +1982,7 @@ pub async fn remove_chat_group_admins(configuration: &configuration::Configurati
     }
 }
 
-/// Removes one or more members from an existing encrypted Chat group conversation. To leave a group, pass your own user ID. Leaving does not delete the conversation for the caller.
+/// Removes one or more members from an existing encrypted Chat group conversation. To leave a group, pass your own user ID. Leaving does not delete the conversation for the caller. When the removal rotates the conversation key, send group_key_rotation_data and the action signatures for the removal and the key change, in that order.
 pub async fn remove_chat_group_members(configuration: &configuration::Configuration, id: &str, remove_chat_group_members_request: models::RemoveChatGroupMembersRequest) -> Result<models::RemoveChatGroupMembersResponse, Error<RemoveChatGroupMembersError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;

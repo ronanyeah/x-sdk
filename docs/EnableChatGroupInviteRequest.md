@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**action_signatures** | Option<[**Vec<models::EnableChatGroupInviteActionSignatures>**](EnableChatGroupInviteActionSignatures.md)> | Cryptographic signatures for the action. | [optional]
+**action_signatures** | Option<[**Vec<models::EnableChatGroupInviteActionSignatures>**](EnableChatGroupInviteActionSignatures.md)> | Signatures for this action, forwarded in the order they are sent. | [optional]
 **affiliate_user_id** | Option<**String**> | ID of the affiliate account to associate with the link. | [optional]
 **decrypted_avatar_url** | Option<**String**> | Group avatar URL (https) to show on the invite preview. | [optional]
 **decrypted_title** | Option<**String**> | Group name to show on the invite preview. | [optional]

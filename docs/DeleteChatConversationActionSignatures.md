@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**encoded_message_event_detail** | **String** | Base64-encoded message event detail. | 
+**encoded_message_event_detail** | **String** | Base64-encoded Thrift MessageEventDetail for the signed action. | 
 **message_event_signature** | [**models::DeleteChatConversationActionSignaturesMessageEventSignature**](DeleteChatConversationActionSignaturesMessageEventSignature.md) |  | 
 **message_id** | **String** | Client-generated ID of the message being signed. | 
 **signature_payload** | Option<**String**> | Payload string the client signed; used only in server-side failure logs. | [optional]

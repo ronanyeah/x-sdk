@@ -99,7 +99,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **ids** | Option<[**Vec<String>**](String.md)> |  |  |
 **max_results** | Option<**i32**> |  |  |[default to 1000]
-**pagination_token** | Option<**String**> | A base32hex-encoded pagination token. |  |
+**pagination_token** | Option<**String**> | A base32hex-encoded pagination token that decodes to 8 bytes. |  |
 
 ### Return type
 

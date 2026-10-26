@@ -13,6 +13,7 @@ Method | HTTP request | Description
 [**get_broadcast**](BroadcastsApi.md#get_broadcast) | **GET** /2/broadcasts/{id} | Get a broadcast
 [**get_broadcast_chat**](BroadcastsApi.md#get_broadcast_chat) | **GET** /2/broadcasts/{id}/chat | Get broadcast chat history
 [**get_chat_moderators**](BroadcastsApi.md#get_chat_moderators) | **GET** /2/broadcasts/chat/moderators | Get chat moderators
+[**get_chat_muted_users**](BroadcastsApi.md#get_chat_muted_users) | **GET** /2/broadcasts/chat/mutes | Get muted chat users
 [**get_scheduled_broadcast**](BroadcastsApi.md#get_scheduled_broadcast) | **GET** /2/broadcasts/scheduled/{id} | Get a scheduled broadcast
 [**get_source**](BroadcastsApi.md#get_source) | **GET** /2/sources/{id} | Get a stream source
 [**go_live_scheduled_broadcast**](BroadcastsApi.md#go_live_scheduled_broadcast) | **POST** /2/broadcasts/scheduled/{id}/live | Go live on a scheduled broadcast
@@ -295,6 +296,40 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**models::GetChatModeratorsResponse**](GetChatModeratorsResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## get_chat_muted_users
+
+> models::GetChatMutedUsersResponse get_chat_muted_users(max_results, pagination_token, broadcast_chat_mute_fields, expansions, user_fields)
+Get muted chat users
+
+Returns the users muted in the authenticated broadcaster's chat, with the expiry time of timed mutes. Mutes apply to all of their broadcasts. Expired timed mutes are omitted. Use `expansions=user_id` to include the muted users.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**max_results** | Option<**i32**> |  |  |
+**pagination_token** | Option<**String**> |  |  |
+**broadcast_chat_mute_fields** | Option<[**Vec<models::BroadcastChatMuteField>**](Models__BroadcastChatMuteField.md)> | A comma separated list of BroadcastChatMute fields to display. |  |
+**expansions** | Option<[**Vec<models::BroadcastChatMuteExpansion>**](Models__BroadcastChatMuteExpansion.md)> | A comma separated list of fields to expand. |  |
+**user_fields** | Option<[**Vec<models::UserField>**](Models__UserField.md)> | A comma separated list of User fields to display. |  |
+
+### Return type
+
+[**models::GetChatMutedUsersResponse**](GetChatMutedUsersResponse.md)
 
 ### Authorization
 

@@ -87,6 +87,14 @@ pub enum GetChatModeratorsError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`get_chat_muted_users`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum GetChatMutedUsersError {
+    DefaultResponse(models::Error),
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`get_scheduled_broadcast`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -604,6 +612,74 @@ pub async fn get_chat_moderators(configuration: &configuration::Configuration, u
     } else {
         let content = resp.text().await?;
         let entity: Option<GetChatModeratorsError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
+/// Returns the users muted in the authenticated broadcaster's chat, with the expiry time of timed mutes. Mutes apply to all of their broadcasts. Expired timed mutes are omitted. Use `expansions=user_id` to include the muted users.
+pub async fn get_chat_muted_users(configuration: &configuration::Configuration, max_results: Option<i32>, pagination_token: Option<&str>, broadcast_chat_mute_fields: Option<Vec<models::BroadcastChatMuteField>>, expansions: Option<Vec<models::BroadcastChatMuteExpansion>>, user_fields: Option<Vec<models::UserField>>) -> Result<models::GetChatMutedUsersResponse, Error<GetChatMutedUsersError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_query_max_results = max_results;
+    let p_query_pagination_token = pagination_token;
+    let p_query_broadcast_chat_mute_fields = broadcast_chat_mute_fields;
+    let p_query_expansions = expansions;
+    let p_query_user_fields = user_fields;
+
+    let uri_str = format!("{}/2/broadcasts/chat/mutes", configuration.base_path);
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref param_value) = p_query_max_results {
+        req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
+    }
+    if let Some(ref param_value) = p_query_pagination_token {
+        req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
+    }
+    if let Some(ref param_value) = p_query_broadcast_chat_mute_fields {
+        req_builder = match "csv" {
+            "multi" => req_builder.query(&param_value.into_iter().map(|p| ("broadcast_chat_mute.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
+            _ => req_builder.query(&[("broadcast_chat_mute.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
+        };
+    }
+    if let Some(ref param_value) = p_query_expansions {
+        req_builder = match "csv" {
+            "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
+            _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
+        };
+    }
+    if let Some(ref param_value) = p_query_user_fields {
+        req_builder = match "csv" {
+            "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
+            _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
+        };
+    }
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.oauth_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::GetChatMutedUsersResponse`"))),
+            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::GetChatMutedUsersResponse`")))),
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<GetChatMutedUsersError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }

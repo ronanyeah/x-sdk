@@ -13,9 +13,11 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RemoveChatGroupMembersRequest {
-    /// Cryptographic signatures for the action.
+    /// Signatures for this action, forwarded in the order they are sent.
     #[serde(rename = "action_signatures", skip_serializing_if = "Option::is_none")]
     pub action_signatures: Option<Vec<models::RemoveChatGroupMembersActionSignatures>>,
+    #[serde(rename = "group_key_rotation_data", skip_serializing_if = "Option::is_none")]
+    pub group_key_rotation_data: Option<Box<models::RemoveChatGroupMembersGroupKeyRotationData>>,
     /// List of user IDs to remove from the group conversation.
     #[serde(rename = "user_ids")]
     pub user_ids: Vec<String>,
@@ -25,6 +27,7 @@ impl RemoveChatGroupMembersRequest {
     pub fn new(user_ids: Vec<String>) -> RemoveChatGroupMembersRequest {
         RemoveChatGroupMembersRequest {
             action_signatures: None,
+            group_key_rotation_data: None,
             user_ids,
         }
     }

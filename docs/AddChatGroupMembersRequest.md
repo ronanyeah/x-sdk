@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**action_signatures** | Option<[**Vec<models::AddChatGroupMembersActionSignatures>**](AddChatGroupMembersActionSignatures.md)> | Cryptographic signatures for the action. | [optional]
+**action_signatures** | Option<[**Vec<models::AddChatGroupMembersActionSignatures>**](AddChatGroupMembersActionSignatures.md)> | Signatures for this action, forwarded in the order they are sent. | [optional]
 **conversation_key_version** | Option<**String**> | Version of the new rotated conversation key. | [optional]
 **conversation_participant_keys** | Option<[**Vec<models::AddChatGroupMembersConversationParticipantKeys>**](AddChatGroupMembersConversationParticipantKeys.md)> | Encrypted conversation keys for each participant. | [optional]
 **encrypted_avatar_url** | Option<**String**> | Re-encrypted group avatar URL with new conversation key. | [optional]
