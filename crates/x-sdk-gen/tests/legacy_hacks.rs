@@ -15,11 +15,11 @@
 
 use serde::Deserialize;
 use serde_json::Value;
-use x_sdk::apis::{configuration::Configuration, users_api};
-use x_sdk::models::GetUsersFollowingResponse;
+use x_sdk_gen::apis::{configuration::Configuration, users_api};
+use x_sdk_gen::models::GetUsersFollowingResponse;
 
 type Following =
-    Result<GetUsersFollowingResponse, x_sdk::apis::Error<users_api::GetUsersFollowingError>>;
+    Result<GetUsersFollowingResponse, x_sdk_gen::apis::Error<users_api::GetUsersFollowingError>>;
 
 fn env(k: &str) -> String {
     std::env::var(k).unwrap_or_else(|_| panic!("{k} not set"))
@@ -154,7 +154,7 @@ fn problem_patch_still_required() {
         "spec-faithful Problem decodes: drop patch 03 ({strict:?})"
     );
 
-    let p: x_sdk::models::Problem = serde_json::from_str(PROBLEM).expect("patch 03 was lost");
+    let p: x_sdk_gen::models::Problem = serde_json::from_str(PROBLEM).expect("patch 03 was lost");
     let out = serde_json::to_value(&p).unwrap();
     assert_eq!(
         out["type"],

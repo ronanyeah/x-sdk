@@ -1,0 +1,13 @@
+[package]
+name = "x-sdk"
+version = "0.1.0"
+description = "X API v2 client"
+edition = "2024"
+
+[dependencies]
+x-sdk-gen = { path = "../x-sdk-gen", default-features = false }
+
+[features]
+default = ["rustls"]
+rustls = ["x-sdk-gen/rustls"]
+native-tls = ["x-sdk-gen/native-tls"]
