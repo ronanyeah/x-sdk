@@ -94,6 +94,22 @@ where
     }
 }
 
+#[cfg(feature = "stream")]
+impl<F, Fut, T, E> Pager<F>
+where
+    F: FnMut(Option<String>) -> Fut,
+    Fut: Future<Output = Result<T, E>>,
+    T: Paginated,
+{
+    /// The pages as a `Stream`. The stream ends after the last page, or after the first error.
+    pub fn into_stream(self) -> impl futures_util::Stream<Item = Result<T, E>> {
+        futures_util::stream::unfold(self, |mut pager| async move {
+            let page = pager.next_page().await?;
+            Some((page, pager))
+        })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

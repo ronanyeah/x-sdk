@@ -6,4 +6,6 @@ pub mod auth;
 pub mod config;
 mod paginated;
 pub mod pagination;
+#[cfg(feature = "stream")]
+pub mod stream;
 mod scope;

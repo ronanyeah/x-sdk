@@ -27,7 +27,7 @@ Method | HTTP request | Description
 
 ## activity_stream
 
-> models::ActivityStreamResponse activity_stream(backfill_minutes, start_time, end_time)
+> std::path::PathBuf activity_stream(backfill_minutes, start_time, end_time)
 Activity Stream
 
 Stream of X Activities
@@ -43,7 +43,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**models::ActivityStreamResponse**](ActivityStreamResponse.md)
+[**std::path::PathBuf**](std::path::PathBuf.md)
 
 ### Authorization
 
@@ -52,7 +52,7 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: application/json, application/problem+json
+- **Accept**: application/octet-stream, application/json, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -119,7 +119,7 @@ Name | Type | Description  | Required | Notes
 
 ## stream_labels_compliance
 
-> models::StreamLabelsComplianceResponse stream_labels_compliance(backfill_minutes, start_time, end_time)
+> std::path::PathBuf stream_labels_compliance(backfill_minutes, start_time, end_time)
 Stream Post labels
 
 Streams all labeling events applied to Posts.
@@ -135,7 +135,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**models::StreamLabelsComplianceResponse**](StreamLabelsComplianceResponse.md)
+[**std::path::PathBuf**](std::path::PathBuf.md)
 
 ### Authorization
 
@@ -144,14 +144,14 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: application/json, application/problem+json
+- **Accept**: application/octet-stream, application/json, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
 ## stream_likes_compliance
 
-> models::StreamLikesComplianceResponse stream_likes_compliance(backfill_minutes, start_time, end_time)
+> std::path::PathBuf stream_likes_compliance(backfill_minutes, start_time, end_time)
 Stream Likes compliance data
 
 Streams all compliance data related to Likes for Users.
@@ -167,7 +167,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**models::StreamLikesComplianceResponse**](StreamLikesComplianceResponse.md)
+[**std::path::PathBuf**](std::path::PathBuf.md)
 
 ### Authorization
 
@@ -176,14 +176,14 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: application/json, application/problem+json
+- **Accept**: application/octet-stream, application/json, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
 ## stream_likes_firehose
 
-> models::StreamLikesFirehoseResponse stream_likes_firehose(partition, backfill_minutes, start_time, end_time, like_with_tweet_author_fields, expansions, media_fields, user_fields, tweet_fields)
+> std::path::PathBuf stream_likes_firehose(partition, backfill_minutes, start_time, end_time, like_with_tweet_author_fields, expansions, media_fields, user_fields, tweet_fields)
 Stream all Likes
 
 Streams all public Likes in real-time.
@@ -205,7 +205,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**models::StreamLikesFirehoseResponse**](StreamLikesFirehoseResponse.md)
+[**std::path::PathBuf**](std::path::PathBuf.md)
 
 ### Authorization
 
@@ -214,14 +214,14 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: application/json, application/problem+json
+- **Accept**: application/octet-stream, application/json, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
 ## stream_likes_sample10
 
-> models::StreamLikesSample10Response stream_likes_sample10(partition, backfill_minutes, start_time, end_time, like_with_tweet_author_fields, expansions, media_fields, user_fields, tweet_fields)
+> std::path::PathBuf stream_likes_sample10(partition, backfill_minutes, start_time, end_time, like_with_tweet_author_fields, expansions, media_fields, user_fields, tweet_fields)
 Stream sampled Likes
 
 Streams a 10% sample of public Likes in real-time.
@@ -243,7 +243,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**models::StreamLikesSample10Response**](StreamLikesSample10Response.md)
+[**std::path::PathBuf**](std::path::PathBuf.md)
 
 ### Authorization
 
@@ -252,14 +252,14 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: application/json, application/problem+json
+- **Accept**: application/octet-stream, application/json, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
 ## stream_posts
 
-> models::StreamPostsResponse stream_posts(backfill_minutes, start_time, end_time, tweet_fields, expansions, media_fields, poll_fields, user_fields, place_fields)
+> std::path::PathBuf stream_posts(backfill_minutes, start_time, end_time, tweet_fields, expansions, media_fields, poll_fields, user_fields, place_fields)
 Stream filtered Posts
 
 Streams Posts in real-time matching the active rule set.
@@ -281,7 +281,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**models::StreamPostsResponse**](StreamPostsResponse.md)
+[**std::path::PathBuf**](std::path::PathBuf.md)
 
 ### Authorization
 
@@ -290,14 +290,14 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: application/json, application/problem+json
+- **Accept**: application/octet-stream, application/json, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
 ## stream_posts_compliance
 
-> models::StreamPostsComplianceResponse stream_posts_compliance(partition, backfill_minutes, start_time, end_time)
+> std::path::PathBuf stream_posts_compliance(partition, backfill_minutes, start_time, end_time)
 Stream Posts compliance data
 
 Streams all compliance data related to Posts.
@@ -314,7 +314,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**models::StreamPostsComplianceResponse**](StreamPostsComplianceResponse.md)
+[**std::path::PathBuf**](std::path::PathBuf.md)
 
 ### Authorization
 
@@ -323,14 +323,14 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: application/json, application/problem+json
+- **Accept**: application/octet-stream, application/json, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
 ## stream_posts_firehose
 
-> models::StreamPostsFirehoseResponse stream_posts_firehose(partition, backfill_minutes, tweet_fields, expansions, media_fields, poll_fields, user_fields, place_fields, start_time, end_time)
+> std::path::PathBuf stream_posts_firehose(partition, backfill_minutes, tweet_fields, expansions, media_fields, poll_fields, user_fields, place_fields, start_time, end_time)
 Stream all Posts
 
 Streams all public Posts in real-time.
@@ -353,7 +353,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**models::StreamPostsFirehoseResponse**](StreamPostsFirehoseResponse.md)
+[**std::path::PathBuf**](std::path::PathBuf.md)
 
 ### Authorization
 
@@ -362,14 +362,14 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: application/json, application/problem+json
+- **Accept**: application/octet-stream, application/json, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
 ## stream_posts_firehose_en
 
-> models::StreamPostsFirehoseEnResponse stream_posts_firehose_en(partition, backfill_minutes, tweet_fields, expansions, media_fields, poll_fields, user_fields, place_fields, start_time, end_time)
+> std::path::PathBuf stream_posts_firehose_en(partition, backfill_minutes, tweet_fields, expansions, media_fields, poll_fields, user_fields, place_fields, start_time, end_time)
 Stream English Posts
 
 Streams all public English-language Posts in real-time.
@@ -392,7 +392,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**models::StreamPostsFirehoseEnResponse**](StreamPostsFirehoseEnResponse.md)
+[**std::path::PathBuf**](std::path::PathBuf.md)
 
 ### Authorization
 
@@ -401,14 +401,14 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: application/json, application/problem+json
+- **Accept**: application/octet-stream, application/json, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
 ## stream_posts_firehose_ja
 
-> models::StreamPostsFirehoseJaResponse stream_posts_firehose_ja(partition, backfill_minutes, tweet_fields, expansions, media_fields, poll_fields, user_fields, place_fields, start_time, end_time)
+> std::path::PathBuf stream_posts_firehose_ja(partition, backfill_minutes, tweet_fields, expansions, media_fields, poll_fields, user_fields, place_fields, start_time, end_time)
 Stream Japanese Posts
 
 Streams all public Japanese-language Posts in real-time.
@@ -431,7 +431,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**models::StreamPostsFirehoseJaResponse**](StreamPostsFirehoseJaResponse.md)
+[**std::path::PathBuf**](std::path::PathBuf.md)
 
 ### Authorization
 
@@ -440,14 +440,14 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: application/json, application/problem+json
+- **Accept**: application/octet-stream, application/json, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
 ## stream_posts_firehose_ko
 
-> models::StreamPostsFirehoseKoResponse stream_posts_firehose_ko(partition, backfill_minutes, tweet_fields, expansions, media_fields, poll_fields, user_fields, place_fields, start_time, end_time)
+> std::path::PathBuf stream_posts_firehose_ko(partition, backfill_minutes, tweet_fields, expansions, media_fields, poll_fields, user_fields, place_fields, start_time, end_time)
 Stream Korean Posts
 
 Streams all public Korean-language Posts in real-time.
@@ -470,7 +470,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**models::StreamPostsFirehoseKoResponse**](StreamPostsFirehoseKoResponse.md)
+[**std::path::PathBuf**](std::path::PathBuf.md)
 
 ### Authorization
 
@@ -479,14 +479,14 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: application/json, application/problem+json
+- **Accept**: application/octet-stream, application/json, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
 ## stream_posts_firehose_pt
 
-> models::StreamPostsFirehosePtResponse stream_posts_firehose_pt(partition, backfill_minutes, tweet_fields, expansions, media_fields, poll_fields, user_fields, place_fields, start_time, end_time)
+> std::path::PathBuf stream_posts_firehose_pt(partition, backfill_minutes, tweet_fields, expansions, media_fields, poll_fields, user_fields, place_fields, start_time, end_time)
 Stream Portuguese Posts
 
 Streams all public Portuguese-language Posts in real-time.
@@ -509,7 +509,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**models::StreamPostsFirehosePtResponse**](StreamPostsFirehosePtResponse.md)
+[**std::path::PathBuf**](std::path::PathBuf.md)
 
 ### Authorization
 
@@ -518,14 +518,14 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: application/json, application/problem+json
+- **Accept**: application/octet-stream, application/json, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
 ## stream_posts_sample
 
-> models::StreamPostsSampleResponse stream_posts_sample(backfill_minutes, tweet_fields, expansions, media_fields, poll_fields, user_fields, place_fields)
+> std::path::PathBuf stream_posts_sample(backfill_minutes, tweet_fields, expansions, media_fields, poll_fields, user_fields, place_fields)
 Stream sampled Posts
 
 Streams a 1% sample of public Posts in real-time.
@@ -545,7 +545,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**models::StreamPostsSampleResponse**](StreamPostsSampleResponse.md)
+[**std::path::PathBuf**](std::path::PathBuf.md)
 
 ### Authorization
 
@@ -554,14 +554,14 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: application/json, application/problem+json
+- **Accept**: application/octet-stream, application/json, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
 ## stream_posts_sample10
 
-> models::StreamPostsSample10Response stream_posts_sample10(partition, backfill_minutes, tweet_fields, expansions, media_fields, poll_fields, user_fields, place_fields, start_time, end_time)
+> std::path::PathBuf stream_posts_sample10(partition, backfill_minutes, tweet_fields, expansions, media_fields, poll_fields, user_fields, place_fields, start_time, end_time)
 Stream 10% sampled Posts
 
 Streams a 10% sample of public Posts in real-time.
@@ -584,7 +584,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**models::StreamPostsSample10Response**](StreamPostsSample10Response.md)
+[**std::path::PathBuf**](std::path::PathBuf.md)
 
 ### Authorization
 
@@ -593,14 +593,14 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: application/json, application/problem+json
+- **Accept**: application/octet-stream, application/json, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
 ## stream_users_compliance
 
-> models::StreamUsersComplianceResponse stream_users_compliance(partition, backfill_minutes, start_time, end_time)
+> std::path::PathBuf stream_users_compliance(partition, backfill_minutes, start_time, end_time)
 Stream Users compliance data
 
 Streams all compliance data related to Users.
@@ -617,7 +617,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**models::StreamUsersComplianceResponse**](StreamUsersComplianceResponse.md)
+[**std::path::PathBuf**](std::path::PathBuf.md)
 
 ### Authorization
 
@@ -626,7 +626,7 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: application/json, application/problem+json
+- **Accept**: application/octet-stream, application/json, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

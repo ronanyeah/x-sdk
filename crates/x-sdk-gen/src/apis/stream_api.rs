@@ -161,7 +161,7 @@ pub enum UpdateRulesError {
 
 
 /// Stream of X Activities
-pub async fn activity_stream(configuration: &configuration::Configuration, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<models::ActivityStreamResponse, Error<ActivityStreamError>> {
+pub async fn activity_stream(configuration: &configuration::Configuration, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<ActivityStreamError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_backfill_minutes = backfill_minutes;
     let p_query_start_time = start_time;
@@ -196,20 +196,9 @@ pub async fn activity_stream(configuration: &configuration::Configuration, backf
     let resp = configuration.client.execute(req).await?;
 
     let status = resp.status();
-    let content_type = resp
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("application/octet-stream");
-    let content_type = super::ContentType::from(content_type);
 
     if !status.is_client_error() && !status.is_server_error() {
-        let content = resp.text().await?;
-        match content_type {
-            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::ActivityStreamResponse`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::ActivityStreamResponse`")))),
-        }
+        Ok(resp)
     } else {
         let content = resp.text().await?;
         let entity: Option<ActivityStreamError> = serde_json::from_str(&content).ok();
@@ -326,7 +315,7 @@ pub async fn get_rules(configuration: &configuration::Configuration, ids: Option
 }
 
 /// Streams all labeling events applied to Posts.
-pub async fn stream_labels_compliance(configuration: &configuration::Configuration, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<models::StreamLabelsComplianceResponse, Error<StreamLabelsComplianceError>> {
+pub async fn stream_labels_compliance(configuration: &configuration::Configuration, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamLabelsComplianceError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_backfill_minutes = backfill_minutes;
     let p_query_start_time = start_time;
@@ -361,20 +350,9 @@ pub async fn stream_labels_compliance(configuration: &configuration::Configurati
     let resp = configuration.client.execute(req).await?;
 
     let status = resp.status();
-    let content_type = resp
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("application/octet-stream");
-    let content_type = super::ContentType::from(content_type);
 
     if !status.is_client_error() && !status.is_server_error() {
-        let content = resp.text().await?;
-        match content_type {
-            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::StreamLabelsComplianceResponse`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::StreamLabelsComplianceResponse`")))),
-        }
+        Ok(resp)
     } else {
         let content = resp.text().await?;
         let entity: Option<StreamLabelsComplianceError> = serde_json::from_str(&content).ok();
@@ -383,7 +361,7 @@ pub async fn stream_labels_compliance(configuration: &configuration::Configurati
 }
 
 /// Streams all compliance data related to Likes for Users.
-pub async fn stream_likes_compliance(configuration: &configuration::Configuration, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<models::StreamLikesComplianceResponse, Error<StreamLikesComplianceError>> {
+pub async fn stream_likes_compliance(configuration: &configuration::Configuration, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamLikesComplianceError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_backfill_minutes = backfill_minutes;
     let p_query_start_time = start_time;
@@ -418,20 +396,9 @@ pub async fn stream_likes_compliance(configuration: &configuration::Configuratio
     let resp = configuration.client.execute(req).await?;
 
     let status = resp.status();
-    let content_type = resp
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("application/octet-stream");
-    let content_type = super::ContentType::from(content_type);
 
     if !status.is_client_error() && !status.is_server_error() {
-        let content = resp.text().await?;
-        match content_type {
-            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::StreamLikesComplianceResponse`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::StreamLikesComplianceResponse`")))),
-        }
+        Ok(resp)
     } else {
         let content = resp.text().await?;
         let entity: Option<StreamLikesComplianceError> = serde_json::from_str(&content).ok();
@@ -440,7 +407,7 @@ pub async fn stream_likes_compliance(configuration: &configuration::Configuratio
 }
 
 /// Streams all public Likes in real-time.
-pub async fn stream_likes_firehose(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, like_with_tweet_author_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, tweet_fields: Option<Vec<String>>) -> Result<models::StreamLikesFirehoseResponse, Error<StreamLikesFirehoseError>> {
+pub async fn stream_likes_firehose(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, like_with_tweet_author_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, tweet_fields: Option<Vec<String>>) -> Result<reqwest::Response, Error<StreamLikesFirehoseError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_partition = partition;
     let p_query_backfill_minutes = backfill_minutes;
@@ -512,20 +479,9 @@ pub async fn stream_likes_firehose(configuration: &configuration::Configuration,
     let resp = configuration.client.execute(req).await?;
 
     let status = resp.status();
-    let content_type = resp
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("application/octet-stream");
-    let content_type = super::ContentType::from(content_type);
 
     if !status.is_client_error() && !status.is_server_error() {
-        let content = resp.text().await?;
-        match content_type {
-            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::StreamLikesFirehoseResponse`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::StreamLikesFirehoseResponse`")))),
-        }
+        Ok(resp)
     } else {
         let content = resp.text().await?;
         let entity: Option<StreamLikesFirehoseError> = serde_json::from_str(&content).ok();
@@ -534,7 +490,7 @@ pub async fn stream_likes_firehose(configuration: &configuration::Configuration,
 }
 
 /// Streams a 10% sample of public Likes in real-time.
-pub async fn stream_likes_sample10(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, like_with_tweet_author_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, tweet_fields: Option<Vec<String>>) -> Result<models::StreamLikesSample10Response, Error<StreamLikesSample10Error>> {
+pub async fn stream_likes_sample10(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, like_with_tweet_author_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, tweet_fields: Option<Vec<String>>) -> Result<reqwest::Response, Error<StreamLikesSample10Error>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_partition = partition;
     let p_query_backfill_minutes = backfill_minutes;
@@ -606,20 +562,9 @@ pub async fn stream_likes_sample10(configuration: &configuration::Configuration,
     let resp = configuration.client.execute(req).await?;
 
     let status = resp.status();
-    let content_type = resp
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("application/octet-stream");
-    let content_type = super::ContentType::from(content_type);
 
     if !status.is_client_error() && !status.is_server_error() {
-        let content = resp.text().await?;
-        match content_type {
-            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::StreamLikesSample10Response`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::StreamLikesSample10Response`")))),
-        }
+        Ok(resp)
     } else {
         let content = resp.text().await?;
         let entity: Option<StreamLikesSample10Error> = serde_json::from_str(&content).ok();
@@ -628,7 +573,7 @@ pub async fn stream_likes_sample10(configuration: &configuration::Configuration,
 }
 
 /// Streams Posts in real-time matching the active rule set.
-pub async fn stream_posts(configuration: &configuration::Configuration, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<models::StreamPostsResponse, Error<StreamPostsError>> {
+pub async fn stream_posts(configuration: &configuration::Configuration, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<reqwest::Response, Error<StreamPostsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_backfill_minutes = backfill_minutes;
     let p_query_start_time = start_time;
@@ -705,20 +650,9 @@ pub async fn stream_posts(configuration: &configuration::Configuration, backfill
     let resp = configuration.client.execute(req).await?;
 
     let status = resp.status();
-    let content_type = resp
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("application/octet-stream");
-    let content_type = super::ContentType::from(content_type);
 
     if !status.is_client_error() && !status.is_server_error() {
-        let content = resp.text().await?;
-        match content_type {
-            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::StreamPostsResponse`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::StreamPostsResponse`")))),
-        }
+        Ok(resp)
     } else {
         let content = resp.text().await?;
         let entity: Option<StreamPostsError> = serde_json::from_str(&content).ok();
@@ -727,7 +661,7 @@ pub async fn stream_posts(configuration: &configuration::Configuration, backfill
 }
 
 /// Streams all compliance data related to Posts.
-pub async fn stream_posts_compliance(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<models::StreamPostsComplianceResponse, Error<StreamPostsComplianceError>> {
+pub async fn stream_posts_compliance(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamPostsComplianceError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_partition = partition;
     let p_query_backfill_minutes = backfill_minutes;
@@ -764,20 +698,9 @@ pub async fn stream_posts_compliance(configuration: &configuration::Configuratio
     let resp = configuration.client.execute(req).await?;
 
     let status = resp.status();
-    let content_type = resp
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("application/octet-stream");
-    let content_type = super::ContentType::from(content_type);
 
     if !status.is_client_error() && !status.is_server_error() {
-        let content = resp.text().await?;
-        match content_type {
-            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::StreamPostsComplianceResponse`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::StreamPostsComplianceResponse`")))),
-        }
+        Ok(resp)
     } else {
         let content = resp.text().await?;
         let entity: Option<StreamPostsComplianceError> = serde_json::from_str(&content).ok();
@@ -786,7 +709,7 @@ pub async fn stream_posts_compliance(configuration: &configuration::Configuratio
 }
 
 /// Streams all public Posts in real-time.
-pub async fn stream_posts_firehose(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<models::StreamPostsFirehoseResponse, Error<StreamPostsFirehoseError>> {
+pub async fn stream_posts_firehose(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamPostsFirehoseError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_partition = partition;
     let p_query_backfill_minutes = backfill_minutes;
@@ -865,20 +788,9 @@ pub async fn stream_posts_firehose(configuration: &configuration::Configuration,
     let resp = configuration.client.execute(req).await?;
 
     let status = resp.status();
-    let content_type = resp
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("application/octet-stream");
-    let content_type = super::ContentType::from(content_type);
 
     if !status.is_client_error() && !status.is_server_error() {
-        let content = resp.text().await?;
-        match content_type {
-            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::StreamPostsFirehoseResponse`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::StreamPostsFirehoseResponse`")))),
-        }
+        Ok(resp)
     } else {
         let content = resp.text().await?;
         let entity: Option<StreamPostsFirehoseError> = serde_json::from_str(&content).ok();
@@ -887,7 +799,7 @@ pub async fn stream_posts_firehose(configuration: &configuration::Configuration,
 }
 
 /// Streams all public English-language Posts in real-time.
-pub async fn stream_posts_firehose_en(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<models::StreamPostsFirehoseEnResponse, Error<StreamPostsFirehoseEnError>> {
+pub async fn stream_posts_firehose_en(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamPostsFirehoseEnError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_partition = partition;
     let p_query_backfill_minutes = backfill_minutes;
@@ -966,20 +878,9 @@ pub async fn stream_posts_firehose_en(configuration: &configuration::Configurati
     let resp = configuration.client.execute(req).await?;
 
     let status = resp.status();
-    let content_type = resp
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("application/octet-stream");
-    let content_type = super::ContentType::from(content_type);
 
     if !status.is_client_error() && !status.is_server_error() {
-        let content = resp.text().await?;
-        match content_type {
-            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::StreamPostsFirehoseEnResponse`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::StreamPostsFirehoseEnResponse`")))),
-        }
+        Ok(resp)
     } else {
         let content = resp.text().await?;
         let entity: Option<StreamPostsFirehoseEnError> = serde_json::from_str(&content).ok();
@@ -988,7 +889,7 @@ pub async fn stream_posts_firehose_en(configuration: &configuration::Configurati
 }
 
 /// Streams all public Japanese-language Posts in real-time.
-pub async fn stream_posts_firehose_ja(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<models::StreamPostsFirehoseJaResponse, Error<StreamPostsFirehoseJaError>> {
+pub async fn stream_posts_firehose_ja(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamPostsFirehoseJaError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_partition = partition;
     let p_query_backfill_minutes = backfill_minutes;
@@ -1067,20 +968,9 @@ pub async fn stream_posts_firehose_ja(configuration: &configuration::Configurati
     let resp = configuration.client.execute(req).await?;
 
     let status = resp.status();
-    let content_type = resp
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("application/octet-stream");
-    let content_type = super::ContentType::from(content_type);
 
     if !status.is_client_error() && !status.is_server_error() {
-        let content = resp.text().await?;
-        match content_type {
-            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::StreamPostsFirehoseJaResponse`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::StreamPostsFirehoseJaResponse`")))),
-        }
+        Ok(resp)
     } else {
         let content = resp.text().await?;
         let entity: Option<StreamPostsFirehoseJaError> = serde_json::from_str(&content).ok();
@@ -1089,7 +979,7 @@ pub async fn stream_posts_firehose_ja(configuration: &configuration::Configurati
 }
 
 /// Streams all public Korean-language Posts in real-time.
-pub async fn stream_posts_firehose_ko(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<models::StreamPostsFirehoseKoResponse, Error<StreamPostsFirehoseKoError>> {
+pub async fn stream_posts_firehose_ko(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamPostsFirehoseKoError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_partition = partition;
     let p_query_backfill_minutes = backfill_minutes;
@@ -1168,20 +1058,9 @@ pub async fn stream_posts_firehose_ko(configuration: &configuration::Configurati
     let resp = configuration.client.execute(req).await?;
 
     let status = resp.status();
-    let content_type = resp
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("application/octet-stream");
-    let content_type = super::ContentType::from(content_type);
 
     if !status.is_client_error() && !status.is_server_error() {
-        let content = resp.text().await?;
-        match content_type {
-            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::StreamPostsFirehoseKoResponse`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::StreamPostsFirehoseKoResponse`")))),
-        }
+        Ok(resp)
     } else {
         let content = resp.text().await?;
         let entity: Option<StreamPostsFirehoseKoError> = serde_json::from_str(&content).ok();
@@ -1190,7 +1069,7 @@ pub async fn stream_posts_firehose_ko(configuration: &configuration::Configurati
 }
 
 /// Streams all public Portuguese-language Posts in real-time.
-pub async fn stream_posts_firehose_pt(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<models::StreamPostsFirehosePtResponse, Error<StreamPostsFirehosePtError>> {
+pub async fn stream_posts_firehose_pt(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamPostsFirehosePtError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_partition = partition;
     let p_query_backfill_minutes = backfill_minutes;
@@ -1269,20 +1148,9 @@ pub async fn stream_posts_firehose_pt(configuration: &configuration::Configurati
     let resp = configuration.client.execute(req).await?;
 
     let status = resp.status();
-    let content_type = resp
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("application/octet-stream");
-    let content_type = super::ContentType::from(content_type);
 
     if !status.is_client_error() && !status.is_server_error() {
-        let content = resp.text().await?;
-        match content_type {
-            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::StreamPostsFirehosePtResponse`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::StreamPostsFirehosePtResponse`")))),
-        }
+        Ok(resp)
     } else {
         let content = resp.text().await?;
         let entity: Option<StreamPostsFirehosePtError> = serde_json::from_str(&content).ok();
@@ -1291,7 +1159,7 @@ pub async fn stream_posts_firehose_pt(configuration: &configuration::Configurati
 }
 
 /// Streams a 1% sample of public Posts in real-time.
-pub async fn stream_posts_sample(configuration: &configuration::Configuration, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<models::StreamPostsSampleResponse, Error<StreamPostsSampleError>> {
+pub async fn stream_posts_sample(configuration: &configuration::Configuration, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<reqwest::Response, Error<StreamPostsSampleError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_backfill_minutes = backfill_minutes;
     let p_query_tweet_fields = tweet_fields;
@@ -1360,20 +1228,9 @@ pub async fn stream_posts_sample(configuration: &configuration::Configuration, b
     let resp = configuration.client.execute(req).await?;
 
     let status = resp.status();
-    let content_type = resp
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("application/octet-stream");
-    let content_type = super::ContentType::from(content_type);
 
     if !status.is_client_error() && !status.is_server_error() {
-        let content = resp.text().await?;
-        match content_type {
-            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::StreamPostsSampleResponse`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::StreamPostsSampleResponse`")))),
-        }
+        Ok(resp)
     } else {
         let content = resp.text().await?;
         let entity: Option<StreamPostsSampleError> = serde_json::from_str(&content).ok();
@@ -1382,7 +1239,7 @@ pub async fn stream_posts_sample(configuration: &configuration::Configuration, b
 }
 
 /// Streams a 10% sample of public Posts in real-time.
-pub async fn stream_posts_sample10(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<models::StreamPostsSample10Response, Error<StreamPostsSample10Error>> {
+pub async fn stream_posts_sample10(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamPostsSample10Error>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_partition = partition;
     let p_query_backfill_minutes = backfill_minutes;
@@ -1461,20 +1318,9 @@ pub async fn stream_posts_sample10(configuration: &configuration::Configuration,
     let resp = configuration.client.execute(req).await?;
 
     let status = resp.status();
-    let content_type = resp
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("application/octet-stream");
-    let content_type = super::ContentType::from(content_type);
 
     if !status.is_client_error() && !status.is_server_error() {
-        let content = resp.text().await?;
-        match content_type {
-            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::StreamPostsSample10Response`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::StreamPostsSample10Response`")))),
-        }
+        Ok(resp)
     } else {
         let content = resp.text().await?;
         let entity: Option<StreamPostsSample10Error> = serde_json::from_str(&content).ok();
@@ -1483,7 +1329,7 @@ pub async fn stream_posts_sample10(configuration: &configuration::Configuration,
 }
 
 /// Streams all compliance data related to Users.
-pub async fn stream_users_compliance(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<models::StreamUsersComplianceResponse, Error<StreamUsersComplianceError>> {
+pub async fn stream_users_compliance(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamUsersComplianceError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_partition = partition;
     let p_query_backfill_minutes = backfill_minutes;
@@ -1520,20 +1366,9 @@ pub async fn stream_users_compliance(configuration: &configuration::Configuratio
     let resp = configuration.client.execute(req).await?;
 
     let status = resp.status();
-    let content_type = resp
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("application/octet-stream");
-    let content_type = super::ContentType::from(content_type);
 
     if !status.is_client_error() && !status.is_server_error() {
-        let content = resp.text().await?;
-        match content_type {
-            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::StreamUsersComplianceResponse`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::StreamUsersComplianceResponse`")))),
-        }
+        Ok(resp)
     } else {
         let content = resp.text().await?;
         let entity: Option<StreamUsersComplianceError> = serde_json::from_str(&content).ok();
