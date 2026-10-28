@@ -17,6 +17,9 @@ tokio = { version = "1.54.1", features = ["io-util", "net"], optional = true }
 url = "2.5.8"
 x-sdk-gen = { path = "../x-sdk-gen", default-features = false }
 
+[dev-dependencies]
+tokio = { version = "1.54.1", features = ["macros", "rt"] }
+
 [features]
 default = ["rustls"]
 # `OAuth2Client::authorize_local`: a one-shot localhost listener for the redirect.

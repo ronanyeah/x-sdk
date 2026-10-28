@@ -10,8 +10,7 @@
 //! dropped. If the SDK check fails, a regenerate lost the patch. Failure messages name
 //! the patch.
 //!
-//! Offline: `cargo test --test legacy_hacks`
-//! Live:    `X_USER_TOKEN=... X_USER_ID=... cargo test --test legacy_hacks -- --ignored`
+//! The `#[ignore]` tests are live and need `X_USER_TOKEN` and `X_USER_ID`.
 
 use serde::Deserialize;
 use serde_json::Value;

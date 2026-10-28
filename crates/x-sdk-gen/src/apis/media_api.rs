@@ -115,9 +115,15 @@ pub async fn append_media_upload(configuration: &configuration::Configuration, i
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_append_media_upload_request);
 
     let req = req_builder.build()?;
@@ -156,9 +162,15 @@ pub async fn create_media_metadata(configuration: &configuration::Configuration,
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_create_media_metadata_request);
 
     let req = req_builder.build()?;
@@ -197,9 +209,15 @@ pub async fn create_media_subtitles(configuration: &configuration::Configuration
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_create_media_subtitles_request);
 
     let req = req_builder.build()?;
@@ -238,9 +256,15 @@ pub async fn delete_media_subtitles(configuration: &configuration::Configuration
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_delete_media_subtitles_request);
 
     let req = req_builder.build()?;
@@ -279,9 +303,15 @@ pub async fn finalize_media_upload(configuration: &configuration::Configuration,
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -337,9 +367,15 @@ pub async fn get_media_analytics(configuration: &configuration::Configuration, m
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -383,12 +419,19 @@ pub async fn get_media_by_media_key(configuration: &configuration::Configuration
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
-    if let Some(ref token) = configuration.bearer_access_token {
+    if !authorized && let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -436,12 +479,19 @@ pub async fn get_media_by_media_keys(configuration: &configuration::Configuratio
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
-    if let Some(ref token) = configuration.bearer_access_token {
+    if !authorized && let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -484,9 +534,15 @@ pub async fn get_media_upload_status(configuration: &configuration::Configuratio
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -524,9 +580,15 @@ pub async fn initialize_media_upload(configuration: &configuration::Configuratio
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_initialize_media_upload_request);
 
     let req = req_builder.build()?;
@@ -565,9 +627,15 @@ pub async fn media_upload(configuration: &configuration::Configuration, media_up
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_media_upload_request);
 
     let req = req_builder.build()?;

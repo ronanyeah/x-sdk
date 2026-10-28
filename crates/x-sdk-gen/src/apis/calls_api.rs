@@ -119,9 +119,15 @@ pub async fn cancel_scheduled_call(configuration: &configuration::Configuration,
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -159,9 +165,15 @@ pub async fn create_call(configuration: &configuration::Configuration, create_ca
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_create_call_request);
 
     let req = req_builder.build()?;
@@ -221,9 +233,15 @@ pub async fn get_call(configuration: &configuration::Configuration, id: &str, ca
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -289,9 +307,15 @@ pub async fn get_scheduled_call(configuration: &configuration::Configuration, id
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -330,9 +354,15 @@ pub async fn join_call(configuration: &configuration::Configuration, id: &str, j
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_join_call_request);
 
     let req = req_builder.build()?;
@@ -371,9 +401,15 @@ pub async fn leave_call(configuration: &configuration::Configuration, id: &str) 
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -450,9 +486,15 @@ pub async fn list_scheduled_calls(configuration: &configuration::Configuration, 
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -491,9 +533,15 @@ pub async fn respond_to_scheduled_call(configuration: &configuration::Configurat
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_respond_to_scheduled_call_request);
 
     let req = req_builder.build()?;
@@ -532,9 +580,15 @@ pub async fn schedule_call(configuration: &configuration::Configuration, schedul
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_schedule_call_request);
 
     let req = req_builder.build()?;
@@ -574,9 +628,15 @@ pub async fn update_scheduled_call(configuration: &configuration::Configuration,
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_update_scheduled_call_request);
 
     let req = req_builder.build()?;

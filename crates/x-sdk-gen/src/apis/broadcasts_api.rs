@@ -259,9 +259,15 @@ pub async fn add_chat_moderator(configuration: &configuration::Configuration, ad
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_add_chat_moderator_request);
 
     let req = req_builder.build()?;
@@ -300,9 +306,15 @@ pub async fn create_scheduled_broadcast(configuration: &configuration::Configura
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_create_scheduled_broadcast_request);
 
     let req = req_builder.build()?;
@@ -341,9 +353,15 @@ pub async fn create_source(configuration: &configuration::Configuration, create_
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_create_source_request);
 
     let req = req_builder.build()?;
@@ -383,9 +401,15 @@ pub async fn create_user_source(configuration: &configuration::Configuration, id
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_create_user_source_request);
 
     let req = req_builder.build()?;
@@ -425,9 +449,15 @@ pub async fn delete_broadcast_chat_message(configuration: &configuration::Config
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -469,9 +499,15 @@ pub async fn delete_scheduled_broadcast(configuration: &configuration::Configura
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -509,9 +545,15 @@ pub async fn delete_source(configuration: &configuration::Configuration, id: &st
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -550,9 +592,15 @@ pub async fn delete_user_source(configuration: &configuration::Configuration, id
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -597,9 +645,15 @@ pub async fn get_broadcast(configuration: &configuration::Configuration, id: &st
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -666,9 +720,15 @@ pub async fn get_broadcast_chat(configuration: &configuration::Configuration, id
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -726,9 +786,15 @@ pub async fn get_chat_moderators(configuration: &configuration::Configuration, u
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -794,9 +860,15 @@ pub async fn get_chat_muted_users(configuration: &configuration::Configuration, 
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -834,9 +906,15 @@ pub async fn get_scheduled_broadcast(configuration: &configuration::Configuratio
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -874,9 +952,15 @@ pub async fn get_source(configuration: &configuration::Configuration, id: &str) 
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -915,9 +999,15 @@ pub async fn get_user_source(configuration: &configuration::Configuration, id: &
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -955,9 +1045,15 @@ pub async fn go_live_scheduled_broadcast(configuration: &configuration::Configur
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1016,9 +1112,15 @@ pub async fn list_broadcasts(configuration: &configuration::Configuration, ids: 
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1071,9 +1173,15 @@ pub async fn list_scheduled_broadcasts(configuration: &configuration::Configurat
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1109,9 +1217,15 @@ pub async fn list_sources(configuration: &configuration::Configuration, ) -> Res
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1149,9 +1263,15 @@ pub async fn list_user_sources(configuration: &configuration::Configuration, id:
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1190,9 +1310,15 @@ pub async fn mute_broadcast_chat_user(configuration: &configuration::Configurati
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_mute_broadcast_chat_user_request);
 
     let req = req_builder.build()?;
@@ -1231,9 +1357,15 @@ pub async fn mute_chat_user(configuration: &configuration::Configuration, mute_c
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_mute_chat_user_request);
 
     let req = req_builder.build()?;
@@ -1272,9 +1404,15 @@ pub async fn remove_chat_moderator(configuration: &configuration::Configuration,
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1313,9 +1451,15 @@ pub async fn send_broadcast_chat(configuration: &configuration::Configuration, i
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_send_broadcast_chat_request);
 
     let req = req_builder.build()?;
@@ -1355,9 +1499,15 @@ pub async fn unmute_broadcast_chat_user(configuration: &configuration::Configura
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1399,9 +1549,15 @@ pub async fn unmute_chat_user(configuration: &configuration::Configuration, user
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1440,9 +1596,15 @@ pub async fn update_scheduled_broadcast(configuration: &configuration::Configura
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_update_scheduled_broadcast_request);
 
     let req = req_builder.build()?;
@@ -1482,9 +1644,15 @@ pub async fn update_source(configuration: &configuration::Configuration, id: &st
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_update_source_request);
 
     let req = req_builder.build()?;
@@ -1525,9 +1693,15 @@ pub async fn update_user_source(configuration: &configuration::Configuration, id
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
     };
+    let _ = authorized;
     req_builder = req_builder.json(&p_body_update_user_source_request);
 
     let req = req_builder.build()?;

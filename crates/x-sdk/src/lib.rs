@@ -4,4 +4,6 @@ pub use x_sdk_gen::{apis, models};
 
 pub mod auth;
 pub mod config;
+mod paginated;
+pub mod pagination;
 mod scope;

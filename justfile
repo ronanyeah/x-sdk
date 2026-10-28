@@ -8,3 +8,8 @@ fetch-schema:
 gen-scopes:
     jq -r -f scripts/gen-scope.jq openapi.json > crates/x-sdk/src/scope.rs
     rustfmt --edition 2024 crates/x-sdk/src/scope.rs
+
+# Response types with meta.next_token in openapi.json -> crates/x-sdk/src/paginated.rs
+gen-paginated:
+    jq -r -f scripts/gen-paginated.jq openapi.json > crates/x-sdk/src/paginated.rs
+    rustfmt --edition 2024 crates/x-sdk/src/paginated.rs
