@@ -14,6 +14,49 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`create_bot`]
+#[derive(Clone, Debug)]
+pub struct CreateBotParams {
+    pub create_bot_request: models::CreateBotRequest
+}
+
+/// struct for passing parameters to the method [`delete_bot`]
+#[derive(Clone, Debug, Default)]
+pub struct DeleteBotParams {
+    pub id: String
+}
+
+/// struct for passing parameters to the method [`get_bots`]
+#[derive(Clone, Debug, Default)]
+pub struct GetBotsParams {
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::UserExpansion>>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>
+}
+
+/// struct for passing parameters to the method [`revoke_bot_token`]
+#[derive(Clone, Debug, Default)]
+pub struct RevokeBotTokenParams {
+    pub id: String
+}
+
+/// struct for passing parameters to the method [`rotate_bot_token`]
+#[derive(Clone, Debug)]
+pub struct RotateBotTokenParams {
+    pub id: String,
+    pub rotate_bot_token_request: models::RotateBotTokenRequest
+}
+
+/// struct for passing parameters to the method [`update_bot`]
+#[derive(Clone, Debug)]
+pub struct UpdateBotParams {
+    pub id: String,
+    pub update_bot_request: models::UpdateBotRequest
+}
+
 
 /// struct for typed errors of method [`create_bot`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -65,9 +108,7 @@ pub enum UpdateBotError {
 
 
 /// Creates a bot account in the calling app's project and returns its bearer token. Idempotent on handle: repeating the request for a handle that already names one of the project's bots returns that bot with a freshly minted token, revoking the previous one — safe to retry when a response was lost, since the replaced token was never seen.
-pub async fn create_bot(configuration: &configuration::Configuration, create_bot_request: models::CreateBotRequest) -> Result<models::CreateBotResponse, Error<CreateBotError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_create_bot_request = create_bot_request;
+pub async fn create_bot(configuration: &configuration::Configuration, params: CreateBotParams) -> Result<models::CreateBotResponse, Error<CreateBotError>> {
 
     let uri_str = format!("{}/2/bots", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -84,7 +125,7 @@ pub async fn create_bot(configuration: &configuration::Configuration, create_bot
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_bot_request);
+    req_builder = req_builder.json(&params.create_bot_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -111,11 +152,9 @@ pub async fn create_bot(configuration: &configuration::Configuration, create_bot
     }
 }
 
-pub async fn delete_bot(configuration: &configuration::Configuration, id: &str) -> Result<models::DeleteBotResponse, Error<DeleteBotError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
+pub async fn delete_bot(configuration: &configuration::Configuration, params: DeleteBotParams) -> Result<models::DeleteBotResponse, Error<DeleteBotError>> {
 
-    let uri_str = format!("{}/2/bots/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/bots/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -156,28 +195,24 @@ pub async fn delete_bot(configuration: &configuration::Configuration, id: &str) 
     }
 }
 
-pub async fn get_bots(configuration: &configuration::Configuration, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetBotsResponse, Error<GetBotsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_user_fields = user_fields;
-    let p_query_expansions = expansions;
-    let p_query_post_fields = post_fields;
+pub async fn get_bots(configuration: &configuration::Configuration, params: GetBotsParams) -> Result<models::GetBotsResponse, Error<GetBotsError>> {
 
     let uri_str = format!("{}/2/bots", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -221,11 +256,9 @@ pub async fn get_bots(configuration: &configuration::Configuration, user_fields:
     }
 }
 
-pub async fn revoke_bot_token(configuration: &configuration::Configuration, id: &str) -> Result<models::RevokeBotTokenResponse, Error<RevokeBotTokenError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
+pub async fn revoke_bot_token(configuration: &configuration::Configuration, params: RevokeBotTokenParams) -> Result<models::RevokeBotTokenResponse, Error<RevokeBotTokenError>> {
 
-    let uri_str = format!("{}/2/bots/{id}/token", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/bots/{id}/token", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -266,12 +299,9 @@ pub async fn revoke_bot_token(configuration: &configuration::Configuration, id: 
     }
 }
 
-pub async fn rotate_bot_token(configuration: &configuration::Configuration, id: &str, rotate_bot_token_request: models::RotateBotTokenRequest) -> Result<models::RotateBotTokenResponse, Error<RotateBotTokenError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_rotate_bot_token_request = rotate_bot_token_request;
+pub async fn rotate_bot_token(configuration: &configuration::Configuration, params: RotateBotTokenParams) -> Result<models::RotateBotTokenResponse, Error<RotateBotTokenError>> {
 
-    let uri_str = format!("{}/2/bots/{id}/token", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/bots/{id}/token", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -286,7 +316,7 @@ pub async fn rotate_bot_token(configuration: &configuration::Configuration, id: 
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_rotate_bot_token_request);
+    req_builder = req_builder.json(&params.rotate_bot_token_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -313,12 +343,9 @@ pub async fn rotate_bot_token(configuration: &configuration::Configuration, id: 
     }
 }
 
-pub async fn update_bot(configuration: &configuration::Configuration, id: &str, update_bot_request: models::UpdateBotRequest) -> Result<models::UpdateBotResponse, Error<UpdateBotError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_update_bot_request = update_bot_request;
+pub async fn update_bot(configuration: &configuration::Configuration, params: UpdateBotParams) -> Result<models::UpdateBotResponse, Error<UpdateBotError>> {
 
-    let uri_str = format!("{}/2/bots/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/bots/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -333,7 +360,7 @@ pub async fn update_bot(configuration: &configuration::Configuration, id: &str, 
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_update_bot_request);
+    req_builder = req_builder.json(&params.update_bot_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;

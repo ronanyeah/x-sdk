@@ -14,6 +14,115 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`create_direct_messages_by_conversation_id`]
+#[derive(Clone, Debug)]
+pub struct CreateDirectMessagesByConversationIdParams {
+    pub dm_conversation_id: String,
+    pub create_direct_messages_by_conversation_id_request: Option<models::CreateDirectMessagesByConversationIdRequest>
+}
+
+/// struct for passing parameters to the method [`create_direct_messages_by_participant_id`]
+#[derive(Clone, Debug)]
+pub struct CreateDirectMessagesByParticipantIdParams {
+    pub participant_id: String,
+    pub create_direct_messages_by_participant_id_request: Option<models::CreateDirectMessagesByParticipantIdRequest>
+}
+
+/// struct for passing parameters to the method [`create_direct_messages_conversation`]
+#[derive(Clone, Debug)]
+pub struct CreateDirectMessagesConversationParams {
+    pub create_direct_messages_conversation_request: models::CreateDirectMessagesConversationRequest
+}
+
+/// struct for passing parameters to the method [`delete_direct_messages_events`]
+#[derive(Clone, Debug, Default)]
+pub struct DeleteDirectMessagesEventsParams {
+    pub event_id: String
+}
+
+/// struct for passing parameters to the method [`dm_conversations_media_download`]
+#[derive(Clone, Debug, Default)]
+pub struct DmConversationsMediaDownloadParams {
+    pub dm_id: String,
+    pub media_id: String,
+    pub resource_id: String
+}
+
+/// struct for passing parameters to the method [`get_direct_messages_events`]
+#[derive(Clone, Debug, Default)]
+pub struct GetDirectMessagesEventsParams {
+    pub max_results: Option<i32>,
+    /// A base32hex-encoded pagination token.
+    pub pagination_token: Option<String>,
+    pub event_types: Option<Vec<String>>,
+    /// A comma separated list of DmEvent fields to display.
+    pub dm_event_fields: Option<Vec<models::DmEventField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::DmEventExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<models::MediaField>>
+}
+
+/// struct for passing parameters to the method [`get_direct_messages_events_by_conversation_id`]
+#[derive(Clone, Debug, Default)]
+pub struct GetDirectMessagesEventsByConversationIdParams {
+    pub id: String,
+    pub max_results: Option<i32>,
+    /// A base32hex-encoded pagination token.
+    pub pagination_token: Option<String>,
+    pub event_types: Option<Vec<String>>,
+    /// A comma separated list of DmEvent fields to display.
+    pub dm_event_fields: Option<Vec<models::DmEventField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::DmEventExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<models::MediaField>>
+}
+
+/// struct for passing parameters to the method [`get_direct_messages_events_by_id`]
+#[derive(Clone, Debug, Default)]
+pub struct GetDirectMessagesEventsByIdParams {
+    pub event_id: String,
+    /// A comma separated list of DmEvent fields to display.
+    pub dm_event_fields: Option<Vec<models::DmEventField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::DmEventExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<models::MediaField>>
+}
+
+/// struct for passing parameters to the method [`get_direct_messages_events_by_participant_id`]
+#[derive(Clone, Debug, Default)]
+pub struct GetDirectMessagesEventsByParticipantIdParams {
+    pub participant_id: String,
+    pub max_results: Option<i32>,
+    /// A base32hex-encoded pagination token.
+    pub pagination_token: Option<String>,
+    pub event_types: Option<Vec<String>>,
+    /// A comma separated list of DmEvent fields to display.
+    pub dm_event_fields: Option<Vec<models::DmEventField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::DmEventExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<models::MediaField>>
+}
+
 
 /// struct for typed errors of method [`create_direct_messages_by_conversation_id`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -88,12 +197,9 @@ pub enum GetDirectMessagesEventsByParticipantIdError {
 }
 
 
-pub async fn create_direct_messages_by_conversation_id(configuration: &configuration::Configuration, dm_conversation_id: &str, create_direct_messages_by_conversation_id_request: Option<models::CreateDirectMessagesByConversationIdRequest>) -> Result<models::CreateDirectMessagesByConversationIdResponse, Error<CreateDirectMessagesByConversationIdError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_dm_conversation_id = dm_conversation_id;
-    let p_body_create_direct_messages_by_conversation_id_request = create_direct_messages_by_conversation_id_request;
+pub async fn create_direct_messages_by_conversation_id(configuration: &configuration::Configuration, params: CreateDirectMessagesByConversationIdParams) -> Result<models::CreateDirectMessagesByConversationIdResponse, Error<CreateDirectMessagesByConversationIdError>> {
 
-    let uri_str = format!("{}/2/dm_conversations/{dm_conversation_id}/messages", configuration.base_path, dm_conversation_id=crate::apis::urlencode(p_path_dm_conversation_id));
+    let uri_str = format!("{}/2/dm_conversations/{dm_conversation_id}/messages", configuration.base_path, dm_conversation_id=crate::apis::urlencode(params.dm_conversation_id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -108,7 +214,7 @@ pub async fn create_direct_messages_by_conversation_id(configuration: &configura
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_direct_messages_by_conversation_id_request);
+    req_builder = req_builder.json(&params.create_direct_messages_by_conversation_id_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -136,12 +242,9 @@ pub async fn create_direct_messages_by_conversation_id(configuration: &configura
 }
 
 /// Sends a new direct message to a specific participant by their ID.
-pub async fn create_direct_messages_by_participant_id(configuration: &configuration::Configuration, participant_id: &str, create_direct_messages_by_participant_id_request: Option<models::CreateDirectMessagesByParticipantIdRequest>) -> Result<models::CreateDirectMessagesByParticipantIdResponse, Error<CreateDirectMessagesByParticipantIdError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_participant_id = participant_id;
-    let p_body_create_direct_messages_by_participant_id_request = create_direct_messages_by_participant_id_request;
+pub async fn create_direct_messages_by_participant_id(configuration: &configuration::Configuration, params: CreateDirectMessagesByParticipantIdParams) -> Result<models::CreateDirectMessagesByParticipantIdResponse, Error<CreateDirectMessagesByParticipantIdError>> {
 
-    let uri_str = format!("{}/2/dm_conversations/with/{participant_id}/messages", configuration.base_path, participant_id=crate::apis::urlencode(p_path_participant_id));
+    let uri_str = format!("{}/2/dm_conversations/with/{participant_id}/messages", configuration.base_path, participant_id=crate::apis::urlencode(params.participant_id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -156,7 +259,7 @@ pub async fn create_direct_messages_by_participant_id(configuration: &configurat
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_direct_messages_by_participant_id_request);
+    req_builder = req_builder.json(&params.create_direct_messages_by_participant_id_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -184,9 +287,7 @@ pub async fn create_direct_messages_by_participant_id(configuration: &configurat
 }
 
 /// Initiates a new direct message conversation with specified participants.
-pub async fn create_direct_messages_conversation(configuration: &configuration::Configuration, create_direct_messages_conversation_request: models::CreateDirectMessagesConversationRequest) -> Result<models::CreateDirectMessagesConversationResponse, Error<CreateDirectMessagesConversationError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_create_direct_messages_conversation_request = create_direct_messages_conversation_request;
+pub async fn create_direct_messages_conversation(configuration: &configuration::Configuration, params: CreateDirectMessagesConversationParams) -> Result<models::CreateDirectMessagesConversationResponse, Error<CreateDirectMessagesConversationError>> {
 
     let uri_str = format!("{}/2/dm_conversations", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -203,7 +304,7 @@ pub async fn create_direct_messages_conversation(configuration: &configuration::
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_direct_messages_conversation_request);
+    req_builder = req_builder.json(&params.create_direct_messages_conversation_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -231,11 +332,9 @@ pub async fn create_direct_messages_conversation(configuration: &configuration::
 }
 
 /// Deletes a specific direct message event by its ID, if owned by the authenticated user.
-pub async fn delete_direct_messages_events(configuration: &configuration::Configuration, event_id: &str) -> Result<models::DeleteDirectMessagesEventsResponse, Error<DeleteDirectMessagesEventsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_event_id = event_id;
+pub async fn delete_direct_messages_events(configuration: &configuration::Configuration, params: DeleteDirectMessagesEventsParams) -> Result<models::DeleteDirectMessagesEventsResponse, Error<DeleteDirectMessagesEventsError>> {
 
-    let uri_str = format!("{}/2/dm_events/{event_id}", configuration.base_path, event_id=crate::apis::urlencode(p_path_event_id));
+    let uri_str = format!("{}/2/dm_events/{event_id}", configuration.base_path, event_id=crate::apis::urlencode(params.event_id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -277,13 +376,9 @@ pub async fn delete_direct_messages_events(configuration: &configuration::Config
 }
 
 /// Downloads media attached to a legacy Direct Message. The requesting user must be a participant in the conversation containing the specified DM event. The response body contains raw binary bytes.
-pub async fn dm_conversations_media_download(configuration: &configuration::Configuration, dm_id: &str, media_id: &str, resource_id: &str) -> Result<reqwest::Response, Error<DmConversationsMediaDownloadError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_dm_id = dm_id;
-    let p_path_media_id = media_id;
-    let p_path_resource_id = resource_id;
+pub async fn dm_conversations_media_download(configuration: &configuration::Configuration, params: DmConversationsMediaDownloadParams) -> Result<reqwest::Response, Error<DmConversationsMediaDownloadError>> {
 
-    let uri_str = format!("{}/2/dm_conversations/media/{dm_id}/{media_id}/{resource_id}", configuration.base_path, dm_id=crate::apis::urlencode(p_path_dm_id), media_id=crate::apis::urlencode(p_path_media_id), resource_id=crate::apis::urlencode(p_path_resource_id));
+    let uri_str = format!("{}/2/dm_conversations/media/{dm_id}/{media_id}/{resource_id}", configuration.base_path, dm_id=crate::apis::urlencode(params.dm_id), media_id=crate::apis::urlencode(params.media_id), resource_id=crate::apis::urlencode(params.resource_id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -313,57 +408,48 @@ pub async fn dm_conversations_media_download(configuration: &configuration::Conf
     }
 }
 
-pub async fn get_direct_messages_events(configuration: &configuration::Configuration, max_results: Option<i32>, pagination_token: Option<&str>, event_types: Option<Vec<String>>, dm_event_fields: Option<Vec<models::DmEventField>>, expansions: Option<Vec<models::DmEventExpansion>>, user_fields: Option<Vec<models::UserField>>, post_fields: Option<Vec<models::PostField>>, media_fields: Option<Vec<models::MediaField>>) -> Result<models::GetDirectMessagesEventsResponse, Error<GetDirectMessagesEventsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_event_types = event_types;
-    let p_query_dm_event_fields = dm_event_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
-    let p_query_post_fields = post_fields;
-    let p_query_media_fields = media_fields;
+pub async fn get_direct_messages_events(configuration: &configuration::Configuration, params: GetDirectMessagesEventsParams) -> Result<models::GetDirectMessagesEventsResponse, Error<GetDirectMessagesEventsError>> {
 
     let uri_str = format!("{}/2/dm_events", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_event_types {
+    if let Some(ref param_value) = params.event_types {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("event_types".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("event_types", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_dm_event_fields {
+    if let Some(ref param_value) = params.dm_event_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("dm_event.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("dm_event.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -407,58 +493,48 @@ pub async fn get_direct_messages_events(configuration: &configuration::Configura
     }
 }
 
-pub async fn get_direct_messages_events_by_conversation_id(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, event_types: Option<Vec<String>>, dm_event_fields: Option<Vec<models::DmEventField>>, expansions: Option<Vec<models::DmEventExpansion>>, user_fields: Option<Vec<models::UserField>>, post_fields: Option<Vec<models::PostField>>, media_fields: Option<Vec<models::MediaField>>) -> Result<models::GetDirectMessagesEventsByConversationIdResponse, Error<GetDirectMessagesEventsByConversationIdError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_event_types = event_types;
-    let p_query_dm_event_fields = dm_event_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
-    let p_query_post_fields = post_fields;
-    let p_query_media_fields = media_fields;
+pub async fn get_direct_messages_events_by_conversation_id(configuration: &configuration::Configuration, params: GetDirectMessagesEventsByConversationIdParams) -> Result<models::GetDirectMessagesEventsByConversationIdResponse, Error<GetDirectMessagesEventsByConversationIdError>> {
 
-    let uri_str = format!("{}/2/dm_conversations/{id}/dm_events", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/dm_conversations/{id}/dm_events", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_event_types {
+    if let Some(ref param_value) = params.event_types {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("event_types".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("event_types", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_dm_event_fields {
+    if let Some(ref param_value) = params.dm_event_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("dm_event.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("dm_event.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -502,43 +578,36 @@ pub async fn get_direct_messages_events_by_conversation_id(configuration: &confi
     }
 }
 
-pub async fn get_direct_messages_events_by_id(configuration: &configuration::Configuration, event_id: &str, dm_event_fields: Option<Vec<models::DmEventField>>, expansions: Option<Vec<models::DmEventExpansion>>, user_fields: Option<Vec<models::UserField>>, post_fields: Option<Vec<models::PostField>>, media_fields: Option<Vec<models::MediaField>>) -> Result<models::GetDirectMessagesEventsByIdResponse, Error<GetDirectMessagesEventsByIdError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_event_id = event_id;
-    let p_query_dm_event_fields = dm_event_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
-    let p_query_post_fields = post_fields;
-    let p_query_media_fields = media_fields;
+pub async fn get_direct_messages_events_by_id(configuration: &configuration::Configuration, params: GetDirectMessagesEventsByIdParams) -> Result<models::GetDirectMessagesEventsByIdResponse, Error<GetDirectMessagesEventsByIdError>> {
 
-    let uri_str = format!("{}/2/dm_events/{event_id}", configuration.base_path, event_id=crate::apis::urlencode(p_path_event_id));
+    let uri_str = format!("{}/2/dm_events/{event_id}", configuration.base_path, event_id=crate::apis::urlencode(params.event_id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_dm_event_fields {
+    if let Some(ref param_value) = params.dm_event_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("dm_event.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("dm_event.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -582,58 +651,48 @@ pub async fn get_direct_messages_events_by_id(configuration: &configuration::Con
     }
 }
 
-pub async fn get_direct_messages_events_by_participant_id(configuration: &configuration::Configuration, participant_id: &str, max_results: Option<i32>, pagination_token: Option<&str>, event_types: Option<Vec<String>>, dm_event_fields: Option<Vec<models::DmEventField>>, expansions: Option<Vec<models::DmEventExpansion>>, user_fields: Option<Vec<models::UserField>>, post_fields: Option<Vec<models::PostField>>, media_fields: Option<Vec<models::MediaField>>) -> Result<models::GetDirectMessagesEventsByParticipantIdResponse, Error<GetDirectMessagesEventsByParticipantIdError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_participant_id = participant_id;
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_event_types = event_types;
-    let p_query_dm_event_fields = dm_event_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
-    let p_query_post_fields = post_fields;
-    let p_query_media_fields = media_fields;
+pub async fn get_direct_messages_events_by_participant_id(configuration: &configuration::Configuration, params: GetDirectMessagesEventsByParticipantIdParams) -> Result<models::GetDirectMessagesEventsByParticipantIdResponse, Error<GetDirectMessagesEventsByParticipantIdError>> {
 
-    let uri_str = format!("{}/2/dm_conversations/with/{participant_id}/dm_events", configuration.base_path, participant_id=crate::apis::urlencode(p_path_participant_id));
+    let uri_str = format!("{}/2/dm_conversations/with/{participant_id}/dm_events", configuration.base_path, participant_id=crate::apis::urlencode(params.participant_id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_event_types {
+    if let Some(ref param_value) = params.event_types {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("event_types".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("event_types", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_dm_event_fields {
+    if let Some(ref param_value) = params.dm_event_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("dm_event.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("dm_event.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),

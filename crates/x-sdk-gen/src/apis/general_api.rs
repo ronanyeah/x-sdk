@@ -24,7 +24,7 @@ pub enum GetOpenApiSpecError {
 
 
 /// Retrieves the full OpenAPI Specification in JSON format. (See https://github.com/OAI/OpenAPI-Specification/blob/master/README.md)
-pub async fn get_open_api_spec(configuration: &configuration::Configuration, ) -> Result<serde_json::Value, Error<GetOpenApiSpecError>> {
+pub async fn get_open_api_spec(configuration: &configuration::Configuration) -> Result<serde_json::Value, Error<GetOpenApiSpecError>> {
 
     let uri_str = format!("{}/2/openapi.json", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);

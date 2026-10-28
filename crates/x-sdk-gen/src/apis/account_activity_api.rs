@@ -14,6 +14,32 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`create_account_activity_subscription`]
+#[derive(Clone, Debug)]
+pub struct CreateAccountActivitySubscriptionParams {
+    pub webhook_id: String,
+    pub body: serde_json::Value
+}
+
+/// struct for passing parameters to the method [`delete_account_activity_subscription`]
+#[derive(Clone, Debug, Default)]
+pub struct DeleteAccountActivitySubscriptionParams {
+    pub webhook_id: String,
+    pub user_id: String
+}
+
+/// struct for passing parameters to the method [`get_account_activity_subscriptions`]
+#[derive(Clone, Debug, Default)]
+pub struct GetAccountActivitySubscriptionsParams {
+    pub webhook_id: String
+}
+
+/// struct for passing parameters to the method [`validate_account_activity_subscription`]
+#[derive(Clone, Debug, Default)]
+pub struct ValidateAccountActivitySubscriptionParams {
+    pub webhook_id: String
+}
+
 
 /// struct for typed errors of method [`create_account_activity_subscription`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -57,12 +83,9 @@ pub enum ValidateAccountActivitySubscriptionError {
 
 
 /// Creates an Account Activity subscription for the user and the given webhook.
-pub async fn create_account_activity_subscription(configuration: &configuration::Configuration, webhook_id: &str, body: serde_json::Value) -> Result<models::CreateAccountActivitySubscriptionResponse, Error<CreateAccountActivitySubscriptionError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_webhook_id = webhook_id;
-    let p_body_body = body;
+pub async fn create_account_activity_subscription(configuration: &configuration::Configuration, params: CreateAccountActivitySubscriptionParams) -> Result<models::CreateAccountActivitySubscriptionResponse, Error<CreateAccountActivitySubscriptionError>> {
 
-    let uri_str = format!("{}/2/account_activity/webhooks/{webhook_id}/subscriptions/all", configuration.base_path, webhook_id=crate::apis::urlencode(p_path_webhook_id));
+    let uri_str = format!("{}/2/account_activity/webhooks/{webhook_id}/subscriptions/all", configuration.base_path, webhook_id=crate::apis::urlencode(params.webhook_id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -77,7 +100,7 @@ pub async fn create_account_activity_subscription(configuration: &configuration:
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_body);
+    req_builder = req_builder.json(&params.body);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -105,12 +128,9 @@ pub async fn create_account_activity_subscription(configuration: &configuration:
 }
 
 /// Deletes an Account Activity subscription for the given webhook and user ID.
-pub async fn delete_account_activity_subscription(configuration: &configuration::Configuration, webhook_id: &str, user_id: &str) -> Result<models::DeleteAccountActivitySubscriptionResponse, Error<DeleteAccountActivitySubscriptionError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_webhook_id = webhook_id;
-    let p_path_user_id = user_id;
+pub async fn delete_account_activity_subscription(configuration: &configuration::Configuration, params: DeleteAccountActivitySubscriptionParams) -> Result<models::DeleteAccountActivitySubscriptionResponse, Error<DeleteAccountActivitySubscriptionError>> {
 
-    let uri_str = format!("{}/2/account_activity/webhooks/{webhook_id}/subscriptions/{user_id}/all", configuration.base_path, webhook_id=crate::apis::urlencode(p_path_webhook_id), user_id=crate::apis::urlencode(p_path_user_id));
+    let uri_str = format!("{}/2/account_activity/webhooks/{webhook_id}/subscriptions/{user_id}/all", configuration.base_path, webhook_id=crate::apis::urlencode(params.webhook_id), user_id=crate::apis::urlencode(params.user_id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -151,7 +171,7 @@ pub async fn delete_account_activity_subscription(configuration: &configuration:
     }
 }
 
-pub async fn get_account_activity_subscription_count(configuration: &configuration::Configuration, ) -> Result<models::GetAccountActivitySubscriptionCountResponse, Error<GetAccountActivitySubscriptionCountError>> {
+pub async fn get_account_activity_subscription_count(configuration: &configuration::Configuration) -> Result<models::GetAccountActivitySubscriptionCountResponse, Error<GetAccountActivitySubscriptionCountError>> {
 
     let uri_str = format!("{}/2/account_activity/subscriptions/count", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
@@ -194,11 +214,9 @@ pub async fn get_account_activity_subscription_count(configuration: &configurati
     }
 }
 
-pub async fn get_account_activity_subscriptions(configuration: &configuration::Configuration, webhook_id: &str) -> Result<models::GetAccountActivitySubscriptionsResponse, Error<GetAccountActivitySubscriptionsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_webhook_id = webhook_id;
+pub async fn get_account_activity_subscriptions(configuration: &configuration::Configuration, params: GetAccountActivitySubscriptionsParams) -> Result<models::GetAccountActivitySubscriptionsResponse, Error<GetAccountActivitySubscriptionsError>> {
 
-    let uri_str = format!("{}/2/account_activity/webhooks/{webhook_id}/subscriptions/all/list", configuration.base_path, webhook_id=crate::apis::urlencode(p_path_webhook_id));
+    let uri_str = format!("{}/2/account_activity/webhooks/{webhook_id}/subscriptions/all/list", configuration.base_path, webhook_id=crate::apis::urlencode(params.webhook_id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -239,11 +257,9 @@ pub async fn get_account_activity_subscriptions(configuration: &configuration::C
     }
 }
 
-pub async fn validate_account_activity_subscription(configuration: &configuration::Configuration, webhook_id: &str) -> Result<models::ValidateAccountActivitySubscriptionResponse, Error<ValidateAccountActivitySubscriptionError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_webhook_id = webhook_id;
+pub async fn validate_account_activity_subscription(configuration: &configuration::Configuration, params: ValidateAccountActivitySubscriptionParams) -> Result<models::ValidateAccountActivitySubscriptionResponse, Error<ValidateAccountActivitySubscriptionError>> {
 
-    let uri_str = format!("{}/2/account_activity/webhooks/{webhook_id}/subscriptions/all", configuration.base_path, webhook_id=crate::apis::urlencode(p_path_webhook_id));
+    let uri_str = format!("{}/2/account_activity/webhooks/{webhook_id}/subscriptions/all", configuration.base_path, webhook_id=crate::apis::urlencode(params.webhook_id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {

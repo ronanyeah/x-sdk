@@ -14,6 +14,22 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`get_trends_by_woeid`]
+#[derive(Clone, Debug, Default)]
+pub struct GetTrendsByWoeidParams {
+    pub woeid: i32,
+    pub max_trends: Option<i32>,
+    /// A comma separated list of Trend fields to display.
+    pub trend_fields: Option<Vec<models::TrendField>>
+}
+
+/// struct for passing parameters to the method [`get_trends_personalized_trends`]
+#[derive(Clone, Debug, Default)]
+pub struct GetTrendsPersonalizedTrendsParams {
+    /// A comma separated list of PersonalizedTrend fields to display.
+    pub personalized_trend_fields: Option<Vec<models::PersonalizedTrendField>>
+}
+
 
 /// struct for typed errors of method [`get_trends_by_woeid`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -32,19 +48,15 @@ pub enum GetTrendsPersonalizedTrendsError {
 }
 
 
-pub async fn get_trends_by_woeid(configuration: &configuration::Configuration, woeid: i32, max_trends: Option<i32>, trend_fields: Option<Vec<models::TrendField>>) -> Result<models::GetTrendsByWoeidResponse, Error<GetTrendsByWoeidError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_woeid = woeid;
-    let p_query_max_trends = max_trends;
-    let p_query_trend_fields = trend_fields;
+pub async fn get_trends_by_woeid(configuration: &configuration::Configuration, params: GetTrendsByWoeidParams) -> Result<models::GetTrendsByWoeidResponse, Error<GetTrendsByWoeidError>> {
 
-    let uri_str = format!("{}/2/trends/by/woeid/{woeid}", configuration.base_path, woeid=p_path_woeid);
+    let uri_str = format!("{}/2/trends/by/woeid/{woeid}", configuration.base_path, woeid=params.woeid);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_max_trends {
+    if let Some(ref param_value) = params.max_trends {
         req_builder = req_builder.query(&[("max_trends", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_trend_fields {
+    if let Some(ref param_value) = params.trend_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("trend.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("trend.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -92,14 +104,12 @@ pub async fn get_trends_by_woeid(configuration: &configuration::Configuration, w
     }
 }
 
-pub async fn get_trends_personalized_trends(configuration: &configuration::Configuration, personalized_trend_fields: Option<Vec<models::PersonalizedTrendField>>) -> Result<models::GetTrendsPersonalizedTrendsResponse, Error<GetTrendsPersonalizedTrendsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_personalized_trend_fields = personalized_trend_fields;
+pub async fn get_trends_personalized_trends(configuration: &configuration::Configuration, params: GetTrendsPersonalizedTrendsParams) -> Result<models::GetTrendsPersonalizedTrendsResponse, Error<GetTrendsPersonalizedTrendsError>> {
 
     let uri_str = format!("{}/2/users/personalized_trends", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_personalized_trend_fields {
+    if let Some(ref param_value) = params.personalized_trend_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("personalized_trend.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("personalized_trend.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),

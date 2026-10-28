@@ -14,6 +14,18 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`article_create_draft`]
+#[derive(Clone, Debug)]
+pub struct ArticleCreateDraftParams {
+    pub article_create_draft_request: models::ArticleCreateDraftRequest
+}
+
+/// struct for passing parameters to the method [`article_publish`]
+#[derive(Clone, Debug, Default)]
+pub struct ArticlePublishParams {
+    pub article_id: String
+}
+
 
 /// struct for typed errors of method [`article_create_draft`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -33,9 +45,7 @@ pub enum ArticlePublishError {
 
 
 /// Creates a new Article draft that can later be published.
-pub async fn article_create_draft(configuration: &configuration::Configuration, article_create_draft_request: models::ArticleCreateDraftRequest) -> Result<models::ArticleCreateDraftResponse, Error<ArticleCreateDraftError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_article_create_draft_request = article_create_draft_request;
+pub async fn article_create_draft(configuration: &configuration::Configuration, params: ArticleCreateDraftParams) -> Result<models::ArticleCreateDraftResponse, Error<ArticleCreateDraftError>> {
 
     let uri_str = format!("{}/2/articles/draft", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -52,7 +62,7 @@ pub async fn article_create_draft(configuration: &configuration::Configuration, 
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_article_create_draft_request);
+    req_builder = req_builder.json(&params.article_create_draft_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -80,11 +90,9 @@ pub async fn article_create_draft(configuration: &configuration::Configuration, 
 }
 
 /// Publishes a draft Article, making it publicly visible.
-pub async fn article_publish(configuration: &configuration::Configuration, article_id: &str) -> Result<models::ArticlePublishResponse, Error<ArticlePublishError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_article_id = article_id;
+pub async fn article_publish(configuration: &configuration::Configuration, params: ArticlePublishParams) -> Result<models::ArticlePublishResponse, Error<ArticlePublishError>> {
 
-    let uri_str = format!("{}/2/articles/{article_id}/publish", configuration.base_path, article_id=crate::apis::urlencode(p_path_article_id));
+    let uri_str = format!("{}/2/articles/{article_id}/publish", configuration.base_path, article_id=crate::apis::urlencode(params.article_id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {

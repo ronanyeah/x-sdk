@@ -14,6 +14,41 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`create_activity_subscription`]
+#[derive(Clone, Debug)]
+pub struct CreateActivitySubscriptionParams {
+    pub create_activity_subscription_request: models::CreateActivitySubscriptionRequest
+}
+
+/// struct for passing parameters to the method [`delete_activity_subscription`]
+#[derive(Clone, Debug, Default)]
+pub struct DeleteActivitySubscriptionParams {
+    pub subscription_id: String
+}
+
+/// struct for passing parameters to the method [`delete_activity_subscriptions_by_ids`]
+#[derive(Clone, Debug, Default)]
+pub struct DeleteActivitySubscriptionsByIdsParams {
+    pub ids: Vec<String>
+}
+
+/// struct for passing parameters to the method [`get_activity_subscriptions`]
+#[derive(Clone, Debug, Default)]
+pub struct GetActivitySubscriptionsParams {
+    pub max_results: Option<i32>,
+    /// A base32hex-encoded pagination token that decodes to 9 bytes.
+    pub pagination_token: Option<String>,
+    /// Only return subscriptions whose filter.user_id matches.
+    pub user_id: Option<String>
+}
+
+/// struct for passing parameters to the method [`update_activity_subscription`]
+#[derive(Clone, Debug)]
+pub struct UpdateActivitySubscriptionParams {
+    pub subscription_id: String,
+    pub update_activity_subscription_request: models::UpdateActivitySubscriptionRequest
+}
+
 
 /// struct for typed errors of method [`create_activity_subscription`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -57,9 +92,7 @@ pub enum UpdateActivitySubscriptionError {
 
 
 /// Creates a subscription for an X activity event. OAuth2 user-context tokens must hold the scope matching the requested event_type: dm.read for chat.* and dm.* events, like.read for like.* events, mute.read for mute.* events, block.read for block.* events, follows.read for subscriptions.* events, and tweet.read for all other event types. Mute and block subscriptions are actor-only: filter.user_id must identify the authenticated user and direction is not supported. subscriptions.* events require a user-context token and filter.user_id must identify the authenticated user. Optional filter.qualifiers further narrow supported chat, follow, unfollow, like, and subscriptions events.
-pub async fn create_activity_subscription(configuration: &configuration::Configuration, create_activity_subscription_request: models::CreateActivitySubscriptionRequest) -> Result<models::CreateActivitySubscriptionResponse, Error<CreateActivitySubscriptionError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_create_activity_subscription_request = create_activity_subscription_request;
+pub async fn create_activity_subscription(configuration: &configuration::Configuration, params: CreateActivitySubscriptionParams) -> Result<models::CreateActivitySubscriptionResponse, Error<CreateActivitySubscriptionError>> {
 
     let uri_str = format!("{}/2/activity/subscriptions", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -80,7 +113,7 @@ pub async fn create_activity_subscription(configuration: &configuration::Configu
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_activity_subscription_request);
+    req_builder = req_builder.json(&params.create_activity_subscription_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -108,11 +141,9 @@ pub async fn create_activity_subscription(configuration: &configuration::Configu
 }
 
 /// Deletes a subscription for an X activity event
-pub async fn delete_activity_subscription(configuration: &configuration::Configuration, subscription_id: &str) -> Result<models::DeleteActivitySubscriptionResponse, Error<DeleteActivitySubscriptionError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_subscription_id = subscription_id;
+pub async fn delete_activity_subscription(configuration: &configuration::Configuration, params: DeleteActivitySubscriptionParams) -> Result<models::DeleteActivitySubscriptionResponse, Error<DeleteActivitySubscriptionError>> {
 
-    let uri_str = format!("{}/2/activity/subscriptions/{subscription_id}", configuration.base_path, subscription_id=crate::apis::urlencode(p_path_subscription_id));
+    let uri_str = format!("{}/2/activity/subscriptions/{subscription_id}", configuration.base_path, subscription_id=crate::apis::urlencode(params.subscription_id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -158,16 +189,14 @@ pub async fn delete_activity_subscription(configuration: &configuration::Configu
 }
 
 /// Deletes multiple subscriptions for X activity events by their IDs
-pub async fn delete_activity_subscriptions_by_ids(configuration: &configuration::Configuration, ids: Vec<String>) -> Result<models::DeleteActivitySubscriptionsByIdsResponse, Error<DeleteActivitySubscriptionsByIdsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_ids = ids;
+pub async fn delete_activity_subscriptions_by_ids(configuration: &configuration::Configuration, params: DeleteActivitySubscriptionsByIdsParams) -> Result<models::DeleteActivitySubscriptionsByIdsResponse, Error<DeleteActivitySubscriptionsByIdsError>> {
 
     let uri_str = format!("{}/2/activity/subscriptions", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     req_builder = match "csv" {
-        "multi" => req_builder.query(&p_query_ids.into_iter().map(|p| ("ids".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
-        _ => req_builder.query(&[("ids", &p_query_ids.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
+        "multi" => req_builder.query(&params.ids.into_iter().map(|p| ("ids".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
+        _ => req_builder.query(&[("ids", &params.ids.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
     };
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
@@ -208,22 +237,18 @@ pub async fn delete_activity_subscriptions_by_ids(configuration: &configuration:
 }
 
 /// Get a list of active subscriptions for XAA. Optional user_id narrows the list to subscriptions whose filter.user_id matches; with a user-context token it must identify the authenticated user.
-pub async fn get_activity_subscriptions(configuration: &configuration::Configuration, max_results: Option<i32>, pagination_token: Option<&str>, user_id: Option<&str>) -> Result<models::GetActivitySubscriptionsResponse, Error<GetActivitySubscriptionsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_user_id = user_id;
+pub async fn get_activity_subscriptions(configuration: &configuration::Configuration, params: GetActivitySubscriptionsParams) -> Result<models::GetActivitySubscriptionsResponse, Error<GetActivitySubscriptionsError>> {
 
     let uri_str = format!("{}/2/activity/subscriptions", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_user_id {
+    if let Some(ref param_value) = params.user_id {
         req_builder = req_builder.query(&[("user_id", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -269,12 +294,9 @@ pub async fn get_activity_subscriptions(configuration: &configuration::Configura
 }
 
 /// Updates a subscription for an X activity event
-pub async fn update_activity_subscription(configuration: &configuration::Configuration, subscription_id: &str, update_activity_subscription_request: models::UpdateActivitySubscriptionRequest) -> Result<models::UpdateActivitySubscriptionResponse, Error<UpdateActivitySubscriptionError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_subscription_id = subscription_id;
-    let p_body_update_activity_subscription_request = update_activity_subscription_request;
+pub async fn update_activity_subscription(configuration: &configuration::Configuration, params: UpdateActivitySubscriptionParams) -> Result<models::UpdateActivitySubscriptionResponse, Error<UpdateActivitySubscriptionError>> {
 
-    let uri_str = format!("{}/2/activity/subscriptions/{subscription_id}", configuration.base_path, subscription_id=crate::apis::urlencode(p_path_subscription_id));
+    let uri_str = format!("{}/2/activity/subscriptions/{subscription_id}", configuration.base_path, subscription_id=crate::apis::urlencode(params.subscription_id));
     let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -293,7 +315,7 @@ pub async fn update_activity_subscription(configuration: &configuration::Configu
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_update_activity_subscription_request);
+    req_builder = req_builder.json(&params.update_activity_subscription_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;

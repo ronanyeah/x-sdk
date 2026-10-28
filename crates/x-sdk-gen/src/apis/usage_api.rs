@@ -14,6 +14,14 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`get_usage`]
+#[derive(Clone, Debug, Default)]
+pub struct GetUsageParams {
+    pub days: Option<i32>,
+    /// A comma separated list of Usage fields to display.
+    pub usage_fields: Option<Vec<models::UsageField>>
+}
+
 
 /// struct for typed errors of method [`get_usage`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -32,18 +40,15 @@ pub enum GetUsageCreditsError {
 }
 
 
-pub async fn get_usage(configuration: &configuration::Configuration, days: Option<i32>, usage_fields: Option<Vec<models::UsageField>>) -> Result<models::GetUsageResponse, Error<GetUsageError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_days = days;
-    let p_query_usage_fields = usage_fields;
+pub async fn get_usage(configuration: &configuration::Configuration, params: GetUsageParams) -> Result<models::GetUsageResponse, Error<GetUsageError>> {
 
     let uri_str = format!("{}/2/usage/tweets", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_days {
+    if let Some(ref param_value) = params.days {
         req_builder = req_builder.query(&[("days", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_usage_fields {
+    if let Some(ref param_value) = params.usage_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("usage.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("usage.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -88,7 +93,7 @@ pub async fn get_usage(configuration: &configuration::Configuration, days: Optio
 }
 
 /// Returns the payer's developer-platform credit balance in USD. total_balance is max(0, prepaid_balance + free_balance); prepaid_balance may be negative.
-pub async fn get_usage_credits(configuration: &configuration::Configuration, ) -> Result<models::GetUsageCreditsResponse, Error<GetUsageCreditsError>> {
+pub async fn get_usage_credits(configuration: &configuration::Configuration) -> Result<models::GetUsageCreditsResponse, Error<GetUsageCreditsError>> {
 
     let uri_str = format!("{}/2/usage/credits", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);

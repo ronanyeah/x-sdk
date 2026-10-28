@@ -14,6 +14,102 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`add_lists_member`]
+#[derive(Clone, Debug)]
+pub struct AddListsMemberParams {
+    pub id: String,
+    pub add_lists_member_request: models::AddListsMemberRequest
+}
+
+/// struct for passing parameters to the method [`create_lists`]
+#[derive(Clone, Debug)]
+pub struct CreateListsParams {
+    pub create_lists_request: models::CreateListsRequest
+}
+
+/// struct for passing parameters to the method [`delete_lists`]
+#[derive(Clone, Debug, Default)]
+pub struct DeleteListsParams {
+    pub id: String
+}
+
+/// struct for passing parameters to the method [`get_lists_by_id`]
+#[derive(Clone, Debug, Default)]
+pub struct GetListsByIdParams {
+    pub id: String,
+    /// A comma separated list of List fields to display.
+    pub list_fields: Option<Vec<models::ListField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::ListExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>
+}
+
+/// struct for passing parameters to the method [`get_lists_followers`]
+#[derive(Clone, Debug, Default)]
+pub struct GetListsFollowersParams {
+    pub id: String,
+    pub max_results: Option<i32>,
+    /// A 64-bit signed integer.
+    pub pagination_token: Option<String>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::UserExpansion>>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>
+}
+
+/// struct for passing parameters to the method [`get_lists_members`]
+#[derive(Clone, Debug, Default)]
+pub struct GetListsMembersParams {
+    pub id: String,
+    pub max_results: Option<i32>,
+    /// A 64-bit signed integer.
+    pub pagination_token: Option<String>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::UserExpansion>>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>
+}
+
+/// struct for passing parameters to the method [`get_lists_posts`]
+#[derive(Clone, Debug, Default)]
+pub struct GetListsPostsParams {
+    pub id: String,
+    pub max_results: Option<i32>,
+    /// A base32hex-encoded pagination token.
+    pub pagination_token: Option<String>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::PostExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<models::MediaField>>,
+    /// A comma separated list of Poll fields to display.
+    pub poll_fields: Option<Vec<models::PollField>>,
+    /// A comma separated list of Place fields to display.
+    pub place_fields: Option<Vec<models::PlaceField>>
+}
+
+/// struct for passing parameters to the method [`remove_lists_member_by_user_id`]
+#[derive(Clone, Debug, Default)]
+pub struct RemoveListsMemberByUserIdParams {
+    pub id: String,
+    pub user_id: String
+}
+
+/// struct for passing parameters to the method [`update_lists`]
+#[derive(Clone, Debug)]
+pub struct UpdateListsParams {
+    pub id: String,
+    pub update_lists_request: models::UpdateListsRequest
+}
+
 
 /// struct for typed errors of method [`add_lists_member`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -88,12 +184,9 @@ pub enum UpdateListsError {
 }
 
 
-pub async fn add_lists_member(configuration: &configuration::Configuration, id: &str, add_lists_member_request: models::AddListsMemberRequest) -> Result<models::AddListsMemberResponse, Error<AddListsMemberError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_add_lists_member_request = add_lists_member_request;
+pub async fn add_lists_member(configuration: &configuration::Configuration, params: AddListsMemberParams) -> Result<models::AddListsMemberResponse, Error<AddListsMemberError>> {
 
-    let uri_str = format!("{}/2/lists/{id}/members", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/lists/{id}/members", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -108,7 +201,7 @@ pub async fn add_lists_member(configuration: &configuration::Configuration, id: 
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_add_lists_member_request);
+    req_builder = req_builder.json(&params.add_lists_member_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -135,9 +228,7 @@ pub async fn add_lists_member(configuration: &configuration::Configuration, id: 
     }
 }
 
-pub async fn create_lists(configuration: &configuration::Configuration, create_lists_request: models::CreateListsRequest) -> Result<models::CreateListsResponse, Error<CreateListsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_create_lists_request = create_lists_request;
+pub async fn create_lists(configuration: &configuration::Configuration, params: CreateListsParams) -> Result<models::CreateListsResponse, Error<CreateListsError>> {
 
     let uri_str = format!("{}/2/lists", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -154,7 +245,7 @@ pub async fn create_lists(configuration: &configuration::Configuration, create_l
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_lists_request);
+    req_builder = req_builder.json(&params.create_lists_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -182,11 +273,9 @@ pub async fn create_lists(configuration: &configuration::Configuration, create_l
 }
 
 /// Deletes a specific List owned by the authenticated user by its ID.
-pub async fn delete_lists(configuration: &configuration::Configuration, id: &str) -> Result<models::DeleteListsResponse, Error<DeleteListsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
+pub async fn delete_lists(configuration: &configuration::Configuration, params: DeleteListsParams) -> Result<models::DeleteListsResponse, Error<DeleteListsError>> {
 
-    let uri_str = format!("{}/2/lists/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/lists/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -227,29 +316,24 @@ pub async fn delete_lists(configuration: &configuration::Configuration, id: &str
     }
 }
 
-pub async fn get_lists_by_id(configuration: &configuration::Configuration, id: &str, list_fields: Option<Vec<models::ListField>>, expansions: Option<Vec<models::ListExpansion>>, user_fields: Option<Vec<models::UserField>>) -> Result<models::GetListsByIdResponse, Error<GetListsByIdError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_list_fields = list_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
+pub async fn get_lists_by_id(configuration: &configuration::Configuration, params: GetListsByIdParams) -> Result<models::GetListsByIdResponse, Error<GetListsByIdError>> {
 
-    let uri_str = format!("{}/2/lists/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/lists/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_list_fields {
+    if let Some(ref param_value) = params.list_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("list.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("list.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -297,37 +381,30 @@ pub async fn get_lists_by_id(configuration: &configuration::Configuration, id: &
     }
 }
 
-pub async fn get_lists_followers(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetListsFollowersResponse, Error<GetListsFollowersError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_user_fields = user_fields;
-    let p_query_expansions = expansions;
-    let p_query_post_fields = post_fields;
+pub async fn get_lists_followers(configuration: &configuration::Configuration, params: GetListsFollowersParams) -> Result<models::GetListsFollowersResponse, Error<GetListsFollowersError>> {
 
-    let uri_str = format!("{}/2/lists/{id}/followers", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/lists/{id}/followers", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -375,37 +452,30 @@ pub async fn get_lists_followers(configuration: &configuration::Configuration, i
     }
 }
 
-pub async fn get_lists_members(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetListsMembersResponse, Error<GetListsMembersError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_user_fields = user_fields;
-    let p_query_expansions = expansions;
-    let p_query_post_fields = post_fields;
+pub async fn get_lists_members(configuration: &configuration::Configuration, params: GetListsMembersParams) -> Result<models::GetListsMembersResponse, Error<GetListsMembersError>> {
 
-    let uri_str = format!("{}/2/lists/{id}/members", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/lists/{id}/members", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -453,58 +523,48 @@ pub async fn get_lists_members(configuration: &configuration::Configuration, id:
     }
 }
 
-pub async fn get_lists_posts(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::GetListsPostsResponse, Error<GetListsPostsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_post_fields = post_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
-    let p_query_media_fields = media_fields;
-    let p_query_poll_fields = poll_fields;
-    let p_query_place_fields = place_fields;
+pub async fn get_lists_posts(configuration: &configuration::Configuration, params: GetListsPostsParams) -> Result<models::GetListsPostsResponse, Error<GetListsPostsError>> {
 
-    let uri_str = format!("{}/2/lists/{id}/tweets", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/lists/{id}/tweets", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_poll_fields {
+    if let Some(ref param_value) = params.poll_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("poll.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("poll.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_place_fields {
+    if let Some(ref param_value) = params.place_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("place.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("place.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -553,12 +613,9 @@ pub async fn get_lists_posts(configuration: &configuration::Configuration, id: &
 }
 
 /// Removes a User from a List by their ID.
-pub async fn remove_lists_member_by_user_id(configuration: &configuration::Configuration, id: &str, user_id: &str) -> Result<models::RemoveListsMemberByUserIdResponse, Error<RemoveListsMemberByUserIdError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_path_user_id = user_id;
+pub async fn remove_lists_member_by_user_id(configuration: &configuration::Configuration, params: RemoveListsMemberByUserIdParams) -> Result<models::RemoveListsMemberByUserIdResponse, Error<RemoveListsMemberByUserIdError>> {
 
-    let uri_str = format!("{}/2/lists/{id}/members/{user_id}", configuration.base_path, id=crate::apis::urlencode(p_path_id), user_id=crate::apis::urlencode(p_path_user_id));
+    let uri_str = format!("{}/2/lists/{id}/members/{user_id}", configuration.base_path, id=crate::apis::urlencode(params.id), user_id=crate::apis::urlencode(params.user_id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -600,12 +657,9 @@ pub async fn remove_lists_member_by_user_id(configuration: &configuration::Confi
 }
 
 /// Updates the details of a specific List owned by the authenticated user by its ID.
-pub async fn update_lists(configuration: &configuration::Configuration, id: &str, update_lists_request: models::UpdateListsRequest) -> Result<models::UpdateListsResponse, Error<UpdateListsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_update_lists_request = update_lists_request;
+pub async fn update_lists(configuration: &configuration::Configuration, params: UpdateListsParams) -> Result<models::UpdateListsResponse, Error<UpdateListsError>> {
 
-    let uri_str = format!("{}/2/lists/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/lists/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -620,7 +674,7 @@ pub async fn update_lists(configuration: &configuration::Configuration, id: &str
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_update_lists_request);
+    req_builder = req_builder.json(&params.update_lists_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;

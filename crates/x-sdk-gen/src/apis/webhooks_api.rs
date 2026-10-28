@@ -14,6 +14,49 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`create_webhook_replay_job`]
+#[derive(Clone, Debug)]
+pub struct CreateWebhookReplayJobParams {
+    pub create_webhook_replay_job_request: models::CreateWebhookReplayJobRequest
+}
+
+/// struct for passing parameters to the method [`create_webhooks`]
+#[derive(Clone, Debug)]
+pub struct CreateWebhooksParams {
+    pub create_webhooks_request: models::CreateWebhooksRequest
+}
+
+/// struct for passing parameters to the method [`create_webhooks_stream_link`]
+#[derive(Clone, Debug, Default)]
+pub struct CreateWebhooksStreamLinkParams {
+    pub webhook_id: String
+}
+
+/// struct for passing parameters to the method [`delete_webhooks`]
+#[derive(Clone, Debug, Default)]
+pub struct DeleteWebhooksParams {
+    pub webhook_id: String
+}
+
+/// struct for passing parameters to the method [`delete_webhooks_stream_link`]
+#[derive(Clone, Debug, Default)]
+pub struct DeleteWebhooksStreamLinkParams {
+    pub webhook_id: String
+}
+
+/// struct for passing parameters to the method [`get_webhooks`]
+#[derive(Clone, Debug, Default)]
+pub struct GetWebhooksParams {
+    /// A comma separated list of WebhookConfig fields to display.
+    pub webhook_config_fields: Option<Vec<models::WebhookConfigField>>
+}
+
+/// struct for passing parameters to the method [`validate_webhooks`]
+#[derive(Clone, Debug, Default)]
+pub struct ValidateWebhooksParams {
+    pub webhook_id: String
+}
+
 
 /// struct for typed errors of method [`create_webhook_replay_job`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -81,9 +124,7 @@ pub enum ValidateWebhooksError {
 
 
 /// Creates a replay job to retrieve events from up to the past 24 hours for all events delivered or attempted to be delivered to the webhook.
-pub async fn create_webhook_replay_job(configuration: &configuration::Configuration, create_webhook_replay_job_request: models::CreateWebhookReplayJobRequest) -> Result<models::CreateWebhookReplayJobResponse, Error<CreateWebhookReplayJobError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_create_webhook_replay_job_request = create_webhook_replay_job_request;
+pub async fn create_webhook_replay_job(configuration: &configuration::Configuration, params: CreateWebhookReplayJobParams) -> Result<models::CreateWebhookReplayJobResponse, Error<CreateWebhookReplayJobError>> {
 
     let uri_str = format!("{}/2/webhooks/replay", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -100,7 +141,7 @@ pub async fn create_webhook_replay_job(configuration: &configuration::Configurat
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_webhook_replay_job_request);
+    req_builder = req_builder.json(&params.create_webhook_replay_job_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -128,9 +169,7 @@ pub async fn create_webhook_replay_job(configuration: &configuration::Configurat
 }
 
 /// Creates a new webhook configuration.
-pub async fn create_webhooks(configuration: &configuration::Configuration, create_webhooks_request: models::CreateWebhooksRequest) -> Result<models::CreateWebhooksResponse, Error<CreateWebhooksError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_create_webhooks_request = create_webhooks_request;
+pub async fn create_webhooks(configuration: &configuration::Configuration, params: CreateWebhooksParams) -> Result<models::CreateWebhooksResponse, Error<CreateWebhooksError>> {
 
     let uri_str = format!("{}/2/webhooks", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -151,7 +190,7 @@ pub async fn create_webhooks(configuration: &configuration::Configuration, creat
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_webhooks_request);
+    req_builder = req_builder.json(&params.create_webhooks_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -179,11 +218,9 @@ pub async fn create_webhooks(configuration: &configuration::Configuration, creat
 }
 
 /// Creates a link to deliver FilteredStream events to the given webhook.
-pub async fn create_webhooks_stream_link(configuration: &configuration::Configuration, webhook_id: &str) -> Result<models::CreateWebhooksStreamLinkResponse, Error<CreateWebhooksStreamLinkError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_webhook_id = webhook_id;
+pub async fn create_webhooks_stream_link(configuration: &configuration::Configuration, params: CreateWebhooksStreamLinkParams) -> Result<models::CreateWebhooksStreamLinkResponse, Error<CreateWebhooksStreamLinkError>> {
 
-    let uri_str = format!("{}/2/tweets/search/webhooks/{webhook_id}", configuration.base_path, webhook_id=crate::apis::urlencode(p_path_webhook_id));
+    let uri_str = format!("{}/2/tweets/search/webhooks/{webhook_id}", configuration.base_path, webhook_id=crate::apis::urlencode(params.webhook_id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -225,11 +262,9 @@ pub async fn create_webhooks_stream_link(configuration: &configuration::Configur
 }
 
 /// Deletes an existing webhook configuration.
-pub async fn delete_webhooks(configuration: &configuration::Configuration, webhook_id: &str) -> Result<models::DeleteWebhooksResponse, Error<DeleteWebhooksError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_webhook_id = webhook_id;
+pub async fn delete_webhooks(configuration: &configuration::Configuration, params: DeleteWebhooksParams) -> Result<models::DeleteWebhooksResponse, Error<DeleteWebhooksError>> {
 
-    let uri_str = format!("{}/2/webhooks/{webhook_id}", configuration.base_path, webhook_id=crate::apis::urlencode(p_path_webhook_id));
+    let uri_str = format!("{}/2/webhooks/{webhook_id}", configuration.base_path, webhook_id=crate::apis::urlencode(params.webhook_id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -275,11 +310,9 @@ pub async fn delete_webhooks(configuration: &configuration::Configuration, webho
 }
 
 /// Deletes the link delivering FilteredStream events to the given webhook.
-pub async fn delete_webhooks_stream_link(configuration: &configuration::Configuration, webhook_id: &str) -> Result<models::DeleteWebhooksStreamLinkResponse, Error<DeleteWebhooksStreamLinkError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_webhook_id = webhook_id;
+pub async fn delete_webhooks_stream_link(configuration: &configuration::Configuration, params: DeleteWebhooksStreamLinkParams) -> Result<models::DeleteWebhooksStreamLinkResponse, Error<DeleteWebhooksStreamLinkError>> {
 
-    let uri_str = format!("{}/2/tweets/search/webhooks/{webhook_id}", configuration.base_path, webhook_id=crate::apis::urlencode(p_path_webhook_id));
+    let uri_str = format!("{}/2/tweets/search/webhooks/{webhook_id}", configuration.base_path, webhook_id=crate::apis::urlencode(params.webhook_id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -321,14 +354,12 @@ pub async fn delete_webhooks_stream_link(configuration: &configuration::Configur
 }
 
 /// Get a list of webhook configs associated with a client app.
-pub async fn get_webhooks(configuration: &configuration::Configuration, webhook_config_fields: Option<Vec<models::WebhookConfigField>>) -> Result<models::GetWebhooksResponse, Error<GetWebhooksError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_webhook_config_fields = webhook_config_fields;
+pub async fn get_webhooks(configuration: &configuration::Configuration, params: GetWebhooksParams) -> Result<models::GetWebhooksResponse, Error<GetWebhooksError>> {
 
     let uri_str = format!("{}/2/webhooks", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_webhook_config_fields {
+    if let Some(ref param_value) = params.webhook_config_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("webhook_config.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("webhook_config.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -377,7 +408,7 @@ pub async fn get_webhooks(configuration: &configuration::Configuration, webhook_
 }
 
 /// Get a list of webhook links associated with a filtered stream ruleset.
-pub async fn get_webhooks_stream_links(configuration: &configuration::Configuration, ) -> Result<models::GetWebhooksStreamLinksResponse, Error<GetWebhooksStreamLinksError>> {
+pub async fn get_webhooks_stream_links(configuration: &configuration::Configuration) -> Result<models::GetWebhooksStreamLinksResponse, Error<GetWebhooksStreamLinksError>> {
 
     let uri_str = format!("{}/2/tweets/search/webhooks", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
@@ -421,11 +452,9 @@ pub async fn get_webhooks_stream_links(configuration: &configuration::Configurat
 }
 
 /// Triggers a CRC check for a given webhook.
-pub async fn validate_webhooks(configuration: &configuration::Configuration, webhook_id: &str) -> Result<models::ValidateWebhooksResponse, Error<ValidateWebhooksError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_webhook_id = webhook_id;
+pub async fn validate_webhooks(configuration: &configuration::Configuration, params: ValidateWebhooksParams) -> Result<models::ValidateWebhooksResponse, Error<ValidateWebhooksError>> {
 
-    let uri_str = format!("{}/2/webhooks/{webhook_id}", configuration.base_path, webhook_id=crate::apis::urlencode(p_path_webhook_id));
+    let uri_str = format!("{}/2/webhooks/{webhook_id}", configuration.base_path, webhook_id=crate::apis::urlencode(params.webhook_id));
     let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {

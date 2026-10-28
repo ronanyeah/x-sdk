@@ -63,12 +63,14 @@ async fn sdk_following(
 ) -> Following {
     users_api::get_users_following(
         &cfg(),
-        &env("X_USER_ID"),
-        Some(100),
-        None,
-        opt(user_fields),
-        opt(expansions),
-        opt(post_fields),
+        users_api::GetUsersFollowingParams {
+            id: env("X_USER_ID"),
+            max_results: Some(100),
+            user_fields: opt(user_fields),
+            expansions: opt(expansions),
+            post_fields: opt(post_fields),
+            ..Default::default()
+        },
     )
     .await
 }
@@ -303,22 +305,18 @@ fn instant() -> chrono::DateTime<chrono::FixedOffset> {
     chrono::DateTime::parse_from_rfc3339("2026-10-01T00:00:00+00:00").unwrap()
 }
 
-/// Every `chrono::DateTime` parameter of a function in src/apis, as (file, name).
+/// Every `chrono::DateTime` field of a params struct in src/apis, as (file, name).
 fn datetime_params() -> Vec<(String, String)> {
     let mut out = vec![];
     for entry in std::fs::read_dir(concat!(env!("CARGO_MANIFEST_DIR"), "/src/apis")).unwrap() {
         let path = entry.unwrap().path();
         let src = std::fs::read_to_string(&path).unwrap();
-        for sig in src.lines().filter(|l| l.starts_with("pub async fn")) {
-            for arg in sig.split(", ").filter(|a| a.contains("chrono::DateTime")) {
-                let name = arg
-                    .split(':')
-                    .next()
-                    .unwrap()
-                    .trim()
-                    .trim_start_matches('(');
-                out.push((path.display().to_string(), name.to_string()));
-            }
+        for field in src
+            .lines()
+            .filter(|l| l.starts_with("    pub ") && l.contains("chrono::DateTime"))
+        {
+            let name = field.trim().trim_start_matches("pub ").split(':').next().unwrap();
+            out.push((path.display().to_string(), name.to_string()));
         }
     }
     out
@@ -381,20 +379,12 @@ async fn datetime_patch_still_required_live() {
 
     let r = users_api::get_users_posts(
         &cfg(),
-        &env("X_USER_ID"),
-        Some(5),
-        None,
-        Some(instant()),
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
+        users_api::GetUsersPostsParams {
+            id: env("X_USER_ID"),
+            max_results: Some(5),
+            start_time: Some(instant()),
+            ..Default::default()
+        },
     )
     .await;
     assert!(r.is_ok(), "SDK call with start_time failed: {r:?}");

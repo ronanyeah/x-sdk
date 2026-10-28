@@ -14,6 +14,235 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`create_posts`]
+#[derive(Clone, Debug)]
+pub struct CreatePostsParams {
+    pub create_posts_request: models::CreatePostsRequest
+}
+
+/// struct for passing parameters to the method [`delete_posts`]
+#[derive(Clone, Debug, Default)]
+pub struct DeletePostsParams {
+    pub id: String
+}
+
+/// struct for passing parameters to the method [`get_posts_analytics`]
+#[derive(Clone, Debug, Default)]
+pub struct GetPostsAnalyticsParams {
+    pub ids: Vec<String>,
+    pub start_time: chrono::DateTime<chrono::FixedOffset>,
+    pub end_time: chrono::DateTime<chrono::FixedOffset>,
+    pub granularity: Option<String>,
+    /// A comma separated list of Analytics fields to display.
+    pub analytics_fields: Option<Vec<models::AnalyticsField>>
+}
+
+/// struct for passing parameters to the method [`get_posts_by_id`]
+#[derive(Clone, Debug, Default)]
+pub struct GetPostsByIdParams {
+    pub id: String,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::PostExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<models::MediaField>>,
+    /// A comma separated list of Poll fields to display.
+    pub poll_fields: Option<Vec<models::PollField>>,
+    /// A comma separated list of Place fields to display.
+    pub place_fields: Option<Vec<models::PlaceField>>
+}
+
+/// struct for passing parameters to the method [`get_posts_by_ids`]
+#[derive(Clone, Debug, Default)]
+pub struct GetPostsByIdsParams {
+    pub ids: Vec<String>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::PostExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<models::MediaField>>,
+    /// A comma separated list of Poll fields to display.
+    pub poll_fields: Option<Vec<models::PollField>>,
+    /// A comma separated list of Place fields to display.
+    pub place_fields: Option<Vec<models::PlaceField>>
+}
+
+/// struct for passing parameters to the method [`get_posts_counts_all`]
+#[derive(Clone, Debug, Default)]
+pub struct GetPostsCountsAllParams {
+    pub query: String,
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    pub since_id: Option<String>,
+    pub until_id: Option<String>,
+    /// A base32hex-encoded pagination token.
+    pub next_token: Option<String>,
+    /// A base32hex-encoded pagination token.
+    pub pagination_token: Option<String>,
+    pub granularity: Option<String>,
+    pub search_count_fields: Option<String>
+}
+
+/// struct for passing parameters to the method [`get_posts_counts_recent`]
+#[derive(Clone, Debug, Default)]
+pub struct GetPostsCountsRecentParams {
+    pub query: String,
+    /// Must be within the last 7 days.
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    pub since_id: Option<String>,
+    pub until_id: Option<String>,
+    /// A base32hex-encoded pagination token.
+    pub next_token: Option<String>,
+    /// A base32hex-encoded pagination token.
+    pub pagination_token: Option<String>,
+    pub granularity: Option<String>,
+    pub search_count_fields: Option<String>
+}
+
+/// struct for passing parameters to the method [`get_posts_liking_users`]
+#[derive(Clone, Debug, Default)]
+pub struct GetPostsLikingUsersParams {
+    pub id: String,
+    pub max_results: Option<i32>,
+    /// A base32hex-encoded pagination token.
+    pub pagination_token: Option<String>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::UserExpansion>>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>
+}
+
+/// struct for passing parameters to the method [`get_posts_quoted_posts`]
+#[derive(Clone, Debug, Default)]
+pub struct GetPostsQuotedPostsParams {
+    pub id: String,
+    pub max_results: Option<i32>,
+    /// A base32hex-encoded pagination token.
+    pub pagination_token: Option<String>,
+    pub exclude: Option<Vec<String>>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::PostExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<models::MediaField>>,
+    /// A comma separated list of Poll fields to display.
+    pub poll_fields: Option<Vec<models::PollField>>,
+    /// A comma separated list of Place fields to display.
+    pub place_fields: Option<Vec<models::PlaceField>>
+}
+
+/// struct for passing parameters to the method [`get_posts_reposted_by`]
+#[derive(Clone, Debug, Default)]
+pub struct GetPostsRepostedByParams {
+    pub id: String,
+    pub max_results: Option<i32>,
+    /// A base32hex-encoded pagination token.
+    pub pagination_token: Option<String>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::UserExpansion>>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>
+}
+
+/// struct for passing parameters to the method [`get_posts_reposts`]
+#[derive(Clone, Debug, Default)]
+pub struct GetPostsRepostsParams {
+    pub id: String,
+    pub max_results: Option<i32>,
+    /// A base32hex-encoded pagination token.
+    pub pagination_token: Option<String>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::PostExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<models::MediaField>>,
+    /// A comma separated list of Poll fields to display.
+    pub poll_fields: Option<Vec<models::PollField>>,
+    /// A comma separated list of Place fields to display.
+    pub place_fields: Option<Vec<models::PlaceField>>
+}
+
+/// struct for passing parameters to the method [`hide_posts_reply`]
+#[derive(Clone, Debug)]
+pub struct HidePostsReplyParams {
+    pub tweet_id: String,
+    pub hide_posts_reply_request: models::HidePostsReplyRequest
+}
+
+/// struct for passing parameters to the method [`search_posts_all`]
+#[derive(Clone, Debug, Default)]
+pub struct SearchPostsAllParams {
+    pub query: String,
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    pub since_id: Option<String>,
+    pub until_id: Option<String>,
+    pub max_results: Option<i32>,
+    /// A base32hex-encoded pagination token.
+    pub next_token: Option<String>,
+    /// A base32hex-encoded pagination token.
+    pub pagination_token: Option<String>,
+    pub sort_order: Option<String>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::PostExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<models::MediaField>>,
+    /// A comma separated list of Poll fields to display.
+    pub poll_fields: Option<Vec<models::PollField>>,
+    /// A comma separated list of Place fields to display.
+    pub place_fields: Option<Vec<models::PlaceField>>
+}
+
+/// struct for passing parameters to the method [`search_posts_recent`]
+#[derive(Clone, Debug, Default)]
+pub struct SearchPostsRecentParams {
+    pub query: String,
+    pub max_results: Option<i32>,
+    /// A base32hex-encoded pagination token.
+    pub next_token: Option<String>,
+    /// A base32hex-encoded pagination token.
+    pub pagination_token: Option<String>,
+    /// Must be within the last 7 days.
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    pub since_id: Option<String>,
+    pub until_id: Option<String>,
+    pub sort_order: Option<String>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::PostExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<models::MediaField>>,
+    /// A comma separated list of Poll fields to display.
+    pub poll_fields: Option<Vec<models::PollField>>,
+    /// A comma separated list of Place fields to display.
+    pub place_fields: Option<Vec<models::PlaceField>>
+}
+
 
 /// struct for typed errors of method [`create_posts`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -128,9 +357,7 @@ pub enum SearchPostsRecentError {
 }
 
 
-pub async fn create_posts(configuration: &configuration::Configuration, create_posts_request: models::CreatePostsRequest) -> Result<models::CreatePostsResponse, Error<CreatePostsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_create_posts_request = create_posts_request;
+pub async fn create_posts(configuration: &configuration::Configuration, params: CreatePostsParams) -> Result<models::CreatePostsResponse, Error<CreatePostsError>> {
 
     let uri_str = format!("{}/2/tweets", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -147,7 +374,7 @@ pub async fn create_posts(configuration: &configuration::Configuration, create_p
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_posts_request);
+    req_builder = req_builder.json(&params.create_posts_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -174,11 +401,9 @@ pub async fn create_posts(configuration: &configuration::Configuration, create_p
     }
 }
 
-pub async fn delete_posts(configuration: &configuration::Configuration, id: &str) -> Result<models::DeletePostsResponse, Error<DeletePostsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
+pub async fn delete_posts(configuration: &configuration::Configuration, params: DeletePostsParams) -> Result<models::DeletePostsResponse, Error<DeletePostsError>> {
 
-    let uri_str = format!("{}/2/tweets/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/tweets/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -219,27 +444,21 @@ pub async fn delete_posts(configuration: &configuration::Configuration, id: &str
     }
 }
 
-pub async fn get_posts_analytics(configuration: &configuration::Configuration, ids: Vec<String>, start_time: chrono::DateTime<chrono::FixedOffset>, end_time: chrono::DateTime<chrono::FixedOffset>, granularity: Option<&str>, analytics_fields: Option<Vec<models::AnalyticsField>>) -> Result<models::GetPostsAnalyticsResponse, Error<GetPostsAnalyticsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_ids = ids;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
-    let p_query_granularity = granularity;
-    let p_query_analytics_fields = analytics_fields;
+pub async fn get_posts_analytics(configuration: &configuration::Configuration, params: GetPostsAnalyticsParams) -> Result<models::GetPostsAnalyticsResponse, Error<GetPostsAnalyticsError>> {
 
     let uri_str = format!("{}/2/tweets/analytics", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     req_builder = match "csv" {
-        "multi" => req_builder.query(&p_query_ids.into_iter().map(|p| ("ids".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
-        _ => req_builder.query(&[("ids", &p_query_ids.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
+        "multi" => req_builder.query(&params.ids.into_iter().map(|p| ("ids".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
+        _ => req_builder.query(&[("ids", &params.ids.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
     };
-    req_builder = req_builder.query(&[("start_time", &p_query_start_time.to_rfc3339())]);
-    req_builder = req_builder.query(&[("end_time", &p_query_end_time.to_rfc3339())]);
-    if let Some(ref param_value) = p_query_granularity {
+    req_builder = req_builder.query(&[("start_time", &params.start_time.to_rfc3339())]);
+    req_builder = req_builder.query(&[("end_time", &params.end_time.to_rfc3339())]);
+    if let Some(ref param_value) = params.granularity {
         req_builder = req_builder.query(&[("granularity", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_analytics_fields {
+    if let Some(ref param_value) = params.analytics_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("analytics.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("analytics.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -283,50 +502,42 @@ pub async fn get_posts_analytics(configuration: &configuration::Configuration, i
     }
 }
 
-pub async fn get_posts_by_id(configuration: &configuration::Configuration, id: &str, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::GetPostsByIdResponse, Error<GetPostsByIdError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_post_fields = post_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
-    let p_query_media_fields = media_fields;
-    let p_query_poll_fields = poll_fields;
-    let p_query_place_fields = place_fields;
+pub async fn get_posts_by_id(configuration: &configuration::Configuration, params: GetPostsByIdParams) -> Result<models::GetPostsByIdResponse, Error<GetPostsByIdError>> {
 
-    let uri_str = format!("{}/2/tweets/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/tweets/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_poll_fields {
+    if let Some(ref param_value) = params.poll_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("poll.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("poll.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_place_fields {
+    if let Some(ref param_value) = params.place_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("place.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("place.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -374,54 +585,46 @@ pub async fn get_posts_by_id(configuration: &configuration::Configuration, id: &
     }
 }
 
-pub async fn get_posts_by_ids(configuration: &configuration::Configuration, ids: Vec<String>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::GetPostsByIdsResponse, Error<GetPostsByIdsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_ids = ids;
-    let p_query_post_fields = post_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
-    let p_query_media_fields = media_fields;
-    let p_query_poll_fields = poll_fields;
-    let p_query_place_fields = place_fields;
+pub async fn get_posts_by_ids(configuration: &configuration::Configuration, params: GetPostsByIdsParams) -> Result<models::GetPostsByIdsResponse, Error<GetPostsByIdsError>> {
 
     let uri_str = format!("{}/2/tweets", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     req_builder = match "csv" {
-        "multi" => req_builder.query(&p_query_ids.into_iter().map(|p| ("ids".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
-        _ => req_builder.query(&[("ids", &p_query_ids.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
+        "multi" => req_builder.query(&params.ids.into_iter().map(|p| ("ids".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
+        _ => req_builder.query(&[("ids", &params.ids.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
     };
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_poll_fields {
+    if let Some(ref param_value) = params.poll_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("poll.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("poll.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_place_fields {
+    if let Some(ref param_value) = params.place_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("place.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("place.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -470,44 +673,34 @@ pub async fn get_posts_by_ids(configuration: &configuration::Configuration, ids:
 }
 
 /// At most one of `pagination_token`, `next_token` may be provided.
-pub async fn get_posts_counts_all(configuration: &configuration::Configuration, query: &str, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, since_id: Option<&str>, until_id: Option<&str>, next_token: Option<&str>, pagination_token: Option<&str>, granularity: Option<&str>, search_count_fields: Option<&str>) -> Result<models::GetPostsCountsAllResponse, Error<GetPostsCountsAllError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_query = query;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
-    let p_query_since_id = since_id;
-    let p_query_until_id = until_id;
-    let p_query_next_token = next_token;
-    let p_query_pagination_token = pagination_token;
-    let p_query_granularity = granularity;
-    let p_query_search_count_fields = search_count_fields;
+pub async fn get_posts_counts_all(configuration: &configuration::Configuration, params: GetPostsCountsAllParams) -> Result<models::GetPostsCountsAllResponse, Error<GetPostsCountsAllError>> {
 
     let uri_str = format!("{}/2/tweets/counts/all", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    req_builder = req_builder.query(&[("query", &p_query_query.to_string())]);
-    if let Some(ref param_value) = p_query_start_time {
+    req_builder = req_builder.query(&[("query", &params.query.to_string())]);
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_since_id {
+    if let Some(ref param_value) = params.since_id {
         req_builder = req_builder.query(&[("since_id", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_until_id {
+    if let Some(ref param_value) = params.until_id {
         req_builder = req_builder.query(&[("until_id", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_next_token {
+    if let Some(ref param_value) = params.next_token {
         req_builder = req_builder.query(&[("next_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_granularity {
+    if let Some(ref param_value) = params.granularity {
         req_builder = req_builder.query(&[("granularity", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_search_count_fields {
+    if let Some(ref param_value) = params.search_count_fields {
         req_builder = req_builder.query(&[("search_count.fields", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -549,44 +742,34 @@ pub async fn get_posts_counts_all(configuration: &configuration::Configuration, 
 }
 
 /// At most one of `pagination_token`, `next_token` may be provided.
-pub async fn get_posts_counts_recent(configuration: &configuration::Configuration, query: &str, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, since_id: Option<&str>, until_id: Option<&str>, next_token: Option<&str>, pagination_token: Option<&str>, granularity: Option<&str>, search_count_fields: Option<&str>) -> Result<models::GetPostsCountsRecentResponse, Error<GetPostsCountsRecentError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_query = query;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
-    let p_query_since_id = since_id;
-    let p_query_until_id = until_id;
-    let p_query_next_token = next_token;
-    let p_query_pagination_token = pagination_token;
-    let p_query_granularity = granularity;
-    let p_query_search_count_fields = search_count_fields;
+pub async fn get_posts_counts_recent(configuration: &configuration::Configuration, params: GetPostsCountsRecentParams) -> Result<models::GetPostsCountsRecentResponse, Error<GetPostsCountsRecentError>> {
 
     let uri_str = format!("{}/2/tweets/counts/recent", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    req_builder = req_builder.query(&[("query", &p_query_query.to_string())]);
-    if let Some(ref param_value) = p_query_start_time {
+    req_builder = req_builder.query(&[("query", &params.query.to_string())]);
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_since_id {
+    if let Some(ref param_value) = params.since_id {
         req_builder = req_builder.query(&[("since_id", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_until_id {
+    if let Some(ref param_value) = params.until_id {
         req_builder = req_builder.query(&[("until_id", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_next_token {
+    if let Some(ref param_value) = params.next_token {
         req_builder = req_builder.query(&[("next_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_granularity {
+    if let Some(ref param_value) = params.granularity {
         req_builder = req_builder.query(&[("granularity", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_search_count_fields {
+    if let Some(ref param_value) = params.search_count_fields {
         req_builder = req_builder.query(&[("search_count.fields", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -631,37 +814,30 @@ pub async fn get_posts_counts_recent(configuration: &configuration::Configuratio
     }
 }
 
-pub async fn get_posts_liking_users(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetPostsLikingUsersResponse, Error<GetPostsLikingUsersError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_user_fields = user_fields;
-    let p_query_expansions = expansions;
-    let p_query_post_fields = post_fields;
+pub async fn get_posts_liking_users(configuration: &configuration::Configuration, params: GetPostsLikingUsersParams) -> Result<models::GetPostsLikingUsersResponse, Error<GetPostsLikingUsersError>> {
 
-    let uri_str = format!("{}/2/tweets/{id}/liking_users", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/tweets/{id}/liking_users", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -705,65 +881,54 @@ pub async fn get_posts_liking_users(configuration: &configuration::Configuration
     }
 }
 
-pub async fn get_posts_quoted_posts(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, exclude: Option<Vec<String>>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::GetPostsQuotedPostsResponse, Error<GetPostsQuotedPostsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_exclude = exclude;
-    let p_query_post_fields = post_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
-    let p_query_media_fields = media_fields;
-    let p_query_poll_fields = poll_fields;
-    let p_query_place_fields = place_fields;
+pub async fn get_posts_quoted_posts(configuration: &configuration::Configuration, params: GetPostsQuotedPostsParams) -> Result<models::GetPostsQuotedPostsResponse, Error<GetPostsQuotedPostsError>> {
 
-    let uri_str = format!("{}/2/tweets/{id}/quote_tweets", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/tweets/{id}/quote_tweets", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_exclude {
+    if let Some(ref param_value) = params.exclude {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("exclude".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("exclude", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_poll_fields {
+    if let Some(ref param_value) = params.poll_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("poll.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("poll.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_place_fields {
+    if let Some(ref param_value) = params.place_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("place.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("place.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -811,37 +976,30 @@ pub async fn get_posts_quoted_posts(configuration: &configuration::Configuration
     }
 }
 
-pub async fn get_posts_reposted_by(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetPostsRepostedByResponse, Error<GetPostsRepostedByError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_user_fields = user_fields;
-    let p_query_expansions = expansions;
-    let p_query_post_fields = post_fields;
+pub async fn get_posts_reposted_by(configuration: &configuration::Configuration, params: GetPostsRepostedByParams) -> Result<models::GetPostsRepostedByResponse, Error<GetPostsRepostedByError>> {
 
-    let uri_str = format!("{}/2/tweets/{id}/retweeted_by", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/tweets/{id}/retweeted_by", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -889,58 +1047,48 @@ pub async fn get_posts_reposted_by(configuration: &configuration::Configuration,
     }
 }
 
-pub async fn get_posts_reposts(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::GetPostsRepostsResponse, Error<GetPostsRepostsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_post_fields = post_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
-    let p_query_media_fields = media_fields;
-    let p_query_poll_fields = poll_fields;
-    let p_query_place_fields = place_fields;
+pub async fn get_posts_reposts(configuration: &configuration::Configuration, params: GetPostsRepostsParams) -> Result<models::GetPostsRepostsResponse, Error<GetPostsRepostsError>> {
 
-    let uri_str = format!("{}/2/tweets/{id}/retweets", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/tweets/{id}/retweets", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_poll_fields {
+    if let Some(ref param_value) = params.poll_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("poll.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("poll.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_place_fields {
+    if let Some(ref param_value) = params.place_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("place.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("place.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -989,12 +1137,9 @@ pub async fn get_posts_reposts(configuration: &configuration::Configuration, id:
 }
 
 /// Hides or unhides a reply to a conversation owned by the authenticated user.
-pub async fn hide_posts_reply(configuration: &configuration::Configuration, tweet_id: &str, hide_posts_reply_request: models::HidePostsReplyRequest) -> Result<models::HidePostsReplyResponse, Error<HidePostsReplyError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_tweet_id = tweet_id;
-    let p_body_hide_posts_reply_request = hide_posts_reply_request;
+pub async fn hide_posts_reply(configuration: &configuration::Configuration, params: HidePostsReplyParams) -> Result<models::HidePostsReplyResponse, Error<HidePostsReplyError>> {
 
-    let uri_str = format!("{}/2/tweets/{tweet_id}/hidden", configuration.base_path, tweet_id=crate::apis::urlencode(p_path_tweet_id));
+    let uri_str = format!("{}/2/tweets/{tweet_id}/hidden", configuration.base_path, tweet_id=crate::apis::urlencode(params.tweet_id));
     let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1009,7 +1154,7 @@ pub async fn hide_posts_reply(configuration: &configuration::Configuration, twee
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_hide_posts_reply_request);
+    req_builder = req_builder.json(&params.hide_posts_reply_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1037,83 +1182,67 @@ pub async fn hide_posts_reply(configuration: &configuration::Configuration, twee
 }
 
 /// At most one of `start_time`, `since_id` may be provided. At most one of `end_time`, `until_id` may be provided. At most one of `pagination_token`, `next_token` may be provided.
-pub async fn search_posts_all(configuration: &configuration::Configuration, query: &str, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, since_id: Option<&str>, until_id: Option<&str>, max_results: Option<i32>, next_token: Option<&str>, pagination_token: Option<&str>, sort_order: Option<&str>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::SearchPostsAllResponse, Error<SearchPostsAllError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_query = query;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
-    let p_query_since_id = since_id;
-    let p_query_until_id = until_id;
-    let p_query_max_results = max_results;
-    let p_query_next_token = next_token;
-    let p_query_pagination_token = pagination_token;
-    let p_query_sort_order = sort_order;
-    let p_query_post_fields = post_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
-    let p_query_media_fields = media_fields;
-    let p_query_poll_fields = poll_fields;
-    let p_query_place_fields = place_fields;
+pub async fn search_posts_all(configuration: &configuration::Configuration, params: SearchPostsAllParams) -> Result<models::SearchPostsAllResponse, Error<SearchPostsAllError>> {
 
     let uri_str = format!("{}/2/tweets/search/all", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    req_builder = req_builder.query(&[("query", &p_query_query.to_string())]);
-    if let Some(ref param_value) = p_query_start_time {
+    req_builder = req_builder.query(&[("query", &params.query.to_string())]);
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_since_id {
+    if let Some(ref param_value) = params.since_id {
         req_builder = req_builder.query(&[("since_id", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_until_id {
+    if let Some(ref param_value) = params.until_id {
         req_builder = req_builder.query(&[("until_id", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_next_token {
+    if let Some(ref param_value) = params.next_token {
         req_builder = req_builder.query(&[("next_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_sort_order {
+    if let Some(ref param_value) = params.sort_order {
         req_builder = req_builder.query(&[("sort_order", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_poll_fields {
+    if let Some(ref param_value) = params.poll_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("poll.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("poll.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_place_fields {
+    if let Some(ref param_value) = params.place_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("place.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("place.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -1162,83 +1291,67 @@ pub async fn search_posts_all(configuration: &configuration::Configuration, quer
 }
 
 /// At most one of `start_time`, `since_id` may be provided. At most one of `end_time`, `until_id` may be provided. At most one of `pagination_token`, `next_token` may be provided.
-pub async fn search_posts_recent(configuration: &configuration::Configuration, query: &str, max_results: Option<i32>, next_token: Option<&str>, pagination_token: Option<&str>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, since_id: Option<&str>, until_id: Option<&str>, sort_order: Option<&str>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::SearchPostsRecentResponse, Error<SearchPostsRecentError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_query = query;
-    let p_query_max_results = max_results;
-    let p_query_next_token = next_token;
-    let p_query_pagination_token = pagination_token;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
-    let p_query_since_id = since_id;
-    let p_query_until_id = until_id;
-    let p_query_sort_order = sort_order;
-    let p_query_post_fields = post_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
-    let p_query_media_fields = media_fields;
-    let p_query_poll_fields = poll_fields;
-    let p_query_place_fields = place_fields;
+pub async fn search_posts_recent(configuration: &configuration::Configuration, params: SearchPostsRecentParams) -> Result<models::SearchPostsRecentResponse, Error<SearchPostsRecentError>> {
 
     let uri_str = format!("{}/2/tweets/search/recent", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    req_builder = req_builder.query(&[("query", &p_query_query.to_string())]);
-    if let Some(ref param_value) = p_query_max_results {
+    req_builder = req_builder.query(&[("query", &params.query.to_string())]);
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_next_token {
+    if let Some(ref param_value) = params.next_token {
         req_builder = req_builder.query(&[("next_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_start_time {
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_since_id {
+    if let Some(ref param_value) = params.since_id {
         req_builder = req_builder.query(&[("since_id", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_until_id {
+    if let Some(ref param_value) = params.until_id {
         req_builder = req_builder.query(&[("until_id", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_sort_order {
+    if let Some(ref param_value) = params.sort_order {
         req_builder = req_builder.query(&[("sort_order", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_poll_fields {
+    if let Some(ref param_value) = params.poll_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("poll.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("poll.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_place_fields {
+    if let Some(ref param_value) = params.place_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("place.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("place.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),

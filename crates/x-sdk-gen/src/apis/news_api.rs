@@ -14,6 +14,24 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`get_news`]
+#[derive(Clone, Debug, Default)]
+pub struct GetNewsParams {
+    pub id: String,
+    /// A comma separated list of News fields to display.
+    pub news_fields: Option<Vec<models::NewsField>>
+}
+
+/// struct for passing parameters to the method [`search_news`]
+#[derive(Clone, Debug, Default)]
+pub struct SearchNewsParams {
+    pub query: String,
+    pub max_results: Option<i32>,
+    pub max_age_hours: Option<i32>,
+    /// A comma separated list of News fields to display.
+    pub news_fields: Option<Vec<models::NewsField>>
+}
+
 
 /// struct for typed errors of method [`get_news`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -33,15 +51,12 @@ pub enum SearchNewsError {
 
 
 /// Retrieves news story by its ID.
-pub async fn get_news(configuration: &configuration::Configuration, id: &str, news_fields: Option<Vec<models::NewsField>>) -> Result<models::GetNewsResponse, Error<GetNewsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_news_fields = news_fields;
+pub async fn get_news(configuration: &configuration::Configuration, params: GetNewsParams) -> Result<models::GetNewsResponse, Error<GetNewsError>> {
 
-    let uri_str = format!("{}/2/news/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/news/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_news_fields {
+    if let Some(ref param_value) = params.news_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("news.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("news.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -89,24 +104,19 @@ pub async fn get_news(configuration: &configuration::Configuration, id: &str, ne
     }
 }
 
-pub async fn search_news(configuration: &configuration::Configuration, query: &str, max_results: Option<i32>, max_age_hours: Option<i32>, news_fields: Option<Vec<models::NewsField>>) -> Result<models::SearchNewsResponse, Error<SearchNewsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_query = query;
-    let p_query_max_results = max_results;
-    let p_query_max_age_hours = max_age_hours;
-    let p_query_news_fields = news_fields;
+pub async fn search_news(configuration: &configuration::Configuration, params: SearchNewsParams) -> Result<models::SearchNewsResponse, Error<SearchNewsError>> {
 
     let uri_str = format!("{}/2/news/search", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    req_builder = req_builder.query(&[("query", &p_query_query.to_string())]);
-    if let Some(ref param_value) = p_query_max_results {
+    req_builder = req_builder.query(&[("query", &params.query.to_string())]);
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_max_age_hours {
+    if let Some(ref param_value) = params.max_age_hours {
         req_builder = req_builder.query(&[("max_age_hours", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_news_fields {
+    if let Some(ref param_value) = params.news_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("news.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("news.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),

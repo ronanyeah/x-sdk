@@ -14,6 +14,83 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`append_media_upload`]
+#[derive(Clone, Debug)]
+pub struct AppendMediaUploadParams {
+    pub id: String,
+    pub append_media_upload_request: models::AppendMediaUploadRequest
+}
+
+/// struct for passing parameters to the method [`create_media_metadata`]
+#[derive(Clone, Debug)]
+pub struct CreateMediaMetadataParams {
+    pub create_media_metadata_request: models::CreateMediaMetadataRequest
+}
+
+/// struct for passing parameters to the method [`create_media_subtitles`]
+#[derive(Clone, Debug)]
+pub struct CreateMediaSubtitlesParams {
+    pub create_media_subtitles_request: models::CreateMediaSubtitlesRequest
+}
+
+/// struct for passing parameters to the method [`delete_media_subtitles`]
+#[derive(Clone, Debug)]
+pub struct DeleteMediaSubtitlesParams {
+    pub delete_media_subtitles_request: models::DeleteMediaSubtitlesRequest
+}
+
+/// struct for passing parameters to the method [`finalize_media_upload`]
+#[derive(Clone, Debug, Default)]
+pub struct FinalizeMediaUploadParams {
+    pub id: String
+}
+
+/// struct for passing parameters to the method [`get_media_analytics`]
+#[derive(Clone, Debug, Default)]
+pub struct GetMediaAnalyticsParams {
+    pub media_keys: Vec<String>,
+    pub start_time: chrono::DateTime<chrono::FixedOffset>,
+    pub end_time: chrono::DateTime<chrono::FixedOffset>,
+    pub granularity: Option<String>,
+    /// A comma separated list of MediaAnalytics fields to display.
+    pub media_analytics_fields: Option<Vec<models::MediaAnalyticsField>>
+}
+
+/// struct for passing parameters to the method [`get_media_by_media_key`]
+#[derive(Clone, Debug, Default)]
+pub struct GetMediaByMediaKeyParams {
+    pub media_key: String,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<models::MediaField>>
+}
+
+/// struct for passing parameters to the method [`get_media_by_media_keys`]
+#[derive(Clone, Debug, Default)]
+pub struct GetMediaByMediaKeysParams {
+    pub media_keys: Vec<String>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<models::MediaField>>
+}
+
+/// struct for passing parameters to the method [`get_media_upload_status`]
+#[derive(Clone, Debug, Default)]
+pub struct GetMediaUploadStatusParams {
+    pub media_id: String,
+    pub command: Option<String>
+}
+
+/// struct for passing parameters to the method [`initialize_media_upload`]
+#[derive(Clone, Debug)]
+pub struct InitializeMediaUploadParams {
+    pub initialize_media_upload_request: models::InitializeMediaUploadRequest
+}
+
+/// struct for passing parameters to the method [`media_upload`]
+#[derive(Clone, Debug)]
+pub struct MediaUploadParams {
+    pub media_upload_request: models::MediaUploadRequest
+}
+
 
 /// struct for typed errors of method [`append_media_upload`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -104,12 +181,9 @@ pub enum MediaUploadError {
 }
 
 
-pub async fn append_media_upload(configuration: &configuration::Configuration, id: &str, append_media_upload_request: models::AppendMediaUploadRequest) -> Result<models::AppendMediaUploadResponse, Error<AppendMediaUploadError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_append_media_upload_request = append_media_upload_request;
+pub async fn append_media_upload(configuration: &configuration::Configuration, params: AppendMediaUploadParams) -> Result<models::AppendMediaUploadResponse, Error<AppendMediaUploadError>> {
 
-    let uri_str = format!("{}/2/media/upload/{id}/append", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/media/upload/{id}/append", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -124,7 +198,7 @@ pub async fn append_media_upload(configuration: &configuration::Configuration, i
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_append_media_upload_request);
+    req_builder = req_builder.json(&params.append_media_upload_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -152,9 +226,7 @@ pub async fn append_media_upload(configuration: &configuration::Configuration, i
 }
 
 /// Creates metadata for a Media file.
-pub async fn create_media_metadata(configuration: &configuration::Configuration, create_media_metadata_request: models::CreateMediaMetadataRequest) -> Result<models::CreateMediaMetadataResponse, Error<CreateMediaMetadataError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_create_media_metadata_request = create_media_metadata_request;
+pub async fn create_media_metadata(configuration: &configuration::Configuration, params: CreateMediaMetadataParams) -> Result<models::CreateMediaMetadataResponse, Error<CreateMediaMetadataError>> {
 
     let uri_str = format!("{}/2/media/metadata", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -171,7 +243,7 @@ pub async fn create_media_metadata(configuration: &configuration::Configuration,
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_media_metadata_request);
+    req_builder = req_builder.json(&params.create_media_metadata_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -199,9 +271,7 @@ pub async fn create_media_metadata(configuration: &configuration::Configuration,
 }
 
 /// Creates subtitles for a specific Media file.
-pub async fn create_media_subtitles(configuration: &configuration::Configuration, create_media_subtitles_request: models::CreateMediaSubtitlesRequest) -> Result<models::CreateMediaSubtitlesResponse, Error<CreateMediaSubtitlesError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_create_media_subtitles_request = create_media_subtitles_request;
+pub async fn create_media_subtitles(configuration: &configuration::Configuration, params: CreateMediaSubtitlesParams) -> Result<models::CreateMediaSubtitlesResponse, Error<CreateMediaSubtitlesError>> {
 
     let uri_str = format!("{}/2/media/subtitles", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -218,7 +288,7 @@ pub async fn create_media_subtitles(configuration: &configuration::Configuration
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_media_subtitles_request);
+    req_builder = req_builder.json(&params.create_media_subtitles_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -246,9 +316,7 @@ pub async fn create_media_subtitles(configuration: &configuration::Configuration
 }
 
 /// Deletes subtitles for a specific Media file.
-pub async fn delete_media_subtitles(configuration: &configuration::Configuration, delete_media_subtitles_request: models::DeleteMediaSubtitlesRequest) -> Result<models::DeleteMediaSubtitlesResponse, Error<DeleteMediaSubtitlesError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_delete_media_subtitles_request = delete_media_subtitles_request;
+pub async fn delete_media_subtitles(configuration: &configuration::Configuration, params: DeleteMediaSubtitlesParams) -> Result<models::DeleteMediaSubtitlesResponse, Error<DeleteMediaSubtitlesError>> {
 
     let uri_str = format!("{}/2/media/subtitles", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
@@ -265,7 +333,7 @@ pub async fn delete_media_subtitles(configuration: &configuration::Configuration
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_delete_media_subtitles_request);
+    req_builder = req_builder.json(&params.delete_media_subtitles_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -293,11 +361,9 @@ pub async fn delete_media_subtitles(configuration: &configuration::Configuration
 }
 
 /// Finalizes a Media upload request.
-pub async fn finalize_media_upload(configuration: &configuration::Configuration, id: &str) -> Result<models::FinalizeMediaUploadResponse, Error<FinalizeMediaUploadError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
+pub async fn finalize_media_upload(configuration: &configuration::Configuration, params: FinalizeMediaUploadParams) -> Result<models::FinalizeMediaUploadResponse, Error<FinalizeMediaUploadError>> {
 
-    let uri_str = format!("{}/2/media/upload/{id}/finalize", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/media/upload/{id}/finalize", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -338,27 +404,21 @@ pub async fn finalize_media_upload(configuration: &configuration::Configuration,
     }
 }
 
-pub async fn get_media_analytics(configuration: &configuration::Configuration, media_keys: Vec<String>, start_time: chrono::DateTime<chrono::FixedOffset>, end_time: chrono::DateTime<chrono::FixedOffset>, granularity: Option<&str>, media_analytics_fields: Option<Vec<models::MediaAnalyticsField>>) -> Result<models::GetMediaAnalyticsResponse, Error<GetMediaAnalyticsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_media_keys = media_keys;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
-    let p_query_granularity = granularity;
-    let p_query_media_analytics_fields = media_analytics_fields;
+pub async fn get_media_analytics(configuration: &configuration::Configuration, params: GetMediaAnalyticsParams) -> Result<models::GetMediaAnalyticsResponse, Error<GetMediaAnalyticsError>> {
 
     let uri_str = format!("{}/2/media/analytics", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     req_builder = match "csv" {
-        "multi" => req_builder.query(&p_query_media_keys.into_iter().map(|p| ("media_keys".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
-        _ => req_builder.query(&[("media_keys", &p_query_media_keys.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
+        "multi" => req_builder.query(&params.media_keys.into_iter().map(|p| ("media_keys".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
+        _ => req_builder.query(&[("media_keys", &params.media_keys.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
     };
-    req_builder = req_builder.query(&[("start_time", &p_query_start_time.to_rfc3339())]);
-    req_builder = req_builder.query(&[("end_time", &p_query_end_time.to_rfc3339())]);
-    if let Some(ref param_value) = p_query_granularity {
+    req_builder = req_builder.query(&[("start_time", &params.start_time.to_rfc3339())]);
+    req_builder = req_builder.query(&[("end_time", &params.end_time.to_rfc3339())]);
+    if let Some(ref param_value) = params.granularity {
         req_builder = req_builder.query(&[("granularity", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_media_analytics_fields {
+    if let Some(ref param_value) = params.media_analytics_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media_analytics.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media_analytics.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -402,15 +462,12 @@ pub async fn get_media_analytics(configuration: &configuration::Configuration, m
     }
 }
 
-pub async fn get_media_by_media_key(configuration: &configuration::Configuration, media_key: &str, media_fields: Option<Vec<models::MediaField>>) -> Result<models::GetMediaByMediaKeyResponse, Error<GetMediaByMediaKeyError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_media_key = media_key;
-    let p_query_media_fields = media_fields;
+pub async fn get_media_by_media_key(configuration: &configuration::Configuration, params: GetMediaByMediaKeyParams) -> Result<models::GetMediaByMediaKeyResponse, Error<GetMediaByMediaKeyError>> {
 
-    let uri_str = format!("{}/2/media/{media_key}", configuration.base_path, media_key=crate::apis::urlencode(p_path_media_key));
+    let uri_str = format!("{}/2/media/{media_key}", configuration.base_path, media_key=crate::apis::urlencode(params.media_key));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -458,19 +515,16 @@ pub async fn get_media_by_media_key(configuration: &configuration::Configuration
     }
 }
 
-pub async fn get_media_by_media_keys(configuration: &configuration::Configuration, media_keys: Vec<String>, media_fields: Option<Vec<models::MediaField>>) -> Result<models::GetMediaByMediaKeysResponse, Error<GetMediaByMediaKeysError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_media_keys = media_keys;
-    let p_query_media_fields = media_fields;
+pub async fn get_media_by_media_keys(configuration: &configuration::Configuration, params: GetMediaByMediaKeysParams) -> Result<models::GetMediaByMediaKeysResponse, Error<GetMediaByMediaKeysError>> {
 
     let uri_str = format!("{}/2/media", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     req_builder = match "csv" {
-        "multi" => req_builder.query(&p_query_media_keys.into_iter().map(|p| ("media_keys".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
-        _ => req_builder.query(&[("media_keys", &p_query_media_keys.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
+        "multi" => req_builder.query(&params.media_keys.into_iter().map(|p| ("media_keys".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
+        _ => req_builder.query(&[("media_keys", &params.media_keys.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
     };
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -519,16 +573,13 @@ pub async fn get_media_by_media_keys(configuration: &configuration::Configuratio
 }
 
 /// Retrieves the status of a Media upload by its ID.
-pub async fn get_media_upload_status(configuration: &configuration::Configuration, media_id: &str, command: Option<&str>) -> Result<models::GetMediaUploadStatusResponse, Error<GetMediaUploadStatusError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_media_id = media_id;
-    let p_query_command = command;
+pub async fn get_media_upload_status(configuration: &configuration::Configuration, params: GetMediaUploadStatusParams) -> Result<models::GetMediaUploadStatusResponse, Error<GetMediaUploadStatusError>> {
 
     let uri_str = format!("{}/2/media/upload", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    req_builder = req_builder.query(&[("media_id", &p_query_media_id.to_string())]);
-    if let Some(ref param_value) = p_query_command {
+    req_builder = req_builder.query(&[("media_id", &params.media_id.to_string())]);
+    if let Some(ref param_value) = params.command {
         req_builder = req_builder.query(&[("command", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -570,9 +621,7 @@ pub async fn get_media_upload_status(configuration: &configuration::Configuratio
 }
 
 /// Initializes a media upload.
-pub async fn initialize_media_upload(configuration: &configuration::Configuration, initialize_media_upload_request: models::InitializeMediaUploadRequest) -> Result<models::InitializeMediaUploadResponse, Error<InitializeMediaUploadError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_initialize_media_upload_request = initialize_media_upload_request;
+pub async fn initialize_media_upload(configuration: &configuration::Configuration, params: InitializeMediaUploadParams) -> Result<models::InitializeMediaUploadResponse, Error<InitializeMediaUploadError>> {
 
     let uri_str = format!("{}/2/media/upload/initialize", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -589,7 +638,7 @@ pub async fn initialize_media_upload(configuration: &configuration::Configuratio
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_initialize_media_upload_request);
+    req_builder = req_builder.json(&params.initialize_media_upload_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -617,9 +666,7 @@ pub async fn initialize_media_upload(configuration: &configuration::Configuratio
 }
 
 /// Uploads a media file for use in posts, direct messages, or ads. The response carries the media identifiers, including the media_key used to reference the asset in later calls. The media field carries the file content base64-encoded in JSON bodies (raw bytes in multipart bodies); media_category is tweet_image, tweet_video, or tweet_gif for posts and ads, dm_image/dm_video/dm_gif for DMs, or subtitles. For X Ads accounts, register the returned media_key via create_media_library_item to add it to the account's media library and use it in campaigns.
-pub async fn media_upload(configuration: &configuration::Configuration, media_upload_request: models::MediaUploadRequest) -> Result<models::MediaUploadResponse, Error<MediaUploadError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_media_upload_request = media_upload_request;
+pub async fn media_upload(configuration: &configuration::Configuration, params: MediaUploadParams) -> Result<models::MediaUploadResponse, Error<MediaUploadError>> {
 
     let uri_str = format!("{}/2/media/upload", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -636,7 +683,7 @@ pub async fn media_upload(configuration: &configuration::Configuration, media_up
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_media_upload_request);
+    req_builder = req_builder.json(&params.media_upload_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;

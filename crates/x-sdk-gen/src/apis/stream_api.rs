@@ -14,6 +14,326 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`activity_stream`]
+#[derive(Clone, Debug, Default)]
+pub struct ActivityStreamParams {
+    /// The number of minutes of backfill requested.
+    pub backfill_minutes: Option<i32>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the activities will be provided.
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the activities will be provided.
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>
+}
+
+/// struct for passing parameters to the method [`get_rule_counts`]
+#[derive(Clone, Debug, Default)]
+pub struct GetRuleCountsParams {
+    pub rules_count_fields: Option<String>
+}
+
+/// struct for passing parameters to the method [`get_rules`]
+#[derive(Clone, Debug, Default)]
+pub struct GetRulesParams {
+    pub ids: Option<Vec<String>>,
+    pub max_results: Option<i32>,
+    /// A base32hex-encoded pagination token that decodes to 8 bytes.
+    pub pagination_token: Option<String>
+}
+
+/// struct for passing parameters to the method [`stream_labels_compliance`]
+#[derive(Clone, Debug, Default)]
+pub struct StreamLabelsComplianceParams {
+    /// The number of minutes of backfill requested.
+    pub backfill_minutes: Option<i32>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post labels will be provided.
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Post labels will be provided.
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>
+}
+
+/// struct for passing parameters to the method [`stream_likes_compliance`]
+#[derive(Clone, Debug, Default)]
+pub struct StreamLikesComplianceParams {
+    /// The number of minutes of backfill requested.
+    pub backfill_minutes: Option<i32>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Likes Compliance events will be provided.
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Likes Compliance events will be provided.
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>
+}
+
+/// struct for passing parameters to the method [`stream_likes_firehose`]
+#[derive(Clone, Debug, Default)]
+pub struct StreamLikesFirehoseParams {
+    /// The partition number.
+    pub partition: i32,
+    /// The number of minutes of backfill requested.
+    pub backfill_minutes: Option<i32>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Likes will be provided.
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// A comma separated list of LikeWithTweetAuthor fields to display.
+    pub like_with_tweet_author_fields: Option<Vec<String>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<String>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<String>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<String>>,
+    /// A comma separated list of Tweet fields to display.
+    pub tweet_fields: Option<Vec<String>>
+}
+
+/// struct for passing parameters to the method [`stream_likes_sample10`]
+#[derive(Clone, Debug, Default)]
+pub struct StreamLikesSample10Params {
+    /// The partition number.
+    pub partition: i32,
+    /// The number of minutes of backfill requested.
+    pub backfill_minutes: Option<i32>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Likes will be provided.
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// A comma separated list of LikeWithTweetAuthor fields to display.
+    pub like_with_tweet_author_fields: Option<Vec<String>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<String>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<String>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<String>>,
+    /// A comma separated list of Tweet fields to display.
+    pub tweet_fields: Option<Vec<String>>
+}
+
+/// struct for passing parameters to the method [`stream_posts`]
+#[derive(Clone, Debug, Default)]
+pub struct StreamPostsParams {
+    /// The number of minutes of backfill requested.
+    pub backfill_minutes: Option<i32>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided.
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// A comma separated list of Tweet fields to display.
+    pub tweet_fields: Option<Vec<String>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<String>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<String>>,
+    /// A comma separated list of Poll fields to display.
+    pub poll_fields: Option<Vec<String>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<String>>,
+    /// A comma separated list of Place fields to display.
+    pub place_fields: Option<Vec<String>>
+}
+
+/// struct for passing parameters to the method [`stream_posts_compliance`]
+#[derive(Clone, Debug, Default)]
+pub struct StreamPostsComplianceParams {
+    /// The partition number.
+    pub partition: i32,
+    /// The number of minutes of backfill requested.
+    pub backfill_minutes: Option<i32>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post Compliance events will be provided.
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Post Compliance events will be provided.
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>
+}
+
+/// struct for passing parameters to the method [`stream_posts_firehose`]
+#[derive(Clone, Debug, Default)]
+pub struct StreamPostsFirehoseParams {
+    /// The partition number.
+    pub partition: i32,
+    /// The number of minutes of backfill requested.
+    pub backfill_minutes: Option<i32>,
+    /// A comma separated list of Tweet fields to display.
+    pub tweet_fields: Option<Vec<String>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<String>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<String>>,
+    /// A comma separated list of Poll fields to display.
+    pub poll_fields: Option<Vec<String>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<String>>,
+    /// A comma separated list of Place fields to display.
+    pub place_fields: Option<Vec<String>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided.
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>
+}
+
+/// struct for passing parameters to the method [`stream_posts_firehose_en`]
+#[derive(Clone, Debug, Default)]
+pub struct StreamPostsFirehoseEnParams {
+    /// The partition number.
+    pub partition: i32,
+    /// The number of minutes of backfill requested.
+    pub backfill_minutes: Option<i32>,
+    /// A comma separated list of Tweet fields to display.
+    pub tweet_fields: Option<Vec<String>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<String>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<String>>,
+    /// A comma separated list of Poll fields to display.
+    pub poll_fields: Option<Vec<String>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<String>>,
+    /// A comma separated list of Place fields to display.
+    pub place_fields: Option<Vec<String>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided.
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>
+}
+
+/// struct for passing parameters to the method [`stream_posts_firehose_ja`]
+#[derive(Clone, Debug, Default)]
+pub struct StreamPostsFirehoseJaParams {
+    /// The partition number.
+    pub partition: i32,
+    /// The number of minutes of backfill requested.
+    pub backfill_minutes: Option<i32>,
+    /// A comma separated list of Tweet fields to display.
+    pub tweet_fields: Option<Vec<String>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<String>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<String>>,
+    /// A comma separated list of Poll fields to display.
+    pub poll_fields: Option<Vec<String>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<String>>,
+    /// A comma separated list of Place fields to display.
+    pub place_fields: Option<Vec<String>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided.
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>
+}
+
+/// struct for passing parameters to the method [`stream_posts_firehose_ko`]
+#[derive(Clone, Debug, Default)]
+pub struct StreamPostsFirehoseKoParams {
+    /// The partition number.
+    pub partition: i32,
+    /// The number of minutes of backfill requested.
+    pub backfill_minutes: Option<i32>,
+    /// A comma separated list of Tweet fields to display.
+    pub tweet_fields: Option<Vec<String>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<String>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<String>>,
+    /// A comma separated list of Poll fields to display.
+    pub poll_fields: Option<Vec<String>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<String>>,
+    /// A comma separated list of Place fields to display.
+    pub place_fields: Option<Vec<String>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided.
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>
+}
+
+/// struct for passing parameters to the method [`stream_posts_firehose_pt`]
+#[derive(Clone, Debug, Default)]
+pub struct StreamPostsFirehosePtParams {
+    /// The partition number.
+    pub partition: i32,
+    /// The number of minutes of backfill requested.
+    pub backfill_minutes: Option<i32>,
+    /// A comma separated list of Tweet fields to display.
+    pub tweet_fields: Option<Vec<String>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<String>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<String>>,
+    /// A comma separated list of Poll fields to display.
+    pub poll_fields: Option<Vec<String>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<String>>,
+    /// A comma separated list of Place fields to display.
+    pub place_fields: Option<Vec<String>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided.
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>
+}
+
+/// struct for passing parameters to the method [`stream_posts_sample`]
+#[derive(Clone, Debug, Default)]
+pub struct StreamPostsSampleParams {
+    /// The number of minutes of backfill requested.
+    pub backfill_minutes: Option<i32>,
+    /// A comma separated list of Tweet fields to display.
+    pub tweet_fields: Option<Vec<String>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<String>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<String>>,
+    /// A comma separated list of Poll fields to display.
+    pub poll_fields: Option<Vec<String>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<String>>,
+    /// A comma separated list of Place fields to display.
+    pub place_fields: Option<Vec<String>>
+}
+
+/// struct for passing parameters to the method [`stream_posts_sample10`]
+#[derive(Clone, Debug, Default)]
+pub struct StreamPostsSample10Params {
+    /// The partition number.
+    pub partition: i32,
+    /// The number of minutes of backfill requested.
+    pub backfill_minutes: Option<i32>,
+    /// A comma separated list of Tweet fields to display.
+    pub tweet_fields: Option<Vec<String>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<String>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<String>>,
+    /// A comma separated list of Poll fields to display.
+    pub poll_fields: Option<Vec<String>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<String>>,
+    /// A comma separated list of Place fields to display.
+    pub place_fields: Option<Vec<String>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided.
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>
+}
+
+/// struct for passing parameters to the method [`stream_users_compliance`]
+#[derive(Clone, Debug, Default)]
+pub struct StreamUsersComplianceParams {
+    /// The partition number.
+    pub partition: i32,
+    /// The number of minutes of backfill requested.
+    pub backfill_minutes: Option<i32>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the User Compliance events will be provided.
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the User Compliance events will be provided.
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>
+}
+
+/// struct for passing parameters to the method [`update_rules`]
+#[derive(Clone, Debug)]
+pub struct UpdateRulesParams {
+    pub update_rules_request: models::UpdateRulesRequest,
+    pub dry_run: Option<bool>,
+    pub delete_all: Option<bool>
+}
+
 
 /// struct for typed errors of method [`activity_stream`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -161,22 +481,18 @@ pub enum UpdateRulesError {
 
 
 /// Stream of X Activities
-pub async fn activity_stream(configuration: &configuration::Configuration, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<ActivityStreamError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_backfill_minutes = backfill_minutes;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
+pub async fn activity_stream(configuration: &configuration::Configuration, params: ActivityStreamParams) -> Result<reqwest::Response, Error<ActivityStreamError>> {
 
     let uri_str = format!("{}/2/activity/stream", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_backfill_minutes {
+    if let Some(ref param_value) = params.backfill_minutes {
         req_builder = req_builder.query(&[("backfill_minutes", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_start_time {
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -206,14 +522,12 @@ pub async fn activity_stream(configuration: &configuration::Configuration, backf
     }
 }
 
-pub async fn get_rule_counts(configuration: &configuration::Configuration, rules_count_fields: Option<&str>) -> Result<models::GetRuleCountsResponse, Error<GetRuleCountsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_rules_count_fields = rules_count_fields;
+pub async fn get_rule_counts(configuration: &configuration::Configuration, params: GetRuleCountsParams) -> Result<models::GetRuleCountsResponse, Error<GetRuleCountsError>> {
 
     let uri_str = format!("{}/2/tweets/search/stream/rules/counts", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_rules_count_fields {
+    if let Some(ref param_value) = params.rules_count_fields {
         req_builder = req_builder.query(&[("rules_count.fields", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -255,25 +569,21 @@ pub async fn get_rule_counts(configuration: &configuration::Configuration, rules
 }
 
 /// Returns the active filtered-stream rules for the authenticated app. Provide `ids` to fetch specific rules; omit it to list all rules.
-pub async fn get_rules(configuration: &configuration::Configuration, ids: Option<Vec<String>>, max_results: Option<i32>, pagination_token: Option<&str>) -> Result<models::GetRulesResponse, Error<GetRulesError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_ids = ids;
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
+pub async fn get_rules(configuration: &configuration::Configuration, params: GetRulesParams) -> Result<models::GetRulesResponse, Error<GetRulesError>> {
 
     let uri_str = format!("{}/2/tweets/search/stream/rules", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_ids {
+    if let Some(ref param_value) = params.ids {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("ids".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("ids", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -315,22 +625,18 @@ pub async fn get_rules(configuration: &configuration::Configuration, ids: Option
 }
 
 /// Streams all labeling events applied to Posts.
-pub async fn stream_labels_compliance(configuration: &configuration::Configuration, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamLabelsComplianceError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_backfill_minutes = backfill_minutes;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
+pub async fn stream_labels_compliance(configuration: &configuration::Configuration, params: StreamLabelsComplianceParams) -> Result<reqwest::Response, Error<StreamLabelsComplianceError>> {
 
     let uri_str = format!("{}/2/tweets/label/stream", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_backfill_minutes {
+    if let Some(ref param_value) = params.backfill_minutes {
         req_builder = req_builder.query(&[("backfill_minutes", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_start_time {
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -361,22 +667,18 @@ pub async fn stream_labels_compliance(configuration: &configuration::Configurati
 }
 
 /// Streams all compliance data related to Likes for Users.
-pub async fn stream_likes_compliance(configuration: &configuration::Configuration, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamLikesComplianceError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_backfill_minutes = backfill_minutes;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
+pub async fn stream_likes_compliance(configuration: &configuration::Configuration, params: StreamLikesComplianceParams) -> Result<reqwest::Response, Error<StreamLikesComplianceError>> {
 
     let uri_str = format!("{}/2/likes/compliance/stream", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_backfill_minutes {
+    if let Some(ref param_value) = params.backfill_minutes {
         req_builder = req_builder.query(&[("backfill_minutes", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_start_time {
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -407,56 +709,46 @@ pub async fn stream_likes_compliance(configuration: &configuration::Configuratio
 }
 
 /// Streams all public Likes in real-time.
-pub async fn stream_likes_firehose(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, like_with_tweet_author_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, tweet_fields: Option<Vec<String>>) -> Result<reqwest::Response, Error<StreamLikesFirehoseError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_partition = partition;
-    let p_query_backfill_minutes = backfill_minutes;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
-    let p_query_like_with_tweet_author_fields = like_with_tweet_author_fields;
-    let p_query_expansions = expansions;
-    let p_query_media_fields = media_fields;
-    let p_query_user_fields = user_fields;
-    let p_query_tweet_fields = tweet_fields;
+pub async fn stream_likes_firehose(configuration: &configuration::Configuration, params: StreamLikesFirehoseParams) -> Result<reqwest::Response, Error<StreamLikesFirehoseError>> {
 
     let uri_str = format!("{}/2/likes/firehose/stream", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_backfill_minutes {
+    if let Some(ref param_value) = params.backfill_minutes {
         req_builder = req_builder.query(&[("backfill_minutes", &param_value.to_string())]);
     }
-    req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
-    if let Some(ref param_value) = p_query_start_time {
+    req_builder = req_builder.query(&[("partition", &params.partition.to_string())]);
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_like_with_tweet_author_fields {
+    if let Some(ref param_value) = params.like_with_tweet_author_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("like_with_tweet_author.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("like_with_tweet_author.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_tweet_fields {
+    if let Some(ref param_value) = params.tweet_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("tweet.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("tweet.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -490,56 +782,46 @@ pub async fn stream_likes_firehose(configuration: &configuration::Configuration,
 }
 
 /// Streams a 10% sample of public Likes in real-time.
-pub async fn stream_likes_sample10(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, like_with_tweet_author_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, tweet_fields: Option<Vec<String>>) -> Result<reqwest::Response, Error<StreamLikesSample10Error>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_partition = partition;
-    let p_query_backfill_minutes = backfill_minutes;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
-    let p_query_like_with_tweet_author_fields = like_with_tweet_author_fields;
-    let p_query_expansions = expansions;
-    let p_query_media_fields = media_fields;
-    let p_query_user_fields = user_fields;
-    let p_query_tweet_fields = tweet_fields;
+pub async fn stream_likes_sample10(configuration: &configuration::Configuration, params: StreamLikesSample10Params) -> Result<reqwest::Response, Error<StreamLikesSample10Error>> {
 
     let uri_str = format!("{}/2/likes/sample10/stream", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_backfill_minutes {
+    if let Some(ref param_value) = params.backfill_minutes {
         req_builder = req_builder.query(&[("backfill_minutes", &param_value.to_string())]);
     }
-    req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
-    if let Some(ref param_value) = p_query_start_time {
+    req_builder = req_builder.query(&[("partition", &params.partition.to_string())]);
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_like_with_tweet_author_fields {
+    if let Some(ref param_value) = params.like_with_tweet_author_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("like_with_tweet_author.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("like_with_tweet_author.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_tweet_fields {
+    if let Some(ref param_value) = params.tweet_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("tweet.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("tweet.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -573,61 +855,51 @@ pub async fn stream_likes_sample10(configuration: &configuration::Configuration,
 }
 
 /// Streams Posts in real-time matching the active rule set.
-pub async fn stream_posts(configuration: &configuration::Configuration, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<reqwest::Response, Error<StreamPostsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_backfill_minutes = backfill_minutes;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
-    let p_query_tweet_fields = tweet_fields;
-    let p_query_expansions = expansions;
-    let p_query_media_fields = media_fields;
-    let p_query_poll_fields = poll_fields;
-    let p_query_user_fields = user_fields;
-    let p_query_place_fields = place_fields;
+pub async fn stream_posts(configuration: &configuration::Configuration, params: StreamPostsParams) -> Result<reqwest::Response, Error<StreamPostsError>> {
 
     let uri_str = format!("{}/2/tweets/search/stream", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_backfill_minutes {
+    if let Some(ref param_value) = params.backfill_minutes {
         req_builder = req_builder.query(&[("backfill_minutes", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_start_time {
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_tweet_fields {
+    if let Some(ref param_value) = params.tweet_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("tweet.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("tweet.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_poll_fields {
+    if let Some(ref param_value) = params.poll_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("poll.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("poll.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_place_fields {
+    if let Some(ref param_value) = params.place_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("place.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("place.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -661,24 +933,19 @@ pub async fn stream_posts(configuration: &configuration::Configuration, backfill
 }
 
 /// Streams all compliance data related to Posts.
-pub async fn stream_posts_compliance(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamPostsComplianceError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_partition = partition;
-    let p_query_backfill_minutes = backfill_minutes;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
+pub async fn stream_posts_compliance(configuration: &configuration::Configuration, params: StreamPostsComplianceParams) -> Result<reqwest::Response, Error<StreamPostsComplianceError>> {
 
     let uri_str = format!("{}/2/tweets/compliance/stream", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_backfill_minutes {
+    if let Some(ref param_value) = params.backfill_minutes {
         req_builder = req_builder.query(&[("backfill_minutes", &param_value.to_string())]);
     }
-    req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
-    if let Some(ref param_value) = p_query_start_time {
+    req_builder = req_builder.query(&[("partition", &params.partition.to_string())]);
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -709,66 +976,55 @@ pub async fn stream_posts_compliance(configuration: &configuration::Configuratio
 }
 
 /// Streams all public Posts in real-time.
-pub async fn stream_posts_firehose(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamPostsFirehoseError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_partition = partition;
-    let p_query_backfill_minutes = backfill_minutes;
-    let p_query_tweet_fields = tweet_fields;
-    let p_query_expansions = expansions;
-    let p_query_media_fields = media_fields;
-    let p_query_poll_fields = poll_fields;
-    let p_query_user_fields = user_fields;
-    let p_query_place_fields = place_fields;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
+pub async fn stream_posts_firehose(configuration: &configuration::Configuration, params: StreamPostsFirehoseParams) -> Result<reqwest::Response, Error<StreamPostsFirehoseError>> {
 
     let uri_str = format!("{}/2/tweets/firehose/stream", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_backfill_minutes {
+    if let Some(ref param_value) = params.backfill_minutes {
         req_builder = req_builder.query(&[("backfill_minutes", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_tweet_fields {
+    if let Some(ref param_value) = params.tweet_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("tweet.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("tweet.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_poll_fields {
+    if let Some(ref param_value) = params.poll_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("poll.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("poll.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_place_fields {
+    if let Some(ref param_value) = params.place_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("place.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("place.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
-    if let Some(ref param_value) = p_query_start_time {
+    req_builder = req_builder.query(&[("partition", &params.partition.to_string())]);
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -799,66 +1055,55 @@ pub async fn stream_posts_firehose(configuration: &configuration::Configuration,
 }
 
 /// Streams all public English-language Posts in real-time.
-pub async fn stream_posts_firehose_en(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamPostsFirehoseEnError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_partition = partition;
-    let p_query_backfill_minutes = backfill_minutes;
-    let p_query_tweet_fields = tweet_fields;
-    let p_query_expansions = expansions;
-    let p_query_media_fields = media_fields;
-    let p_query_poll_fields = poll_fields;
-    let p_query_user_fields = user_fields;
-    let p_query_place_fields = place_fields;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
+pub async fn stream_posts_firehose_en(configuration: &configuration::Configuration, params: StreamPostsFirehoseEnParams) -> Result<reqwest::Response, Error<StreamPostsFirehoseEnError>> {
 
     let uri_str = format!("{}/2/tweets/firehose/stream/lang/en", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_backfill_minutes {
+    if let Some(ref param_value) = params.backfill_minutes {
         req_builder = req_builder.query(&[("backfill_minutes", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_tweet_fields {
+    if let Some(ref param_value) = params.tweet_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("tweet.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("tweet.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_poll_fields {
+    if let Some(ref param_value) = params.poll_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("poll.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("poll.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_place_fields {
+    if let Some(ref param_value) = params.place_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("place.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("place.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
-    if let Some(ref param_value) = p_query_start_time {
+    req_builder = req_builder.query(&[("partition", &params.partition.to_string())]);
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -889,66 +1134,55 @@ pub async fn stream_posts_firehose_en(configuration: &configuration::Configurati
 }
 
 /// Streams all public Japanese-language Posts in real-time.
-pub async fn stream_posts_firehose_ja(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamPostsFirehoseJaError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_partition = partition;
-    let p_query_backfill_minutes = backfill_minutes;
-    let p_query_tweet_fields = tweet_fields;
-    let p_query_expansions = expansions;
-    let p_query_media_fields = media_fields;
-    let p_query_poll_fields = poll_fields;
-    let p_query_user_fields = user_fields;
-    let p_query_place_fields = place_fields;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
+pub async fn stream_posts_firehose_ja(configuration: &configuration::Configuration, params: StreamPostsFirehoseJaParams) -> Result<reqwest::Response, Error<StreamPostsFirehoseJaError>> {
 
     let uri_str = format!("{}/2/tweets/firehose/stream/lang/ja", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_backfill_minutes {
+    if let Some(ref param_value) = params.backfill_minutes {
         req_builder = req_builder.query(&[("backfill_minutes", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_tweet_fields {
+    if let Some(ref param_value) = params.tweet_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("tweet.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("tweet.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_poll_fields {
+    if let Some(ref param_value) = params.poll_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("poll.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("poll.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_place_fields {
+    if let Some(ref param_value) = params.place_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("place.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("place.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
-    if let Some(ref param_value) = p_query_start_time {
+    req_builder = req_builder.query(&[("partition", &params.partition.to_string())]);
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -979,66 +1213,55 @@ pub async fn stream_posts_firehose_ja(configuration: &configuration::Configurati
 }
 
 /// Streams all public Korean-language Posts in real-time.
-pub async fn stream_posts_firehose_ko(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamPostsFirehoseKoError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_partition = partition;
-    let p_query_backfill_minutes = backfill_minutes;
-    let p_query_tweet_fields = tweet_fields;
-    let p_query_expansions = expansions;
-    let p_query_media_fields = media_fields;
-    let p_query_poll_fields = poll_fields;
-    let p_query_user_fields = user_fields;
-    let p_query_place_fields = place_fields;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
+pub async fn stream_posts_firehose_ko(configuration: &configuration::Configuration, params: StreamPostsFirehoseKoParams) -> Result<reqwest::Response, Error<StreamPostsFirehoseKoError>> {
 
     let uri_str = format!("{}/2/tweets/firehose/stream/lang/ko", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_backfill_minutes {
+    if let Some(ref param_value) = params.backfill_minutes {
         req_builder = req_builder.query(&[("backfill_minutes", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_tweet_fields {
+    if let Some(ref param_value) = params.tweet_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("tweet.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("tweet.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_poll_fields {
+    if let Some(ref param_value) = params.poll_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("poll.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("poll.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_place_fields {
+    if let Some(ref param_value) = params.place_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("place.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("place.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
-    if let Some(ref param_value) = p_query_start_time {
+    req_builder = req_builder.query(&[("partition", &params.partition.to_string())]);
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1069,66 +1292,55 @@ pub async fn stream_posts_firehose_ko(configuration: &configuration::Configurati
 }
 
 /// Streams all public Portuguese-language Posts in real-time.
-pub async fn stream_posts_firehose_pt(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamPostsFirehosePtError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_partition = partition;
-    let p_query_backfill_minutes = backfill_minutes;
-    let p_query_tweet_fields = tweet_fields;
-    let p_query_expansions = expansions;
-    let p_query_media_fields = media_fields;
-    let p_query_poll_fields = poll_fields;
-    let p_query_user_fields = user_fields;
-    let p_query_place_fields = place_fields;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
+pub async fn stream_posts_firehose_pt(configuration: &configuration::Configuration, params: StreamPostsFirehosePtParams) -> Result<reqwest::Response, Error<StreamPostsFirehosePtError>> {
 
     let uri_str = format!("{}/2/tweets/firehose/stream/lang/pt", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_backfill_minutes {
+    if let Some(ref param_value) = params.backfill_minutes {
         req_builder = req_builder.query(&[("backfill_minutes", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_tweet_fields {
+    if let Some(ref param_value) = params.tweet_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("tweet.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("tweet.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_poll_fields {
+    if let Some(ref param_value) = params.poll_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("poll.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("poll.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_place_fields {
+    if let Some(ref param_value) = params.place_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("place.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("place.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
-    if let Some(ref param_value) = p_query_start_time {
+    req_builder = req_builder.query(&[("partition", &params.partition.to_string())]);
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1159,53 +1371,45 @@ pub async fn stream_posts_firehose_pt(configuration: &configuration::Configurati
 }
 
 /// Streams a 1% sample of public Posts in real-time.
-pub async fn stream_posts_sample(configuration: &configuration::Configuration, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>) -> Result<reqwest::Response, Error<StreamPostsSampleError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_backfill_minutes = backfill_minutes;
-    let p_query_tweet_fields = tweet_fields;
-    let p_query_expansions = expansions;
-    let p_query_media_fields = media_fields;
-    let p_query_poll_fields = poll_fields;
-    let p_query_user_fields = user_fields;
-    let p_query_place_fields = place_fields;
+pub async fn stream_posts_sample(configuration: &configuration::Configuration, params: StreamPostsSampleParams) -> Result<reqwest::Response, Error<StreamPostsSampleError>> {
 
     let uri_str = format!("{}/2/tweets/sample/stream", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_backfill_minutes {
+    if let Some(ref param_value) = params.backfill_minutes {
         req_builder = req_builder.query(&[("backfill_minutes", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_tweet_fields {
+    if let Some(ref param_value) = params.tweet_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("tweet.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("tweet.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_poll_fields {
+    if let Some(ref param_value) = params.poll_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("poll.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("poll.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_place_fields {
+    if let Some(ref param_value) = params.place_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("place.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("place.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -1239,66 +1443,55 @@ pub async fn stream_posts_sample(configuration: &configuration::Configuration, b
 }
 
 /// Streams a 10% sample of public Posts in real-time.
-pub async fn stream_posts_sample10(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, tweet_fields: Option<Vec<String>>, expansions: Option<Vec<String>>, media_fields: Option<Vec<String>>, poll_fields: Option<Vec<String>>, user_fields: Option<Vec<String>>, place_fields: Option<Vec<String>>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamPostsSample10Error>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_partition = partition;
-    let p_query_backfill_minutes = backfill_minutes;
-    let p_query_tweet_fields = tweet_fields;
-    let p_query_expansions = expansions;
-    let p_query_media_fields = media_fields;
-    let p_query_poll_fields = poll_fields;
-    let p_query_user_fields = user_fields;
-    let p_query_place_fields = place_fields;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
+pub async fn stream_posts_sample10(configuration: &configuration::Configuration, params: StreamPostsSample10Params) -> Result<reqwest::Response, Error<StreamPostsSample10Error>> {
 
     let uri_str = format!("{}/2/tweets/sample10/stream", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_backfill_minutes {
+    if let Some(ref param_value) = params.backfill_minutes {
         req_builder = req_builder.query(&[("backfill_minutes", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_tweet_fields {
+    if let Some(ref param_value) = params.tweet_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("tweet.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("tweet.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_poll_fields {
+    if let Some(ref param_value) = params.poll_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("poll.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("poll.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_place_fields {
+    if let Some(ref param_value) = params.place_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("place.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("place.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
-    if let Some(ref param_value) = p_query_start_time {
+    req_builder = req_builder.query(&[("partition", &params.partition.to_string())]);
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1329,24 +1522,19 @@ pub async fn stream_posts_sample10(configuration: &configuration::Configuration,
 }
 
 /// Streams all compliance data related to Users.
-pub async fn stream_users_compliance(configuration: &configuration::Configuration, partition: i32, backfill_minutes: Option<i32>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>) -> Result<reqwest::Response, Error<StreamUsersComplianceError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_partition = partition;
-    let p_query_backfill_minutes = backfill_minutes;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
+pub async fn stream_users_compliance(configuration: &configuration::Configuration, params: StreamUsersComplianceParams) -> Result<reqwest::Response, Error<StreamUsersComplianceError>> {
 
     let uri_str = format!("{}/2/users/compliance/stream", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_backfill_minutes {
+    if let Some(ref param_value) = params.backfill_minutes {
         req_builder = req_builder.query(&[("backfill_minutes", &param_value.to_string())]);
     }
-    req_builder = req_builder.query(&[("partition", &p_query_partition.to_string())]);
-    if let Some(ref param_value) = p_query_start_time {
+    req_builder = req_builder.query(&[("partition", &params.partition.to_string())]);
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1377,19 +1565,15 @@ pub async fn stream_users_compliance(configuration: &configuration::Configuratio
 }
 
 /// Adds or deletes rules from the active rule set for the filtered stream. Exactly one of `add`, `delete`, or `?delete_all=true` must be specified. Use `?dry_run=true` to validate without committing.
-pub async fn update_rules(configuration: &configuration::Configuration, update_rules_request: models::UpdateRulesRequest, dry_run: Option<bool>, delete_all: Option<bool>) -> Result<models::UpdateRulesResponse, Error<UpdateRulesError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_update_rules_request = update_rules_request;
-    let p_query_dry_run = dry_run;
-    let p_query_delete_all = delete_all;
+pub async fn update_rules(configuration: &configuration::Configuration, params: UpdateRulesParams) -> Result<models::UpdateRulesResponse, Error<UpdateRulesError>> {
 
     let uri_str = format!("{}/2/tweets/search/stream/rules", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    if let Some(ref param_value) = p_query_dry_run {
+    if let Some(ref param_value) = params.dry_run {
         req_builder = req_builder.query(&[("dry_run", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_delete_all {
+    if let Some(ref param_value) = params.delete_all {
         req_builder = req_builder.query(&[("delete_all", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1404,7 +1588,7 @@ pub async fn update_rules(configuration: &configuration::Configuration, update_r
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_update_rules_request);
+    req_builder = req_builder.json(&params.update_rules_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;

@@ -14,6 +14,100 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`get_spaces_buyers`]
+#[derive(Clone, Debug, Default)]
+pub struct GetSpacesBuyersParams {
+    pub id: String,
+    pub max_results: Option<i32>,
+    /// A base32hex-encoded pagination token.
+    pub pagination_token: Option<String>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::UserExpansion>>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>
+}
+
+/// struct for passing parameters to the method [`get_spaces_by_creator_ids`]
+#[derive(Clone, Debug, Default)]
+pub struct GetSpacesByCreatorIdsParams {
+    pub user_ids: Vec<String>,
+    /// A comma separated list of Space fields to display.
+    pub space_fields: Option<Vec<models::SpaceField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::SpaceExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of Topic fields to display.
+    pub topic_fields: Option<Vec<models::TopicField>>
+}
+
+/// struct for passing parameters to the method [`get_spaces_by_id`]
+#[derive(Clone, Debug, Default)]
+pub struct GetSpacesByIdParams {
+    pub id: String,
+    /// A comma separated list of Space fields to display.
+    pub space_fields: Option<Vec<models::SpaceField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::SpaceExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of Topic fields to display.
+    pub topic_fields: Option<Vec<models::TopicField>>
+}
+
+/// struct for passing parameters to the method [`get_spaces_by_ids`]
+#[derive(Clone, Debug, Default)]
+pub struct GetSpacesByIdsParams {
+    pub ids: Vec<String>,
+    /// A comma separated list of Space fields to display.
+    pub space_fields: Option<Vec<models::SpaceField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::SpaceExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of Topic fields to display.
+    pub topic_fields: Option<Vec<models::TopicField>>
+}
+
+/// struct for passing parameters to the method [`get_spaces_posts`]
+#[derive(Clone, Debug, Default)]
+pub struct GetSpacesPostsParams {
+    pub id: String,
+    pub max_results: Option<i32>,
+    /// A base32hex-encoded pagination token.
+    pub pagination_token: Option<String>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::PostExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<models::MediaField>>,
+    /// A comma separated list of Poll fields to display.
+    pub poll_fields: Option<Vec<models::PollField>>,
+    /// A comma separated list of Place fields to display.
+    pub place_fields: Option<Vec<models::PlaceField>>
+}
+
+/// struct for passing parameters to the method [`search_spaces`]
+#[derive(Clone, Debug, Default)]
+pub struct SearchSpacesParams {
+    pub query: String,
+    pub state: Option<String>,
+    pub max_results: Option<i32>,
+    /// A comma separated list of Space fields to display.
+    pub space_fields: Option<Vec<models::SpaceField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::SpaceExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of Topic fields to display.
+    pub topic_fields: Option<Vec<models::TopicField>>
+}
+
 
 /// struct for typed errors of method [`get_spaces_buyers`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -65,37 +159,30 @@ pub enum SearchSpacesError {
 
 
 /// Retrieves a list of Users who purchased tickets to a specific Space by its ID.
-pub async fn get_spaces_buyers(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetSpacesBuyersResponse, Error<GetSpacesBuyersError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_user_fields = user_fields;
-    let p_query_expansions = expansions;
-    let p_query_post_fields = post_fields;
+pub async fn get_spaces_buyers(configuration: &configuration::Configuration, params: GetSpacesBuyersParams) -> Result<models::GetSpacesBuyersResponse, Error<GetSpacesBuyersError>> {
 
-    let uri_str = format!("{}/2/spaces/{id}/buyers", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/spaces/{id}/buyers", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -139,40 +226,34 @@ pub async fn get_spaces_buyers(configuration: &configuration::Configuration, id:
     }
 }
 
-pub async fn get_spaces_by_creator_ids(configuration: &configuration::Configuration, user_ids: Vec<String>, space_fields: Option<Vec<models::SpaceField>>, expansions: Option<Vec<models::SpaceExpansion>>, user_fields: Option<Vec<models::UserField>>, topic_fields: Option<Vec<models::TopicField>>) -> Result<models::GetSpacesByCreatorIdsResponse, Error<GetSpacesByCreatorIdsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_user_ids = user_ids;
-    let p_query_space_fields = space_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
-    let p_query_topic_fields = topic_fields;
+pub async fn get_spaces_by_creator_ids(configuration: &configuration::Configuration, params: GetSpacesByCreatorIdsParams) -> Result<models::GetSpacesByCreatorIdsResponse, Error<GetSpacesByCreatorIdsError>> {
 
     let uri_str = format!("{}/2/spaces/by/creator_ids", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     req_builder = match "csv" {
-        "multi" => req_builder.query(&p_query_user_ids.into_iter().map(|p| ("user_ids".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
-        _ => req_builder.query(&[("user_ids", &p_query_user_ids.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
+        "multi" => req_builder.query(&params.user_ids.into_iter().map(|p| ("user_ids".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
+        _ => req_builder.query(&[("user_ids", &params.user_ids.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
     };
-    if let Some(ref param_value) = p_query_space_fields {
+    if let Some(ref param_value) = params.space_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("space.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("space.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_topic_fields {
+    if let Some(ref param_value) = params.topic_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("topic.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("topic.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -220,36 +301,30 @@ pub async fn get_spaces_by_creator_ids(configuration: &configuration::Configurat
     }
 }
 
-pub async fn get_spaces_by_id(configuration: &configuration::Configuration, id: &str, space_fields: Option<Vec<models::SpaceField>>, expansions: Option<Vec<models::SpaceExpansion>>, user_fields: Option<Vec<models::UserField>>, topic_fields: Option<Vec<models::TopicField>>) -> Result<models::GetSpacesByIdResponse, Error<GetSpacesByIdError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_space_fields = space_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
-    let p_query_topic_fields = topic_fields;
+pub async fn get_spaces_by_id(configuration: &configuration::Configuration, params: GetSpacesByIdParams) -> Result<models::GetSpacesByIdResponse, Error<GetSpacesByIdError>> {
 
-    let uri_str = format!("{}/2/spaces/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/spaces/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_space_fields {
+    if let Some(ref param_value) = params.space_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("space.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("space.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_topic_fields {
+    if let Some(ref param_value) = params.topic_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("topic.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("topic.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -297,40 +372,34 @@ pub async fn get_spaces_by_id(configuration: &configuration::Configuration, id: 
     }
 }
 
-pub async fn get_spaces_by_ids(configuration: &configuration::Configuration, ids: Vec<String>, space_fields: Option<Vec<models::SpaceField>>, expansions: Option<Vec<models::SpaceExpansion>>, user_fields: Option<Vec<models::UserField>>, topic_fields: Option<Vec<models::TopicField>>) -> Result<models::GetSpacesByIdsResponse, Error<GetSpacesByIdsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_ids = ids;
-    let p_query_space_fields = space_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
-    let p_query_topic_fields = topic_fields;
+pub async fn get_spaces_by_ids(configuration: &configuration::Configuration, params: GetSpacesByIdsParams) -> Result<models::GetSpacesByIdsResponse, Error<GetSpacesByIdsError>> {
 
     let uri_str = format!("{}/2/spaces", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     req_builder = match "csv" {
-        "multi" => req_builder.query(&p_query_ids.into_iter().map(|p| ("ids".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
-        _ => req_builder.query(&[("ids", &p_query_ids.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
+        "multi" => req_builder.query(&params.ids.into_iter().map(|p| ("ids".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
+        _ => req_builder.query(&[("ids", &params.ids.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
     };
-    if let Some(ref param_value) = p_query_space_fields {
+    if let Some(ref param_value) = params.space_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("space.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("space.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_topic_fields {
+    if let Some(ref param_value) = params.topic_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("topic.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("topic.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -379,58 +448,48 @@ pub async fn get_spaces_by_ids(configuration: &configuration::Configuration, ids
 }
 
 /// Retrieves a list of Posts shared in a specific Space by its ID.
-pub async fn get_spaces_posts(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::GetSpacesPostsResponse, Error<GetSpacesPostsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_post_fields = post_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
-    let p_query_media_fields = media_fields;
-    let p_query_poll_fields = poll_fields;
-    let p_query_place_fields = place_fields;
+pub async fn get_spaces_posts(configuration: &configuration::Configuration, params: GetSpacesPostsParams) -> Result<models::GetSpacesPostsResponse, Error<GetSpacesPostsError>> {
 
-    let uri_str = format!("{}/2/spaces/{id}/tweets", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/spaces/{id}/tweets", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_poll_fields {
+    if let Some(ref param_value) = params.poll_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("poll.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("poll.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_place_fields {
+    if let Some(ref param_value) = params.place_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("place.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("place.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -479,45 +538,37 @@ pub async fn get_spaces_posts(configuration: &configuration::Configuration, id: 
 }
 
 /// Retrieves a list of Spaces matching the specified search query.
-pub async fn search_spaces(configuration: &configuration::Configuration, query: &str, state: Option<&str>, max_results: Option<i32>, space_fields: Option<Vec<models::SpaceField>>, expansions: Option<Vec<models::SpaceExpansion>>, user_fields: Option<Vec<models::UserField>>, topic_fields: Option<Vec<models::TopicField>>) -> Result<models::SearchSpacesResponse, Error<SearchSpacesError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_query = query;
-    let p_query_state = state;
-    let p_query_max_results = max_results;
-    let p_query_space_fields = space_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
-    let p_query_topic_fields = topic_fields;
+pub async fn search_spaces(configuration: &configuration::Configuration, params: SearchSpacesParams) -> Result<models::SearchSpacesResponse, Error<SearchSpacesError>> {
 
     let uri_str = format!("{}/2/spaces/search", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    req_builder = req_builder.query(&[("query", &p_query_query.to_string())]);
-    if let Some(ref param_value) = p_query_state {
+    req_builder = req_builder.query(&[("query", &params.query.to_string())]);
+    if let Some(ref param_value) = params.state {
         req_builder = req_builder.query(&[("state", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_space_fields {
+    if let Some(ref param_value) = params.space_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("space.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("space.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_topic_fields {
+    if let Some(ref param_value) = params.topic_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("topic.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("topic.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),

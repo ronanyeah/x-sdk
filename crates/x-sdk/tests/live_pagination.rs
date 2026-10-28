@@ -17,10 +17,19 @@ async fn following_pages_do_not_repeat() {
     let cfg = config::bearer(env("X_USER_TOKEN"));
     let cfg = &cfg;
     let id = env("X_USER_ID");
-    let id = id.as_str();
+    let id = &id;
 
     let mut pages = Pager::new(|token| async move {
-        users_api::get_users_following(cfg, id, Some(1), token.as_deref(), None, None, None).await
+        users_api::get_users_following(
+            cfg,
+            users_api::GetUsersFollowingParams {
+                id: id.clone(),
+                max_results: Some(1),
+                pagination_token: token,
+                ..Default::default()
+            },
+        )
+        .await
     })
     .max_pages(3);
 

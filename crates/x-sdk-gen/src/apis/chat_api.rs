@@ -14,6 +14,390 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`accept_chat_message_request`]
+#[derive(Clone, Debug, Default)]
+pub struct AcceptChatMessageRequestParams {
+    /// The other user's ID, or both user IDs joined by a hyphen.
+    pub id: String
+}
+
+/// struct for passing parameters to the method [`add_chat_group_admins`]
+#[derive(Clone, Debug)]
+pub struct AddChatGroupAdminsParams {
+    /// The ID of the group conversation, starting with `g`.
+    pub id: String,
+    pub add_chat_group_admins_request: models::AddChatGroupAdminsRequest
+}
+
+/// struct for passing parameters to the method [`add_chat_group_members`]
+#[derive(Clone, Debug)]
+pub struct AddChatGroupMembersParams {
+    pub id: String,
+    pub add_chat_group_members_request: models::AddChatGroupMembersRequest
+}
+
+/// struct for passing parameters to the method [`add_conversation_keys`]
+#[derive(Clone, Debug)]
+pub struct AddConversationKeysParams {
+    pub id: String,
+    pub add_conversation_keys_request: models::AddConversationKeysRequest
+}
+
+/// struct for passing parameters to the method [`add_user_public_key`]
+#[derive(Clone, Debug)]
+pub struct AddUserPublicKeyParams {
+    pub id: String,
+    pub add_user_public_key_request: models::AddUserPublicKeyRequest
+}
+
+/// struct for passing parameters to the method [`approve_chat_group_admin_request`]
+#[derive(Clone, Debug)]
+pub struct ApproveChatGroupAdminRequestParams {
+    /// The ID of the group conversation, starting with `g`.
+    pub id: String,
+    /// The ID of the user who requested admin permissions.
+    pub user_id: String,
+    pub approve_chat_group_admin_request_request: models::ApproveChatGroupAdminRequestRequest
+}
+
+/// struct for passing parameters to the method [`archive_chat_conversation`]
+#[derive(Clone, Debug)]
+pub struct ArchiveChatConversationParams {
+    /// The ID of the conversation: a group ID starting with `g`, the other user's ID for a 1:1 conversation, or both user IDs of a 1:1 conversation joined by a hyphen.
+    pub id: String,
+    pub archive_chat_conversation_request: models::ArchiveChatConversationRequest
+}
+
+/// struct for passing parameters to the method [`chat_media_download`]
+#[derive(Clone, Debug, Default)]
+pub struct ChatMediaDownloadParams {
+    pub id: String,
+    pub media_hash_key: String
+}
+
+/// struct for passing parameters to the method [`chat_media_upload_append`]
+#[derive(Clone, Debug)]
+pub struct ChatMediaUploadAppendParams {
+    pub id: String,
+    pub chat_media_upload_append_request: models::ChatMediaUploadAppendRequest
+}
+
+/// struct for passing parameters to the method [`chat_media_upload_finalize`]
+#[derive(Clone, Debug)]
+pub struct ChatMediaUploadFinalizeParams {
+    pub id: String,
+    pub chat_media_upload_finalize_request: models::ChatMediaUploadFinalizeRequest
+}
+
+/// struct for passing parameters to the method [`chat_media_upload_initialize`]
+#[derive(Clone, Debug)]
+pub struct ChatMediaUploadInitializeParams {
+    pub chat_media_upload_initialize_request: models::ChatMediaUploadInitializeRequest
+}
+
+/// struct for passing parameters to the method [`create_chat_conversation`]
+#[derive(Clone, Debug)]
+pub struct CreateChatConversationParams {
+    pub create_chat_conversation_request: models::CreateChatConversationRequest
+}
+
+/// struct for passing parameters to the method [`create_chat_group_admin_request`]
+#[derive(Clone, Debug)]
+pub struct CreateChatGroupAdminRequestParams {
+    /// The ID of the group conversation, starting with `g`.
+    pub id: String,
+    pub create_chat_group_admin_request_request: models::CreateChatGroupAdminRequestRequest
+}
+
+/// struct for passing parameters to the method [`create_chat_group_join_request`]
+#[derive(Clone, Debug)]
+pub struct CreateChatGroupJoinRequestParams {
+    /// The ID of the group conversation, starting with `g`.
+    pub id: String,
+    pub create_chat_group_join_request_request: models::CreateChatGroupJoinRequestRequest
+}
+
+/// struct for passing parameters to the method [`delete_chat_conversation`]
+#[derive(Clone, Debug)]
+pub struct DeleteChatConversationParams {
+    /// The ID of the conversation: a group ID starting with `g`, the other user's ID for a 1:1 conversation, or both user IDs of a 1:1 conversation joined by a hyphen.
+    pub id: String,
+    pub delete_chat_conversation_request: models::DeleteChatConversationRequest
+}
+
+/// struct for passing parameters to the method [`delete_chat_conversation_message_ttl`]
+#[derive(Clone, Debug)]
+pub struct DeleteChatConversationMessageTtlParams {
+    /// The ID of the conversation: a group ID starting with `g`, the other user's ID for a 1:1 conversation, or both user IDs of a 1:1 conversation joined by a hyphen.
+    pub id: String,
+    pub delete_chat_conversation_message_ttl_request: models::DeleteChatConversationMessageTtlRequest
+}
+
+/// struct for passing parameters to the method [`delete_chat_messages`]
+#[derive(Clone, Debug)]
+pub struct DeleteChatMessagesParams {
+    pub id: String,
+    pub delete_chat_messages_request: models::DeleteChatMessagesRequest
+}
+
+/// struct for passing parameters to the method [`disable_chat_group_invite`]
+#[derive(Clone, Debug)]
+pub struct DisableChatGroupInviteParams {
+    /// The ID of the group conversation, starting with `g`.
+    pub id: String,
+    pub disable_chat_group_invite_request: models::DisableChatGroupInviteRequest
+}
+
+/// struct for passing parameters to the method [`enable_chat_group_invite`]
+#[derive(Clone, Debug)]
+pub struct EnableChatGroupInviteParams {
+    /// The ID of the group conversation, starting with `g`.
+    pub id: String,
+    pub enable_chat_group_invite_request: models::EnableChatGroupInviteRequest
+}
+
+/// struct for passing parameters to the method [`get_chat_conversation`]
+#[derive(Clone, Debug, Default)]
+pub struct GetChatConversationParams {
+    pub id: String,
+    /// A comma separated list of ChatConversation fields to display.
+    pub chat_conversation_fields: Option<Vec<models::ChatConversationField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::ChatConversationExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>
+}
+
+/// struct for passing parameters to the method [`get_chat_conversation_events`]
+#[derive(Clone, Debug, Default)]
+pub struct GetChatConversationEventsParams {
+    pub id: String,
+    /// The maximum number of events to return.
+    pub max_results: Option<i32>,
+    /// The next_token from a previous response, to fetch the next page.
+    pub pagination_token: Option<String>,
+    /// A comma separated list of ChatMessageEvent fields to display.
+    pub chat_message_event_fields: Option<Vec<models::ChatMessageEventField>>
+}
+
+/// struct for passing parameters to the method [`get_chat_conversation_pinned_messages`]
+#[derive(Clone, Debug, Default)]
+pub struct GetChatConversationPinnedMessagesParams {
+    /// The ID of the conversation: a group ID starting with `g`, the other user's ID for a 1:1 conversation, or both user IDs of a 1:1 conversation joined by a hyphen.
+    pub id: String,
+    /// The next_token from a previous response, to fetch the next page.
+    pub pagination_token: Option<String>,
+    /// A comma separated list of ChatPinnedMessage fields to display.
+    pub chat_pinned_message_fields: Option<Vec<models::ChatPinnedMessageField>>
+}
+
+/// struct for passing parameters to the method [`get_chat_conversations`]
+#[derive(Clone, Debug, Default)]
+pub struct GetChatConversationsParams {
+    /// Conversations covered per page (1-1000, default 200). Filtered pages can return fewer.
+    pub max_results: Option<i32>,
+    /// meta.next_token from the previous page. Send the same filters with it, or the request fails.
+    pub pagination_token: Option<String>,
+    /// Return only unread conversations. A page can be short; keep paging while has_more.
+    pub unread_only: Option<bool>,
+    /// Only direct (1:1) or only group conversations. Omit for both.
+    pub r#type: Option<String>,
+    /// true: only archived; false: only not archived. Omit for both.
+    pub is_archived: Option<bool>,
+    /// true: only muted; false: only not muted. Omit for both.
+    pub is_muted: Option<bool>,
+    /// Comma-separated numeric user IDs (1-10), all in the chat. Names or @handles: use participant_query.
+    pub participant_ids: Option<Vec<String>>,
+    /// Name or @username prefix (1-50 chars); keeps chats where any other participant matches it.
+    pub participant_query: Option<String>,
+    /// ISO 8601, e.g. 2026-10-16T00:00:00Z. Chats whose latest message is at or after this time.
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// ISO 8601, e.g. 2026-10-17T00:00:00Z. Chats whose latest message is before this time.
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// A comma separated list of ChatConversation fields to display.
+    pub chat_conversation_fields: Option<Vec<models::ChatConversationField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::ChatConversationExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>
+}
+
+/// struct for passing parameters to the method [`get_chat_group_admin_requests`]
+#[derive(Clone, Debug, Default)]
+pub struct GetChatGroupAdminRequestsParams {
+    /// The ID of the group conversation, starting with `g`.
+    pub id: String,
+    /// The next_token from a previous response, to fetch the next page.
+    pub pagination_token: Option<String>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::UserExpansion>>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>
+}
+
+/// struct for passing parameters to the method [`get_chat_group_invite`]
+#[derive(Clone, Debug, Default)]
+pub struct GetChatGroupInviteParams {
+    /// The ID of the group conversation, starting with `g`.
+    pub id: String,
+    /// The 10-character invite token from the group's invite link.
+    pub token: String,
+    /// A comma separated list of ChatGroupInvite fields to display.
+    pub chat_group_invite_fields: Option<Vec<models::ChatGroupInviteField>>
+}
+
+/// struct for passing parameters to the method [`get_chat_message_request`]
+#[derive(Clone, Debug, Default)]
+pub struct GetChatMessageRequestParams {
+    /// The other user's ID, or both user IDs joined by a hyphen.
+    pub id: String,
+    /// A comma separated list of ChatMessageRequestDetail fields to display.
+    pub chat_message_request_detail_fields: Option<Vec<models::ChatMessageRequestDetailField>>
+}
+
+/// struct for passing parameters to the method [`get_chat_message_requests`]
+#[derive(Clone, Debug, Default)]
+pub struct GetChatMessageRequestsParams {
+    /// Which message request inbox to list: `you_may_know` (the apps' Priority tab) or `low_quality` (the apps' Hidden tab).
+    pub inbox_type: Option<String>,
+    /// The maximum number of message requests to return.
+    pub max_results: Option<i32>,
+    /// The next_token from a previous response, to fetch the next page.
+    pub pagination_token: Option<String>,
+    /// A comma separated list of ChatMessageRequest fields to display.
+    pub chat_message_request_fields: Option<Vec<models::ChatMessageRequestField>>
+}
+
+/// struct for passing parameters to the method [`get_chat_settings`]
+#[derive(Clone, Debug, Default)]
+pub struct GetChatSettingsParams {
+    /// A comma separated list of ChatSettings fields to display.
+    pub chat_settings_fields: Option<Vec<models::ChatSettingsField>>
+}
+
+/// struct for passing parameters to the method [`mark_chat_conversation_read`]
+#[derive(Clone, Debug)]
+pub struct MarkChatConversationReadParams {
+    pub id: String,
+    pub mark_chat_conversation_read_request: models::MarkChatConversationReadRequest
+}
+
+/// struct for passing parameters to the method [`mark_chat_conversation_unread`]
+#[derive(Clone, Debug, Default)]
+pub struct MarkChatConversationUnreadParams {
+    pub id: String
+}
+
+/// struct for passing parameters to the method [`mute_chat_conversation`]
+#[derive(Clone, Debug)]
+pub struct MuteChatConversationParams {
+    /// The ID of the conversation: a group ID starting with `g`, the other user's ID for a 1:1 conversation, or both user IDs of a 1:1 conversation joined by a hyphen.
+    pub id: String,
+    pub mute_chat_conversation_request: models::MuteChatConversationRequest
+}
+
+/// struct for passing parameters to the method [`reject_chat_group_admin_request`]
+#[derive(Clone, Debug)]
+pub struct RejectChatGroupAdminRequestParams {
+    /// The ID of the group conversation, starting with `g`.
+    pub id: String,
+    /// The ID of the user who requested admin permissions.
+    pub user_id: String,
+    pub reject_chat_group_admin_request_request: models::RejectChatGroupAdminRequestRequest
+}
+
+/// struct for passing parameters to the method [`reject_chat_group_join_requests`]
+#[derive(Clone, Debug)]
+pub struct RejectChatGroupJoinRequestsParams {
+    /// The ID of the group conversation, starting with `g`.
+    pub id: String,
+    pub reject_chat_group_join_requests_request: models::RejectChatGroupJoinRequestsRequest
+}
+
+/// struct for passing parameters to the method [`remove_chat_group_admins`]
+#[derive(Clone, Debug)]
+pub struct RemoveChatGroupAdminsParams {
+    /// The ID of the group conversation, starting with `g`.
+    pub id: String,
+    pub remove_chat_group_admins_request: models::RemoveChatGroupAdminsRequest
+}
+
+/// struct for passing parameters to the method [`remove_chat_group_members`]
+#[derive(Clone, Debug)]
+pub struct RemoveChatGroupMembersParams {
+    pub id: String,
+    pub remove_chat_group_members_request: models::RemoveChatGroupMembersRequest
+}
+
+/// struct for passing parameters to the method [`send_chat_message`]
+#[derive(Clone, Debug)]
+pub struct SendChatMessageParams {
+    pub id: String,
+    pub send_chat_message_request: models::SendChatMessageRequest
+}
+
+/// struct for passing parameters to the method [`send_chat_typing_indicator`]
+#[derive(Clone, Debug, Default)]
+pub struct SendChatTypingIndicatorParams {
+    pub id: String
+}
+
+/// struct for passing parameters to the method [`unarchive_chat_conversation`]
+#[derive(Clone, Debug)]
+pub struct UnarchiveChatConversationParams {
+    /// The ID of the conversation: a group ID starting with `g`, the other user's ID for a 1:1 conversation, or both user IDs of a 1:1 conversation joined by a hyphen.
+    pub id: String,
+    pub unarchive_chat_conversation_request: models::UnarchiveChatConversationRequest
+}
+
+/// struct for passing parameters to the method [`unmute_chat_conversation`]
+#[derive(Clone, Debug)]
+pub struct UnmuteChatConversationParams {
+    /// The ID of the conversation: a group ID starting with `g`, the other user's ID for a 1:1 conversation, or both user IDs of a 1:1 conversation joined by a hyphen.
+    pub id: String,
+    pub unmute_chat_conversation_request: models::UnmuteChatConversationRequest
+}
+
+/// struct for passing parameters to the method [`update_chat_conversation_message_ttl`]
+#[derive(Clone, Debug)]
+pub struct UpdateChatConversationMessageTtlParams {
+    /// The ID of the conversation: a group ID starting with `g`, the other user's ID for a 1:1 conversation, or both user IDs of a 1:1 conversation joined by a hyphen.
+    pub id: String,
+    pub update_chat_conversation_message_ttl_request: models::UpdateChatConversationMessageTtlRequest
+}
+
+/// struct for passing parameters to the method [`update_chat_conversation_screen_capture`]
+#[derive(Clone, Debug)]
+pub struct UpdateChatConversationScreenCaptureParams {
+    /// The ID of the conversation: a group ID starting with `g`, the other user's ID for a 1:1 conversation, or both user IDs of a 1:1 conversation joined by a hyphen.
+    pub id: String,
+    pub update_chat_conversation_screen_capture_request: Option<models::UpdateChatConversationScreenCaptureRequest>
+}
+
+/// struct for passing parameters to the method [`update_chat_group`]
+#[derive(Clone, Debug)]
+pub struct UpdateChatGroupParams {
+    /// The ID of the group conversation, starting with `g`.
+    pub id: String,
+    pub update_chat_group_request: models::UpdateChatGroupRequest
+}
+
+/// struct for passing parameters to the method [`update_chat_group_admin_settings`]
+#[derive(Clone, Debug)]
+pub struct UpdateChatGroupAdminSettingsParams {
+    /// The ID of the group conversation, starting with `g`.
+    pub id: String,
+    pub update_chat_group_admin_settings_request: Option<models::UpdateChatGroupAdminSettingsRequest>
+}
+
+/// struct for passing parameters to the method [`update_chat_settings`]
+#[derive(Clone, Debug)]
+pub struct UpdateChatSettingsParams {
+    pub update_chat_settings_request: Option<models::UpdateChatSettingsRequest>
+}
+
 
 /// struct for typed errors of method [`accept_chat_message_request`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -377,11 +761,9 @@ pub enum UpdateChatSettingsError {
 
 
 /// Accepts the other user's pending message request in a 1:1 Chat conversation, which moves to the authenticated user's inbox. Without a pending request, including after a successful accept, the response is 404. Replying to a request does not accept it.
-pub async fn accept_chat_message_request(configuration: &configuration::Configuration, id: &str) -> Result<models::AcceptChatMessageRequestResponse, Error<AcceptChatMessageRequestError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
+pub async fn accept_chat_message_request(configuration: &configuration::Configuration, params: AcceptChatMessageRequestParams) -> Result<models::AcceptChatMessageRequestResponse, Error<AcceptChatMessageRequestError>> {
 
-    let uri_str = format!("{}/2/chat/message_requests/{id}/accept", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/message_requests/{id}/accept", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -423,12 +805,9 @@ pub async fn accept_chat_message_request(configuration: &configuration::Configur
 }
 
 /// Grants admin rights to one or more members of an existing encrypted Chat group conversation.
-pub async fn add_chat_group_admins(configuration: &configuration::Configuration, id: &str, add_chat_group_admins_request: models::AddChatGroupAdminsRequest) -> Result<models::AddChatGroupAdminsResponse, Error<AddChatGroupAdminsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_add_chat_group_admins_request = add_chat_group_admins_request;
+pub async fn add_chat_group_admins(configuration: &configuration::Configuration, params: AddChatGroupAdminsParams) -> Result<models::AddChatGroupAdminsResponse, Error<AddChatGroupAdminsError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/admins", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/admins", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -443,7 +822,7 @@ pub async fn add_chat_group_admins(configuration: &configuration::Configuration,
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_add_chat_group_admins_request);
+    req_builder = req_builder.json(&params.add_chat_group_admins_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -471,12 +850,9 @@ pub async fn add_chat_group_admins(configuration: &configuration::Configuration,
 }
 
 /// Adds one or more members to an existing encrypted Chat group conversation, rotating the conversation key. Adding a user who has a pending join request approves that request; approval needs the same key-rotation body as adding any member.
-pub async fn add_chat_group_members(configuration: &configuration::Configuration, id: &str, add_chat_group_members_request: models::AddChatGroupMembersRequest) -> Result<models::AddChatGroupMembersResponse, Error<AddChatGroupMembersError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_add_chat_group_members_request = add_chat_group_members_request;
+pub async fn add_chat_group_members(configuration: &configuration::Configuration, params: AddChatGroupMembersParams) -> Result<models::AddChatGroupMembersResponse, Error<AddChatGroupMembersError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/members", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/members", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -491,7 +867,7 @@ pub async fn add_chat_group_members(configuration: &configuration::Configuration
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_add_chat_group_members_request);
+    req_builder = req_builder.json(&params.add_chat_group_members_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -519,12 +895,9 @@ pub async fn add_chat_group_members(configuration: &configuration::Configuration
 }
 
 /// Adds (initializes or rotates) the encryption keys for a Chat conversation. Call this before sending messages in a new 1:1 conversation, and again with a newer key version to rotate the conversation key. For 1:1 conversations, provide the recipient's user ID as the conversation id; the server constructs the canonical conversation ID from the authenticated user and recipient. The request body must contain the conversation key version and participant keys (the conversation key encrypted for each participant using their public key).
-pub async fn add_conversation_keys(configuration: &configuration::Configuration, id: &str, add_conversation_keys_request: models::AddConversationKeysRequest) -> Result<models::AddConversationKeysResponse, Error<AddConversationKeysError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_add_conversation_keys_request = add_conversation_keys_request;
+pub async fn add_conversation_keys(configuration: &configuration::Configuration, params: AddConversationKeysParams) -> Result<models::AddConversationKeysResponse, Error<AddConversationKeysError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/keys", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/keys", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -539,7 +912,7 @@ pub async fn add_conversation_keys(configuration: &configuration::Configuration,
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_add_conversation_keys_request);
+    req_builder = req_builder.json(&params.add_conversation_keys_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -567,12 +940,9 @@ pub async fn add_conversation_keys(configuration: &configuration::Configuration,
 }
 
 /// Registers a user's public key for X Chat encryption.
-pub async fn add_user_public_key(configuration: &configuration::Configuration, id: &str, add_user_public_key_request: models::AddUserPublicKeyRequest) -> Result<models::AddUserPublicKeyResponse, Error<AddUserPublicKeyError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_add_user_public_key_request = add_user_public_key_request;
+pub async fn add_user_public_key(configuration: &configuration::Configuration, params: AddUserPublicKeyParams) -> Result<models::AddUserPublicKeyResponse, Error<AddUserPublicKeyError>> {
 
-    let uri_str = format!("{}/2/users/{id}/public_keys", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/users/{id}/public_keys", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -587,7 +957,7 @@ pub async fn add_user_public_key(configuration: &configuration::Configuration, i
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_add_user_public_key_request);
+    req_builder = req_builder.json(&params.add_user_public_key_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -615,13 +985,9 @@ pub async fn add_user_public_key(configuration: &configuration::Configuration, i
 }
 
 /// Makes the user who requested admin permissions an admin of an encrypted Chat group conversation. Only a group admin can approve.
-pub async fn approve_chat_group_admin_request(configuration: &configuration::Configuration, id: &str, user_id: &str, approve_chat_group_admin_request_request: models::ApproveChatGroupAdminRequestRequest) -> Result<models::ApproveChatGroupAdminRequestResponse, Error<ApproveChatGroupAdminRequestError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_path_user_id = user_id;
-    let p_body_approve_chat_group_admin_request_request = approve_chat_group_admin_request_request;
+pub async fn approve_chat_group_admin_request(configuration: &configuration::Configuration, params: ApproveChatGroupAdminRequestParams) -> Result<models::ApproveChatGroupAdminRequestResponse, Error<ApproveChatGroupAdminRequestError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/admin_requests/{user_id}/approve", configuration.base_path, id=crate::apis::urlencode(p_path_id), user_id=crate::apis::urlencode(p_path_user_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/admin_requests/{user_id}/approve", configuration.base_path, id=crate::apis::urlencode(params.id), user_id=crate::apis::urlencode(params.user_id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -636,7 +1002,7 @@ pub async fn approve_chat_group_admin_request(configuration: &configuration::Con
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_approve_chat_group_admin_request_request);
+    req_builder = req_builder.json(&params.approve_chat_group_admin_request_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -664,12 +1030,9 @@ pub async fn approve_chat_group_admin_request(configuration: &configuration::Con
 }
 
 /// Archives a Chat conversation for the authenticated user only. Archiving an archived conversation changes nothing. Works for group and 1:1 conversations. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
-pub async fn archive_chat_conversation(configuration: &configuration::Configuration, id: &str, archive_chat_conversation_request: models::ArchiveChatConversationRequest) -> Result<models::ArchiveChatConversationResponse, Error<ArchiveChatConversationError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_archive_chat_conversation_request = archive_chat_conversation_request;
+pub async fn archive_chat_conversation(configuration: &configuration::Configuration, params: ArchiveChatConversationParams) -> Result<models::ArchiveChatConversationResponse, Error<ArchiveChatConversationError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/archive", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/archive", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -684,7 +1047,7 @@ pub async fn archive_chat_conversation(configuration: &configuration::Configurat
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_archive_chat_conversation_request);
+    req_builder = req_builder.json(&params.archive_chat_conversation_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -712,12 +1075,9 @@ pub async fn archive_chat_conversation(configuration: &configuration::Configurat
 }
 
 /// Downloads encrypted media bytes from an XChat conversation. The response body contains raw binary bytes.
-pub async fn chat_media_download(configuration: &configuration::Configuration, id: &str, media_hash_key: &str) -> Result<reqwest::Response, Error<ChatMediaDownloadError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_path_media_hash_key = media_hash_key;
+pub async fn chat_media_download(configuration: &configuration::Configuration, params: ChatMediaDownloadParams) -> Result<reqwest::Response, Error<ChatMediaDownloadError>> {
 
-    let uri_str = format!("{}/2/chat/media/{id}/{media_hash_key}", configuration.base_path, id=crate::apis::urlencode(p_path_id), media_hash_key=crate::apis::urlencode(p_path_media_hash_key));
+    let uri_str = format!("{}/2/chat/media/{id}/{media_hash_key}", configuration.base_path, id=crate::apis::urlencode(params.id), media_hash_key=crate::apis::urlencode(params.media_hash_key));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -748,12 +1108,9 @@ pub async fn chat_media_download(configuration: &configuration::Configuration, i
 }
 
 /// Appends media data to an XChat upload session.
-pub async fn chat_media_upload_append(configuration: &configuration::Configuration, id: &str, chat_media_upload_append_request: models::ChatMediaUploadAppendRequest) -> Result<models::ChatMediaUploadAppendResponse, Error<ChatMediaUploadAppendError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_chat_media_upload_append_request = chat_media_upload_append_request;
+pub async fn chat_media_upload_append(configuration: &configuration::Configuration, params: ChatMediaUploadAppendParams) -> Result<models::ChatMediaUploadAppendResponse, Error<ChatMediaUploadAppendError>> {
 
-    let uri_str = format!("{}/2/chat/media/upload/{id}/append", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/media/upload/{id}/append", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -768,7 +1125,7 @@ pub async fn chat_media_upload_append(configuration: &configuration::Configurati
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_chat_media_upload_append_request);
+    req_builder = req_builder.json(&params.chat_media_upload_append_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -796,12 +1153,9 @@ pub async fn chat_media_upload_append(configuration: &configuration::Configurati
 }
 
 /// Finalizes an XChat media upload session.
-pub async fn chat_media_upload_finalize(configuration: &configuration::Configuration, id: &str, chat_media_upload_finalize_request: models::ChatMediaUploadFinalizeRequest) -> Result<models::ChatMediaUploadFinalizeResponse, Error<ChatMediaUploadFinalizeError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_chat_media_upload_finalize_request = chat_media_upload_finalize_request;
+pub async fn chat_media_upload_finalize(configuration: &configuration::Configuration, params: ChatMediaUploadFinalizeParams) -> Result<models::ChatMediaUploadFinalizeResponse, Error<ChatMediaUploadFinalizeError>> {
 
-    let uri_str = format!("{}/2/chat/media/upload/{id}/finalize", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/media/upload/{id}/finalize", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -816,7 +1170,7 @@ pub async fn chat_media_upload_finalize(configuration: &configuration::Configura
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_chat_media_upload_finalize_request);
+    req_builder = req_builder.json(&params.chat_media_upload_finalize_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -844,9 +1198,7 @@ pub async fn chat_media_upload_finalize(configuration: &configuration::Configura
 }
 
 /// Initializes an XChat media upload session.
-pub async fn chat_media_upload_initialize(configuration: &configuration::Configuration, chat_media_upload_initialize_request: models::ChatMediaUploadInitializeRequest) -> Result<models::ChatMediaUploadInitializeResponse, Error<ChatMediaUploadInitializeError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_chat_media_upload_initialize_request = chat_media_upload_initialize_request;
+pub async fn chat_media_upload_initialize(configuration: &configuration::Configuration, params: ChatMediaUploadInitializeParams) -> Result<models::ChatMediaUploadInitializeResponse, Error<ChatMediaUploadInitializeError>> {
 
     let uri_str = format!("{}/2/chat/media/upload/initialize", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -863,7 +1215,7 @@ pub async fn chat_media_upload_initialize(configuration: &configuration::Configu
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_chat_media_upload_initialize_request);
+    req_builder = req_builder.json(&params.chat_media_upload_initialize_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -891,9 +1243,7 @@ pub async fn chat_media_upload_initialize(configuration: &configuration::Configu
 }
 
 /// Creates a new encrypted Chat group conversation on behalf of the authenticated user.
-pub async fn create_chat_conversation(configuration: &configuration::Configuration, create_chat_conversation_request: models::CreateChatConversationRequest) -> Result<models::CreateChatConversationResponse, Error<CreateChatConversationError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_create_chat_conversation_request = create_chat_conversation_request;
+pub async fn create_chat_conversation(configuration: &configuration::Configuration, params: CreateChatConversationParams) -> Result<models::CreateChatConversationResponse, Error<CreateChatConversationError>> {
 
     let uri_str = format!("{}/2/chat/conversations/group", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -910,7 +1260,7 @@ pub async fn create_chat_conversation(configuration: &configuration::Configurati
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_chat_conversation_request);
+    req_builder = req_builder.json(&params.create_chat_conversation_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -938,12 +1288,9 @@ pub async fn create_chat_conversation(configuration: &configuration::Configurati
 }
 
 /// Asks the admins of an encrypted Chat group conversation to make the authenticated user an admin. An admin approves or rejects the request.
-pub async fn create_chat_group_admin_request(configuration: &configuration::Configuration, id: &str, create_chat_group_admin_request_request: models::CreateChatGroupAdminRequestRequest) -> Result<models::CreateChatGroupAdminRequestResponse, Error<CreateChatGroupAdminRequestError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_create_chat_group_admin_request_request = create_chat_group_admin_request_request;
+pub async fn create_chat_group_admin_request(configuration: &configuration::Configuration, params: CreateChatGroupAdminRequestParams) -> Result<models::CreateChatGroupAdminRequestResponse, Error<CreateChatGroupAdminRequestError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/admin_requests", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/admin_requests", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -958,7 +1305,7 @@ pub async fn create_chat_group_admin_request(configuration: &configuration::Conf
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_chat_group_admin_request_request);
+    req_builder = req_builder.json(&params.create_chat_group_admin_request_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -986,12 +1333,9 @@ pub async fn create_chat_group_admin_request(configuration: &configuration::Conf
 }
 
 /// Asks to join an encrypted Chat group conversation through its invite link. The request stays pending until a group admin adds the user to the group.
-pub async fn create_chat_group_join_request(configuration: &configuration::Configuration, id: &str, create_chat_group_join_request_request: models::CreateChatGroupJoinRequestRequest) -> Result<models::CreateChatGroupJoinRequestResponse, Error<CreateChatGroupJoinRequestError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_create_chat_group_join_request_request = create_chat_group_join_request_request;
+pub async fn create_chat_group_join_request(configuration: &configuration::Configuration, params: CreateChatGroupJoinRequestParams) -> Result<models::CreateChatGroupJoinRequestResponse, Error<CreateChatGroupJoinRequestError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/join_requests", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/join_requests", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1006,7 +1350,7 @@ pub async fn create_chat_group_join_request(configuration: &configuration::Confi
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_chat_group_join_request_request);
+    req_builder = req_builder.json(&params.create_chat_group_join_request_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1034,12 +1378,9 @@ pub async fn create_chat_group_join_request(configuration: &configuration::Confi
 }
 
 /// Deletes a Chat conversation for the authenticated user only; other participants keep it. Works for group and 1:1 conversations. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient. Deleting a pending message request's conversation deletes the request, like Delete in the X app.
-pub async fn delete_chat_conversation(configuration: &configuration::Configuration, id: &str, delete_chat_conversation_request: models::DeleteChatConversationRequest) -> Result<models::DeleteChatConversationResponse, Error<DeleteChatConversationError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_delete_chat_conversation_request = delete_chat_conversation_request;
+pub async fn delete_chat_conversation(configuration: &configuration::Configuration, params: DeleteChatConversationParams) -> Result<models::DeleteChatConversationResponse, Error<DeleteChatConversationError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1054,7 +1395,7 @@ pub async fn delete_chat_conversation(configuration: &configuration::Configurati
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_delete_chat_conversation_request);
+    req_builder = req_builder.json(&params.delete_chat_conversation_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1082,12 +1423,9 @@ pub async fn delete_chat_conversation(configuration: &configuration::Configurati
 }
 
 /// Stops new messages in a 1:1 or group Chat conversation from disappearing, for every participant. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
-pub async fn delete_chat_conversation_message_ttl(configuration: &configuration::Configuration, id: &str, delete_chat_conversation_message_ttl_request: models::DeleteChatConversationMessageTtlRequest) -> Result<models::DeleteChatConversationMessageTtlResponse, Error<DeleteChatConversationMessageTtlError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_delete_chat_conversation_message_ttl_request = delete_chat_conversation_message_ttl_request;
+pub async fn delete_chat_conversation_message_ttl(configuration: &configuration::Configuration, params: DeleteChatConversationMessageTtlParams) -> Result<models::DeleteChatConversationMessageTtlResponse, Error<DeleteChatConversationMessageTtlError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/message_ttl", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/message_ttl", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1102,7 +1440,7 @@ pub async fn delete_chat_conversation_message_ttl(configuration: &configuration:
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_delete_chat_conversation_message_ttl_request);
+    req_builder = req_builder.json(&params.delete_chat_conversation_message_ttl_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1130,12 +1468,9 @@ pub async fn delete_chat_conversation_message_ttl(configuration: &configuration:
 }
 
 /// Deletes one or more messages from a Chat conversation. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient. Delete for all removes a message you sent (or, in groups you administer, any message) for every participant; delete for self removes any message only from your own view.
-pub async fn delete_chat_messages(configuration: &configuration::Configuration, id: &str, delete_chat_messages_request: models::DeleteChatMessagesRequest) -> Result<models::DeleteChatMessagesResponse, Error<DeleteChatMessagesError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_delete_chat_messages_request = delete_chat_messages_request;
+pub async fn delete_chat_messages(configuration: &configuration::Configuration, params: DeleteChatMessagesParams) -> Result<models::DeleteChatMessagesResponse, Error<DeleteChatMessagesError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/messages/delete", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/messages/delete", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1150,7 +1485,7 @@ pub async fn delete_chat_messages(configuration: &configuration::Configuration, 
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_delete_chat_messages_request);
+    req_builder = req_builder.json(&params.delete_chat_messages_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1178,12 +1513,9 @@ pub async fn delete_chat_messages(configuration: &configuration::Configuration, 
 }
 
 /// Turns off the invite link for an encrypted Chat group conversation. The existing link stops working.
-pub async fn disable_chat_group_invite(configuration: &configuration::Configuration, id: &str, disable_chat_group_invite_request: models::DisableChatGroupInviteRequest) -> Result<models::DisableChatGroupInviteResponse, Error<DisableChatGroupInviteError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_disable_chat_group_invite_request = disable_chat_group_invite_request;
+pub async fn disable_chat_group_invite(configuration: &configuration::Configuration, params: DisableChatGroupInviteParams) -> Result<models::DisableChatGroupInviteResponse, Error<DisableChatGroupInviteError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/invite", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/invite", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1198,7 +1530,7 @@ pub async fn disable_chat_group_invite(configuration: &configuration::Configurat
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_disable_chat_group_invite_request);
+    req_builder = req_builder.json(&params.disable_chat_group_invite_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1226,12 +1558,9 @@ pub async fn disable_chat_group_invite(configuration: &configuration::Configurat
 }
 
 /// Turns on the invite link for an encrypted Chat group conversation and returns the link details. The client builds the link and sends it as invite_url, in the form https://x.com/i/chat/group_join/<conversation_id>/<token>, where the token is exactly 10 letters, digits, '-' or '_'. invite_url is required when action_signatures is sent. To make the link expire, send validity_duration_msec or validity_expiry_timestamp_msec. With action_signatures, send validity_expiry_timestamp_msec, because the signed payload carries the expiry. The group name and avatar sent here are stored unencrypted and shown to anyone who opens the link.
-pub async fn enable_chat_group_invite(configuration: &configuration::Configuration, id: &str, enable_chat_group_invite_request: models::EnableChatGroupInviteRequest) -> Result<models::EnableChatGroupInviteResponse, Error<EnableChatGroupInviteError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_enable_chat_group_invite_request = enable_chat_group_invite_request;
+pub async fn enable_chat_group_invite(configuration: &configuration::Configuration, params: EnableChatGroupInviteParams) -> Result<models::EnableChatGroupInviteResponse, Error<EnableChatGroupInviteError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/invite", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/invite", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1246,7 +1575,7 @@ pub async fn enable_chat_group_invite(configuration: &configuration::Configurati
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_enable_chat_group_invite_request);
+    req_builder = req_builder.json(&params.enable_chat_group_invite_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1274,29 +1603,24 @@ pub async fn enable_chat_group_invite(configuration: &configuration::Configurati
 }
 
 /// Returns metadata for a Chat conversation including type, muted status, and group details. Use chat_conversation.fields to select which fields are returned. Use expansions to hydrate member, admin, or participant user objects. Use user.fields to control which profile fields are returned for expanded users. The unread, last_read_event_id and newest_event_id fields give your read state, computed from your latest read receipt and the conversation's latest notifying message.
-pub async fn get_chat_conversation(configuration: &configuration::Configuration, id: &str, chat_conversation_fields: Option<Vec<models::ChatConversationField>>, expansions: Option<Vec<models::ChatConversationExpansion>>, user_fields: Option<Vec<models::UserField>>) -> Result<models::GetChatConversationResponse, Error<GetChatConversationError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_chat_conversation_fields = chat_conversation_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
+pub async fn get_chat_conversation(configuration: &configuration::Configuration, params: GetChatConversationParams) -> Result<models::GetChatConversationResponse, Error<GetChatConversationError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_chat_conversation_fields {
+    if let Some(ref param_value) = params.chat_conversation_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("chat_conversation.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("chat_conversation.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -1341,23 +1665,18 @@ pub async fn get_chat_conversation(configuration: &configuration::Configuration,
 }
 
 /// Retrieves the events of a specific Chat conversation, newest first, with pagination support: messages, key changes, group changes, and read receipts. Events with an id above the conversation's last_read_event_id come after the point you read up to; to collect them, page until an event's id is at or below it. Only `id` and `encoded_event` are always present. Events are either end-to-end encrypted or unencrypted, such as messages sent before the conversation was encrypted. Encrypted events carry `conversation_key_version`, and usually `conversation_token` and `message_event_signature`; treat an encrypted event without `message_event_signature` as unverified. An event without `conversation_key_version` is unencrypted. Decode each `encoded_event` client-side, and decrypt it with the conversation key named by `conversation_key_version` when that is present. A page holds up to `max_results` events and can hold fewer while `has_more` is true. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
-pub async fn get_chat_conversation_events(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, chat_message_event_fields: Option<Vec<models::ChatMessageEventField>>) -> Result<models::GetChatConversationEventsResponse, Error<GetChatConversationEventsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_chat_message_event_fields = chat_message_event_fields;
+pub async fn get_chat_conversation_events(configuration: &configuration::Configuration, params: GetChatConversationEventsParams) -> Result<models::GetChatConversationEventsResponse, Error<GetChatConversationEventsError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/events", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/events", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_chat_message_event_fields {
+    if let Some(ref param_value) = params.chat_message_event_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("chat_message_event.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("chat_message_event.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -1402,19 +1721,15 @@ pub async fn get_chat_conversation_events(configuration: &configuration::Configu
 }
 
 /// Retrieves the pinned message events of a Chat conversation with pagination support. Each event is a Base64-encoded Thrift pin event whose contents are end-to-end encrypted; decode and decrypt it client-side. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
-pub async fn get_chat_conversation_pinned_messages(configuration: &configuration::Configuration, id: &str, pagination_token: Option<&str>, chat_pinned_message_fields: Option<Vec<models::ChatPinnedMessageField>>) -> Result<models::GetChatConversationPinnedMessagesResponse, Error<GetChatConversationPinnedMessagesError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_pagination_token = pagination_token;
-    let p_query_chat_pinned_message_fields = chat_pinned_message_fields;
+pub async fn get_chat_conversation_pinned_messages(configuration: &configuration::Configuration, params: GetChatConversationPinnedMessagesParams) -> Result<models::GetChatConversationPinnedMessagesResponse, Error<GetChatConversationPinnedMessagesError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/pinned_messages", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/pinned_messages", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_chat_pinned_message_fields {
+    if let Some(ref param_value) = params.chat_pinned_message_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("chat_pinned_message.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("chat_pinned_message.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -1459,71 +1774,57 @@ pub async fn get_chat_conversation_pinned_messages(configuration: &configuration
 }
 
 /// Retrieves a list of Chat conversations for the authenticated user's inbox, most recently active first. The unread, last_read_event_id and newest_event_id fields give your read state, computed from your latest read receipt and each conversation's latest notifying message.  The filters unread_only, type, is_archived, is_muted, participant_ids, participant_query, start_time and end_time are optional and combine with AND. participant_query keeps conversations where another participant's username, or a word of their display name, starts with the query, ignoring case and accents; with a leading @ it matches usernames only. It considers the 100 people who best match the query, uses only public profile information, and never matches group names, nicknames or messages. start_time and end_time apply to the time of each conversation's latest message. Each page covers max_results conversations and returns those that match, so a page can hold fewer than max_results, or none, while has_more is true: keep paging with next_token. Once a page reaches a conversation whose latest message is older than start_time, has_more is false.  A pagination_token only works with the same filters as the request that returned it; with other filters, the request fails with a 400.  When both are provided, `start_time` must be earlier than `end_time`.
-pub async fn get_chat_conversations(configuration: &configuration::Configuration, max_results: Option<i32>, pagination_token: Option<&str>, unread_only: Option<bool>, r#type: Option<&str>, is_archived: Option<bool>, is_muted: Option<bool>, participant_ids: Option<Vec<String>>, participant_query: Option<&str>, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, chat_conversation_fields: Option<Vec<models::ChatConversationField>>, expansions: Option<Vec<models::ChatConversationExpansion>>, user_fields: Option<Vec<models::UserField>>) -> Result<models::GetChatConversationsResponse, Error<GetChatConversationsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_unread_only = unread_only;
-    let p_query_type = r#type;
-    let p_query_is_archived = is_archived;
-    let p_query_is_muted = is_muted;
-    let p_query_participant_ids = participant_ids;
-    let p_query_participant_query = participant_query;
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
-    let p_query_chat_conversation_fields = chat_conversation_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
+pub async fn get_chat_conversations(configuration: &configuration::Configuration, params: GetChatConversationsParams) -> Result<models::GetChatConversationsResponse, Error<GetChatConversationsError>> {
 
     let uri_str = format!("{}/2/chat/conversations", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_unread_only {
+    if let Some(ref param_value) = params.unread_only {
         req_builder = req_builder.query(&[("unread_only", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_type {
+    if let Some(ref param_value) = params.r#type {
         req_builder = req_builder.query(&[("type", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_is_archived {
+    if let Some(ref param_value) = params.is_archived {
         req_builder = req_builder.query(&[("is_archived", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_is_muted {
+    if let Some(ref param_value) = params.is_muted {
         req_builder = req_builder.query(&[("is_muted", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_participant_ids {
+    if let Some(ref param_value) = params.participant_ids {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("participant_ids".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("participant_ids", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_participant_query {
+    if let Some(ref param_value) = params.participant_query {
         req_builder = req_builder.query(&[("participant_query", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_start_time {
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_chat_conversation_fields {
+    if let Some(ref param_value) = params.chat_conversation_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("chat_conversation.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("chat_conversation.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -1568,33 +1869,27 @@ pub async fn get_chat_conversations(configuration: &configuration::Configuration
 }
 
 /// Returns the users who have asked to become admins of an encrypted Chat group conversation. Only a group admin can list admin requests. Use user.fields to select which profile fields are returned.
-pub async fn get_chat_group_admin_requests(configuration: &configuration::Configuration, id: &str, pagination_token: Option<&str>, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetChatGroupAdminRequestsResponse, Error<GetChatGroupAdminRequestsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_pagination_token = pagination_token;
-    let p_query_user_fields = user_fields;
-    let p_query_expansions = expansions;
-    let p_query_post_fields = post_fields;
+pub async fn get_chat_group_admin_requests(configuration: &configuration::Configuration, params: GetChatGroupAdminRequestsParams) -> Result<models::GetChatGroupAdminRequestsResponse, Error<GetChatGroupAdminRequestsError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/admin_requests", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/admin_requests", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -1639,16 +1934,12 @@ pub async fn get_chat_group_admin_requests(configuration: &configuration::Config
 }
 
 /// Returns the preview of an encrypted Chat group conversation from its invite link: group name, avatar, member count, and the authenticated user's join state. The conversation ID and the token both come from the invite link.
-pub async fn get_chat_group_invite(configuration: &configuration::Configuration, id: &str, token: &str, chat_group_invite_fields: Option<Vec<models::ChatGroupInviteField>>) -> Result<models::GetChatGroupInviteResponse, Error<GetChatGroupInviteError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_path_token = token;
-    let p_query_chat_group_invite_fields = chat_group_invite_fields;
+pub async fn get_chat_group_invite(configuration: &configuration::Configuration, params: GetChatGroupInviteParams) -> Result<models::GetChatGroupInviteResponse, Error<GetChatGroupInviteError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/invites/{token}", configuration.base_path, id=crate::apis::urlencode(p_path_id), token=crate::apis::urlencode(p_path_token));
+    let uri_str = format!("{}/2/chat/conversations/{id}/invites/{token}", configuration.base_path, id=crate::apis::urlencode(params.id), token=crate::apis::urlencode(params.token));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_chat_group_invite_fields {
+    if let Some(ref param_value) = params.chat_group_invite_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("chat_group_invite.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("chat_group_invite.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -1693,15 +1984,12 @@ pub async fn get_chat_group_invite(configuration: &configuration::Configuration,
 }
 
 /// Retrieves the message request state of a 1:1 Chat conversation and its newest message events. Like opening the request in an X app, reading it marks the returned messages as delivered and updates the unread badge.
-pub async fn get_chat_message_request(configuration: &configuration::Configuration, id: &str, chat_message_request_detail_fields: Option<Vec<models::ChatMessageRequestDetailField>>) -> Result<models::GetChatMessageRequestResponse, Error<GetChatMessageRequestError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_chat_message_request_detail_fields = chat_message_request_detail_fields;
+pub async fn get_chat_message_request(configuration: &configuration::Configuration, params: GetChatMessageRequestParams) -> Result<models::GetChatMessageRequestResponse, Error<GetChatMessageRequestError>> {
 
-    let uri_str = format!("{}/2/chat/message_requests/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/message_requests/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_chat_message_request_detail_fields {
+    if let Some(ref param_value) = params.chat_message_request_detail_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("chat_message_request_detail.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("chat_message_request_detail.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -1746,26 +2034,21 @@ pub async fn get_chat_message_request(configuration: &configuration::Configurati
 }
 
 /// Retrieves the authenticated user's pending Chat message requests from one inbox. Message contents are end-to-end encrypted unless the conversation is unencrypted. Accepting or deleting requests between pages can skip or repeat requests, and a page can be empty while `next_token` is set.
-pub async fn get_chat_message_requests(configuration: &configuration::Configuration, inbox_type: Option<&str>, max_results: Option<i32>, pagination_token: Option<&str>, chat_message_request_fields: Option<Vec<models::ChatMessageRequestField>>) -> Result<models::GetChatMessageRequestsResponse, Error<GetChatMessageRequestsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_inbox_type = inbox_type;
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_chat_message_request_fields = chat_message_request_fields;
+pub async fn get_chat_message_requests(configuration: &configuration::Configuration, params: GetChatMessageRequestsParams) -> Result<models::GetChatMessageRequestsResponse, Error<GetChatMessageRequestsError>> {
 
     let uri_str = format!("{}/2/chat/message_requests", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_inbox_type {
+    if let Some(ref param_value) = params.inbox_type {
         req_builder = req_builder.query(&[("inbox_type", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_chat_message_request_fields {
+    if let Some(ref param_value) = params.chat_message_request_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("chat_message_request.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("chat_message_request.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -1810,14 +2093,12 @@ pub async fn get_chat_message_requests(configuration: &configuration::Configurat
 }
 
 /// Returns the authenticated user's Chat privacy settings: who can message them, read receipts, the message quality filter, and audio/video call permissions.
-pub async fn get_chat_settings(configuration: &configuration::Configuration, chat_settings_fields: Option<Vec<models::ChatSettingsField>>) -> Result<models::GetChatSettingsResponse, Error<GetChatSettingsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_chat_settings_fields = chat_settings_fields;
+pub async fn get_chat_settings(configuration: &configuration::Configuration, params: GetChatSettingsParams) -> Result<models::GetChatSettingsResponse, Error<GetChatSettingsError>> {
 
     let uri_str = format!("{}/2/chat/settings", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_chat_settings_fields {
+    if let Some(ref param_value) = params.chat_settings_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("chat_settings.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("chat_settings.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -1862,7 +2143,7 @@ pub async fn get_chat_settings(configuration: &configuration::Configuration, cha
 }
 
 /// Initializes a new Chat group conversation and returns a unique conversation ID. Use the returned conversation_id in a subsequent POST /chat/conversations/group call to fully create and configure the group.
-pub async fn initialize_chat_group(configuration: &configuration::Configuration, ) -> Result<models::InitializeChatGroupResponse, Error<InitializeChatGroupError>> {
+pub async fn initialize_chat_group(configuration: &configuration::Configuration) -> Result<models::InitializeChatGroupResponse, Error<InitializeChatGroupError>> {
 
     let uri_str = format!("{}/2/chat/conversations/group/initialize", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -1906,12 +2187,9 @@ pub async fn initialize_chat_group(configuration: &configuration::Configuration,
 }
 
 /// Marks a specific Chat conversation as read on behalf of the authenticated user. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient. Without action_signatures the conversation is marked read up to its newest event and the read receipt is unsigned. With one action signature over a MarkConversationReadEvent, the server sends that signed read receipt, marking the conversation read up to the event it names.
-pub async fn mark_chat_conversation_read(configuration: &configuration::Configuration, id: &str, mark_chat_conversation_read_request: models::MarkChatConversationReadRequest) -> Result<models::MarkChatConversationReadResponse, Error<MarkChatConversationReadError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_mark_chat_conversation_read_request = mark_chat_conversation_read_request;
+pub async fn mark_chat_conversation_read(configuration: &configuration::Configuration, params: MarkChatConversationReadParams) -> Result<models::MarkChatConversationReadResponse, Error<MarkChatConversationReadError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/read", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/read", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1926,7 +2204,7 @@ pub async fn mark_chat_conversation_read(configuration: &configuration::Configur
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_mark_chat_conversation_read_request);
+    req_builder = req_builder.json(&params.mark_chat_conversation_read_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1954,11 +2232,9 @@ pub async fn mark_chat_conversation_read(configuration: &configuration::Configur
 }
 
 /// Marks a specific Chat conversation as unread on behalf of the authenticated user. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
-pub async fn mark_chat_conversation_unread(configuration: &configuration::Configuration, id: &str) -> Result<models::MarkChatConversationUnreadResponse, Error<MarkChatConversationUnreadError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
+pub async fn mark_chat_conversation_unread(configuration: &configuration::Configuration, params: MarkChatConversationUnreadParams) -> Result<models::MarkChatConversationUnreadResponse, Error<MarkChatConversationUnreadError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/unread", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/unread", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -2000,12 +2276,9 @@ pub async fn mark_chat_conversation_unread(configuration: &configuration::Config
 }
 
 /// Mutes notifications for a Chat conversation for the authenticated user only. Works for group and 1:1 conversations. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
-pub async fn mute_chat_conversation(configuration: &configuration::Configuration, id: &str, mute_chat_conversation_request: models::MuteChatConversationRequest) -> Result<models::MuteChatConversationResponse, Error<MuteChatConversationError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_mute_chat_conversation_request = mute_chat_conversation_request;
+pub async fn mute_chat_conversation(configuration: &configuration::Configuration, params: MuteChatConversationParams) -> Result<models::MuteChatConversationResponse, Error<MuteChatConversationError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/mute", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/mute", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -2020,7 +2293,7 @@ pub async fn mute_chat_conversation(configuration: &configuration::Configuration
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_mute_chat_conversation_request);
+    req_builder = req_builder.json(&params.mute_chat_conversation_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -2048,13 +2321,9 @@ pub async fn mute_chat_conversation(configuration: &configuration::Configuration
 }
 
 /// Declines a user's pending request for admin permissions in an encrypted Chat group conversation. Only a group admin can reject.
-pub async fn reject_chat_group_admin_request(configuration: &configuration::Configuration, id: &str, user_id: &str, reject_chat_group_admin_request_request: models::RejectChatGroupAdminRequestRequest) -> Result<models::RejectChatGroupAdminRequestResponse, Error<RejectChatGroupAdminRequestError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_path_user_id = user_id;
-    let p_body_reject_chat_group_admin_request_request = reject_chat_group_admin_request_request;
+pub async fn reject_chat_group_admin_request(configuration: &configuration::Configuration, params: RejectChatGroupAdminRequestParams) -> Result<models::RejectChatGroupAdminRequestResponse, Error<RejectChatGroupAdminRequestError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/admin_requests/{user_id}/reject", configuration.base_path, id=crate::apis::urlencode(p_path_id), user_id=crate::apis::urlencode(p_path_user_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/admin_requests/{user_id}/reject", configuration.base_path, id=crate::apis::urlencode(params.id), user_id=crate::apis::urlencode(params.user_id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -2069,7 +2338,7 @@ pub async fn reject_chat_group_admin_request(configuration: &configuration::Conf
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_reject_chat_group_admin_request_request);
+    req_builder = req_builder.json(&params.reject_chat_group_admin_request_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -2097,12 +2366,9 @@ pub async fn reject_chat_group_admin_request(configuration: &configuration::Conf
 }
 
 /// Rejects pending requests to join an encrypted Chat group conversation. Only group admins can reject requests. To approve a request instead, add the requesting users with addChatGroupMembers; adding a user clears their pending request.
-pub async fn reject_chat_group_join_requests(configuration: &configuration::Configuration, id: &str, reject_chat_group_join_requests_request: models::RejectChatGroupJoinRequestsRequest) -> Result<models::RejectChatGroupJoinRequestsResponse, Error<RejectChatGroupJoinRequestsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_reject_chat_group_join_requests_request = reject_chat_group_join_requests_request;
+pub async fn reject_chat_group_join_requests(configuration: &configuration::Configuration, params: RejectChatGroupJoinRequestsParams) -> Result<models::RejectChatGroupJoinRequestsResponse, Error<RejectChatGroupJoinRequestsError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/join_requests/reject", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/join_requests/reject", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -2117,7 +2383,7 @@ pub async fn reject_chat_group_join_requests(configuration: &configuration::Conf
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_reject_chat_group_join_requests_request);
+    req_builder = req_builder.json(&params.reject_chat_group_join_requests_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -2145,12 +2411,9 @@ pub async fn reject_chat_group_join_requests(configuration: &configuration::Conf
 }
 
 /// Revokes admin rights from one or more admins of an existing encrypted Chat group conversation. They stay members of the group.
-pub async fn remove_chat_group_admins(configuration: &configuration::Configuration, id: &str, remove_chat_group_admins_request: models::RemoveChatGroupAdminsRequest) -> Result<models::RemoveChatGroupAdminsResponse, Error<RemoveChatGroupAdminsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_remove_chat_group_admins_request = remove_chat_group_admins_request;
+pub async fn remove_chat_group_admins(configuration: &configuration::Configuration, params: RemoveChatGroupAdminsParams) -> Result<models::RemoveChatGroupAdminsResponse, Error<RemoveChatGroupAdminsError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/admins/remove", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/admins/remove", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -2165,7 +2428,7 @@ pub async fn remove_chat_group_admins(configuration: &configuration::Configurati
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_remove_chat_group_admins_request);
+    req_builder = req_builder.json(&params.remove_chat_group_admins_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -2193,12 +2456,9 @@ pub async fn remove_chat_group_admins(configuration: &configuration::Configurati
 }
 
 /// Removes one or more members from an existing encrypted Chat group conversation. To leave a group, pass your own user ID. Leaving does not delete the conversation for the caller. When the removal rotates the conversation key, send group_key_rotation_data and the action signatures for the removal and the key change, in that order.
-pub async fn remove_chat_group_members(configuration: &configuration::Configuration, id: &str, remove_chat_group_members_request: models::RemoveChatGroupMembersRequest) -> Result<models::RemoveChatGroupMembersResponse, Error<RemoveChatGroupMembersError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_remove_chat_group_members_request = remove_chat_group_members_request;
+pub async fn remove_chat_group_members(configuration: &configuration::Configuration, params: RemoveChatGroupMembersParams) -> Result<models::RemoveChatGroupMembersResponse, Error<RemoveChatGroupMembersError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/members/remove", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/members/remove", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -2213,7 +2473,7 @@ pub async fn remove_chat_group_members(configuration: &configuration::Configurat
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_remove_chat_group_members_request);
+    req_builder = req_builder.json(&params.remove_chat_group_members_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -2241,12 +2501,9 @@ pub async fn remove_chat_group_members(configuration: &configuration::Configurat
 }
 
 /// Sends an encrypted message to a specific Chat conversation. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient. A recipient who cannot be messaged (closed inbox, system/notification account, or a 1:1 block) returns HTTP 403 with type https://api.x.com/2/problems/recipient-not-messageable.
-pub async fn send_chat_message(configuration: &configuration::Configuration, id: &str, send_chat_message_request: models::SendChatMessageRequest) -> Result<models::SendChatMessageResponse, Error<SendChatMessageError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_send_chat_message_request = send_chat_message_request;
+pub async fn send_chat_message(configuration: &configuration::Configuration, params: SendChatMessageParams) -> Result<models::SendChatMessageResponse, Error<SendChatMessageError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/messages", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/messages", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -2261,7 +2518,7 @@ pub async fn send_chat_message(configuration: &configuration::Configuration, id:
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_send_chat_message_request);
+    req_builder = req_builder.json(&params.send_chat_message_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -2289,11 +2546,9 @@ pub async fn send_chat_message(configuration: &configuration::Configuration, id:
 }
 
 /// Sends a typing indicator to a specific Chat conversation on behalf of the authenticated user. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
-pub async fn send_chat_typing_indicator(configuration: &configuration::Configuration, id: &str) -> Result<models::SendChatTypingIndicatorResponse, Error<SendChatTypingIndicatorError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
+pub async fn send_chat_typing_indicator(configuration: &configuration::Configuration, params: SendChatTypingIndicatorParams) -> Result<models::SendChatTypingIndicatorResponse, Error<SendChatTypingIndicatorError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/typing", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/typing", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -2335,12 +2590,9 @@ pub async fn send_chat_typing_indicator(configuration: &configuration::Configura
 }
 
 /// Unarchives a Chat conversation for the authenticated user only. Unarchiving a conversation that is not archived changes nothing. Works for group and 1:1 conversations. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
-pub async fn unarchive_chat_conversation(configuration: &configuration::Configuration, id: &str, unarchive_chat_conversation_request: models::UnarchiveChatConversationRequest) -> Result<models::UnarchiveChatConversationResponse, Error<UnarchiveChatConversationError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_unarchive_chat_conversation_request = unarchive_chat_conversation_request;
+pub async fn unarchive_chat_conversation(configuration: &configuration::Configuration, params: UnarchiveChatConversationParams) -> Result<models::UnarchiveChatConversationResponse, Error<UnarchiveChatConversationError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/archive", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/archive", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -2355,7 +2607,7 @@ pub async fn unarchive_chat_conversation(configuration: &configuration::Configur
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_unarchive_chat_conversation_request);
+    req_builder = req_builder.json(&params.unarchive_chat_conversation_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -2383,12 +2635,9 @@ pub async fn unarchive_chat_conversation(configuration: &configuration::Configur
 }
 
 /// Unmutes notifications for a Chat conversation for the authenticated user only. Works for group and 1:1 conversations. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
-pub async fn unmute_chat_conversation(configuration: &configuration::Configuration, id: &str, unmute_chat_conversation_request: models::UnmuteChatConversationRequest) -> Result<models::UnmuteChatConversationResponse, Error<UnmuteChatConversationError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_unmute_chat_conversation_request = unmute_chat_conversation_request;
+pub async fn unmute_chat_conversation(configuration: &configuration::Configuration, params: UnmuteChatConversationParams) -> Result<models::UnmuteChatConversationResponse, Error<UnmuteChatConversationError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/mute", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/mute", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -2403,7 +2652,7 @@ pub async fn unmute_chat_conversation(configuration: &configuration::Configurati
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_unmute_chat_conversation_request);
+    req_builder = req_builder.json(&params.unmute_chat_conversation_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -2431,12 +2680,9 @@ pub async fn unmute_chat_conversation(configuration: &configuration::Configurati
 }
 
 /// Sets how long new messages in a 1:1 or group Chat conversation last before they disappear, for every participant. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
-pub async fn update_chat_conversation_message_ttl(configuration: &configuration::Configuration, id: &str, update_chat_conversation_message_ttl_request: models::UpdateChatConversationMessageTtlRequest) -> Result<models::UpdateChatConversationMessageTtlResponse, Error<UpdateChatConversationMessageTtlError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_update_chat_conversation_message_ttl_request = update_chat_conversation_message_ttl_request;
+pub async fn update_chat_conversation_message_ttl(configuration: &configuration::Configuration, params: UpdateChatConversationMessageTtlParams) -> Result<models::UpdateChatConversationMessageTtlResponse, Error<UpdateChatConversationMessageTtlError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/message_ttl", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/message_ttl", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -2451,7 +2697,7 @@ pub async fn update_chat_conversation_message_ttl(configuration: &configuration:
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_update_chat_conversation_message_ttl_request);
+    req_builder = req_builder.json(&params.update_chat_conversation_message_ttl_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -2479,12 +2725,9 @@ pub async fn update_chat_conversation_message_ttl(configuration: &configuration:
 }
 
 /// Turns screenshot blocking or screenshot detection on or off in a Chat conversation, for every participant. In a group conversation, only admins can change these settings. Each request changes one setting: send either blocking or detection. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
-pub async fn update_chat_conversation_screen_capture(configuration: &configuration::Configuration, id: &str, update_chat_conversation_screen_capture_request: Option<models::UpdateChatConversationScreenCaptureRequest>) -> Result<models::UpdateChatConversationScreenCaptureResponse, Error<UpdateChatConversationScreenCaptureError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_update_chat_conversation_screen_capture_request = update_chat_conversation_screen_capture_request;
+pub async fn update_chat_conversation_screen_capture(configuration: &configuration::Configuration, params: UpdateChatConversationScreenCaptureParams) -> Result<models::UpdateChatConversationScreenCaptureResponse, Error<UpdateChatConversationScreenCaptureError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/screen_capture", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/screen_capture", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -2499,7 +2742,7 @@ pub async fn update_chat_conversation_screen_capture(configuration: &configurati
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_update_chat_conversation_screen_capture_request);
+    req_builder = req_builder.json(&params.update_chat_conversation_screen_capture_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -2527,12 +2770,9 @@ pub async fn update_chat_conversation_screen_capture(configuration: &configurati
 }
 
 /// Renames an encrypted Chat group conversation, changes its avatar, or sets its description. The client encrypts each value with the conversation key and lists the values it changed in modified_fields.
-pub async fn update_chat_group(configuration: &configuration::Configuration, id: &str, update_chat_group_request: models::UpdateChatGroupRequest) -> Result<models::UpdateChatGroupResponse, Error<UpdateChatGroupError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_update_chat_group_request = update_chat_group_request;
+pub async fn update_chat_group(configuration: &configuration::Configuration, params: UpdateChatGroupParams) -> Result<models::UpdateChatGroupResponse, Error<UpdateChatGroupError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -2547,7 +2787,7 @@ pub async fn update_chat_group(configuration: &configuration::Configuration, id:
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_update_chat_group_request);
+    req_builder = req_builder.json(&params.update_chat_group_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -2575,12 +2815,9 @@ pub async fn update_chat_group(configuration: &configuration::Configuration, id:
 }
 
 /// Sets which actions only admins can perform in an existing encrypted Chat group conversation. A setting set to true restricts that action to admins, and false opens it to all members. Setting `send_message` to true makes the group announcement-only. Omitted settings keep their stored value. When sending `action_signatures`, sign over the full merged settings: the stored values with this request's changes applied, not only the settings in the request.
-pub async fn update_chat_group_admin_settings(configuration: &configuration::Configuration, id: &str, update_chat_group_admin_settings_request: Option<models::UpdateChatGroupAdminSettingsRequest>) -> Result<models::UpdateChatGroupAdminSettingsResponse, Error<UpdateChatGroupAdminSettingsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_update_chat_group_admin_settings_request = update_chat_group_admin_settings_request;
+pub async fn update_chat_group_admin_settings(configuration: &configuration::Configuration, params: UpdateChatGroupAdminSettingsParams) -> Result<models::UpdateChatGroupAdminSettingsResponse, Error<UpdateChatGroupAdminSettingsError>> {
 
-    let uri_str = format!("{}/2/chat/conversations/{id}/admin_settings", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/chat/conversations/{id}/admin_settings", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -2595,7 +2832,7 @@ pub async fn update_chat_group_admin_settings(configuration: &configuration::Con
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_update_chat_group_admin_settings_request);
+    req_builder = req_builder.json(&params.update_chat_group_admin_settings_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -2623,9 +2860,7 @@ pub async fn update_chat_group_admin_settings(configuration: &configuration::Con
 }
 
 /// Updates the authenticated user's Chat privacy settings: who can message them, read receipts, the message quality filter, and audio/video call permissions. allow_dms_from, dm_receipt_settings, and dm_quality_filter accept only their listed values, matched exactly and case-sensitively; anything else is a 400. av_settings must set at least one of its settings. Whether settings omitted from a partial av_settings keep their values or are reset is not yet confirmed; send every av_settings field you want to keep.
-pub async fn update_chat_settings(configuration: &configuration::Configuration, update_chat_settings_request: Option<models::UpdateChatSettingsRequest>) -> Result<models::UpdateChatSettingsResponse, Error<UpdateChatSettingsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_update_chat_settings_request = update_chat_settings_request;
+pub async fn update_chat_settings(configuration: &configuration::Configuration, params: UpdateChatSettingsParams) -> Result<models::UpdateChatSettingsResponse, Error<UpdateChatSettingsError>> {
 
     let uri_str = format!("{}/2/chat/settings", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
@@ -2642,7 +2877,7 @@ pub async fn update_chat_settings(configuration: &configuration::Configuration, 
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_update_chat_settings_request);
+    req_builder = req_builder.json(&params.update_chat_settings_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;

@@ -14,6 +14,12 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`ensure_account`]
+#[derive(Clone, Debug)]
+pub struct EnsureAccountParams {
+    pub ensure_account_request: models::EnsureAccountRequest
+}
+
 
 /// struct for typed errors of method [`ensure_account`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -33,9 +39,7 @@ pub enum GetDeveloperAccountError {
 
 
 /// Creates an X Developer Platform account for the authenticated user if they do not already have one, and returns it. Idempotent: when the user already has an account it is returned unchanged with `created` false.
-pub async fn ensure_account(configuration: &configuration::Configuration, ensure_account_request: models::EnsureAccountRequest) -> Result<models::EnsureAccountResponse, Error<EnsureAccountError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_ensure_account_request = ensure_account_request;
+pub async fn ensure_account(configuration: &configuration::Configuration, params: EnsureAccountParams) -> Result<models::EnsureAccountResponse, Error<EnsureAccountError>> {
 
     let uri_str = format!("{}/2/account", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -52,7 +56,7 @@ pub async fn ensure_account(configuration: &configuration::Configuration, ensure
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_ensure_account_request);
+    req_builder = req_builder.json(&params.ensure_account_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -80,7 +84,7 @@ pub async fn ensure_account(configuration: &configuration::Configuration, ensure
 }
 
 /// Returns the authenticated user's X Developer Platform account. A user without an account gets a resource-not-found error entry.
-pub async fn get_developer_account(configuration: &configuration::Configuration, ) -> Result<models::GetDeveloperAccountResponse, Error<GetDeveloperAccountError>> {
+pub async fn get_developer_account(configuration: &configuration::Configuration) -> Result<models::GetDeveloperAccountResponse, Error<GetDeveloperAccountError>> {
 
     let uri_str = format!("{}/2/account", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);

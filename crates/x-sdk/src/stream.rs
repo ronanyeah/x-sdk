@@ -116,14 +116,14 @@ type Inner<T> = Pin<Box<dyn Stream<Item = Result<T, Error>> + Send>>;
 /// yielded as [`Error::Json`] and the stream continues.
 ///
 /// ```no_run
-/// use x_sdk::apis::stream_api;
+/// use x_sdk::apis::stream_api::{self, StreamPostsSampleParams};
 /// use x_sdk::models::StreamPostsSampleResponse;
 /// use x_sdk::stream::{self, StreamExt};
 ///
 /// # async fn run(cfg: x_sdk::apis::configuration::Configuration) {
 /// let cfg = &cfg;
 /// let mut posts = std::pin::pin!(stream::reconnecting::<StreamPostsSampleResponse, _, _, _>(
-///     || stream_api::stream_posts_sample(cfg, None, None, None, None, None, None, None),
+///     || stream_api::stream_posts_sample(cfg, StreamPostsSampleParams::default()),
 /// ));
 /// while let Some(post) = posts.next().await { /* ... */ }
 /// # }

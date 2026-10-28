@@ -14,6 +14,266 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`add_chat_moderator`]
+#[derive(Clone, Debug)]
+pub struct AddChatModeratorParams {
+    pub add_chat_moderator_request: models::AddChatModeratorRequest
+}
+
+/// struct for passing parameters to the method [`create_scheduled_broadcast`]
+#[derive(Clone, Debug)]
+pub struct CreateScheduledBroadcastParams {
+    pub create_scheduled_broadcast_request: models::CreateScheduledBroadcastRequest
+}
+
+/// struct for passing parameters to the method [`create_source`]
+#[derive(Clone, Debug)]
+pub struct CreateSourceParams {
+    pub create_source_request: models::CreateSourceRequest
+}
+
+/// struct for passing parameters to the method [`create_user_source`]
+#[derive(Clone, Debug)]
+pub struct CreateUserSourceParams {
+    pub id: String,
+    pub create_user_source_request: models::CreateUserSourceRequest
+}
+
+/// struct for passing parameters to the method [`delete_broadcast`]
+#[derive(Clone, Debug, Default)]
+pub struct DeleteBroadcastParams {
+    pub id: String
+}
+
+/// struct for passing parameters to the method [`delete_broadcast_chat_message`]
+#[derive(Clone, Debug, Default)]
+pub struct DeleteBroadcastChatMessageParams {
+    pub id: String,
+    pub message_id: String
+}
+
+/// struct for passing parameters to the method [`delete_scheduled_broadcast`]
+#[derive(Clone, Debug, Default)]
+pub struct DeleteScheduledBroadcastParams {
+    pub id: String,
+    /// Deprecated: recurring schedules are being retired and `true` will be rejected.
+    pub roll_forward: Option<bool>
+}
+
+/// struct for passing parameters to the method [`delete_source`]
+#[derive(Clone, Debug, Default)]
+pub struct DeleteSourceParams {
+    pub id: String
+}
+
+/// struct for passing parameters to the method [`delete_user_broadcast`]
+#[derive(Clone, Debug, Default)]
+pub struct DeleteUserBroadcastParams {
+    pub id: String,
+    pub broadcast_id: String
+}
+
+/// struct for passing parameters to the method [`delete_user_source`]
+#[derive(Clone, Debug, Default)]
+pub struct DeleteUserSourceParams {
+    pub id: String,
+    pub source_id: String
+}
+
+/// struct for passing parameters to the method [`get_broadcast`]
+#[derive(Clone, Debug, Default)]
+pub struct GetBroadcastParams {
+    pub id: String,
+    /// A comma separated list of Broadcast fields to display.
+    pub broadcast_fields: Option<Vec<models::BroadcastField>>
+}
+
+/// struct for passing parameters to the method [`get_broadcast_chat`]
+#[derive(Clone, Debug, Default)]
+pub struct GetBroadcastChatParams {
+    pub id: String,
+    pub max_results: Option<i32>,
+    /// A 64-bit signed integer.
+    pub pagination_token: Option<String>,
+    /// A comma separated list of BroadcastChatMessage fields to display.
+    pub broadcast_chat_message_fields: Option<Vec<models::BroadcastChatMessageField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::BroadcastChatMessageExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>
+}
+
+/// struct for passing parameters to the method [`get_chat_moderators`]
+#[derive(Clone, Debug, Default)]
+pub struct GetChatModeratorsParams {
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::UserExpansion>>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>
+}
+
+/// struct for passing parameters to the method [`get_chat_muted_users`]
+#[derive(Clone, Debug, Default)]
+pub struct GetChatMutedUsersParams {
+    pub max_results: Option<i32>,
+    pub pagination_token: Option<String>,
+    /// A comma separated list of BroadcastChatMute fields to display.
+    pub broadcast_chat_mute_fields: Option<Vec<models::BroadcastChatMuteField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::BroadcastChatMuteExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>
+}
+
+/// struct for passing parameters to the method [`get_scheduled_broadcast`]
+#[derive(Clone, Debug, Default)]
+pub struct GetScheduledBroadcastParams {
+    pub id: String
+}
+
+/// struct for passing parameters to the method [`get_source`]
+#[derive(Clone, Debug, Default)]
+pub struct GetSourceParams {
+    pub id: String
+}
+
+/// struct for passing parameters to the method [`get_user_broadcast`]
+#[derive(Clone, Debug, Default)]
+pub struct GetUserBroadcastParams {
+    pub id: String,
+    pub broadcast_id: String
+}
+
+/// struct for passing parameters to the method [`get_user_source`]
+#[derive(Clone, Debug, Default)]
+pub struct GetUserSourceParams {
+    pub id: String,
+    pub source_id: String
+}
+
+/// struct for passing parameters to the method [`go_live_scheduled_broadcast`]
+#[derive(Clone, Debug, Default)]
+pub struct GoLiveScheduledBroadcastParams {
+    pub id: String
+}
+
+/// struct for passing parameters to the method [`list_broadcasts`]
+#[derive(Clone, Debug, Default)]
+pub struct ListBroadcastsParams {
+    /// Comma-separated broadcast IDs to retrieve instead of listing broadcasts.
+    pub ids: Option<Vec<String>>,
+    pub max_results: Option<i32>,
+    pub pagination_token: Option<String>,
+    /// A comma separated list of Broadcast fields to display.
+    pub broadcast_fields: Option<Vec<models::BroadcastField>>
+}
+
+/// struct for passing parameters to the method [`list_scheduled_broadcasts`]
+#[derive(Clone, Debug, Default)]
+pub struct ListScheduledBroadcastsParams {
+    pub max_results: Option<i32>,
+    pub oldest_start_time: Option<String>,
+    pub newest_start_time: Option<String>,
+    pub pagination_token: Option<String>
+}
+
+/// struct for passing parameters to the method [`list_user_broadcasts`]
+#[derive(Clone, Debug, Default)]
+pub struct ListUserBroadcastsParams {
+    pub id: String,
+    /// `next_token.offset` from the previous page.
+    pub pagination_token: Option<String>
+}
+
+/// struct for passing parameters to the method [`list_user_sources`]
+#[derive(Clone, Debug, Default)]
+pub struct ListUserSourcesParams {
+    pub id: String
+}
+
+/// struct for passing parameters to the method [`mute_broadcast_chat_user`]
+#[derive(Clone, Debug)]
+pub struct MuteBroadcastChatUserParams {
+    pub id: String,
+    pub mute_broadcast_chat_user_request: models::MuteBroadcastChatUserRequest
+}
+
+/// struct for passing parameters to the method [`mute_chat_user`]
+#[derive(Clone, Debug)]
+pub struct MuteChatUserParams {
+    pub mute_chat_user_request: models::MuteChatUserRequest
+}
+
+/// struct for passing parameters to the method [`remove_chat_moderator`]
+#[derive(Clone, Debug, Default)]
+pub struct RemoveChatModeratorParams {
+    /// A 64-bit signed integer.
+    pub user_id: String
+}
+
+/// struct for passing parameters to the method [`send_broadcast_chat`]
+#[derive(Clone, Debug)]
+pub struct SendBroadcastChatParams {
+    pub id: String,
+    pub send_broadcast_chat_request: models::SendBroadcastChatRequest
+}
+
+/// struct for passing parameters to the method [`unmute_broadcast_chat_user`]
+#[derive(Clone, Debug, Default)]
+pub struct UnmuteBroadcastChatUserParams {
+    pub id: String,
+    /// A 64-bit signed integer.
+    pub user_id: String
+}
+
+/// struct for passing parameters to the method [`unmute_chat_user`]
+#[derive(Clone, Debug, Default)]
+pub struct UnmuteChatUserParams {
+    /// A 64-bit signed integer.
+    pub user_id: String,
+    /// A broadcast whose host's chats the user is unmuted in.
+    pub broadcast_id: Option<String>
+}
+
+/// struct for passing parameters to the method [`update_broadcast_state`]
+#[derive(Clone, Debug)]
+pub struct UpdateBroadcastStateParams {
+    pub id: String,
+    pub update_broadcast_state_request: models::UpdateBroadcastStateRequest
+}
+
+/// struct for passing parameters to the method [`update_scheduled_broadcast`]
+#[derive(Clone, Debug)]
+pub struct UpdateScheduledBroadcastParams {
+    pub id: String,
+    pub update_scheduled_broadcast_request: models::UpdateScheduledBroadcastRequest
+}
+
+/// struct for passing parameters to the method [`update_source`]
+#[derive(Clone, Debug)]
+pub struct UpdateSourceParams {
+    pub id: String,
+    pub update_source_request: models::UpdateSourceRequest
+}
+
+/// struct for passing parameters to the method [`update_user_broadcast_state`]
+#[derive(Clone, Debug)]
+pub struct UpdateUserBroadcastStateParams {
+    pub id: String,
+    pub broadcast_id: String,
+    pub update_user_broadcast_state_request: models::UpdateUserBroadcastStateRequest
+}
+
+/// struct for passing parameters to the method [`update_user_source`]
+#[derive(Clone, Debug)]
+pub struct UpdateUserSourceParams {
+    pub id: String,
+    pub source_id: String,
+    pub update_user_source_request: models::UpdateUserSourceRequest
+}
+
 
 /// struct for typed errors of method [`add_chat_moderator`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -297,9 +557,7 @@ pub enum UpdateUserSourceError {
 
 
 /// Adds a moderator to the authenticated broadcaster's persistent list and returns the updated moderator user IDs. The list applies to all current and future broadcast chats.
-pub async fn add_chat_moderator(configuration: &configuration::Configuration, add_chat_moderator_request: models::AddChatModeratorRequest) -> Result<models::AddChatModeratorResponse, Error<AddChatModeratorError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_add_chat_moderator_request = add_chat_moderator_request;
+pub async fn add_chat_moderator(configuration: &configuration::Configuration, params: AddChatModeratorParams) -> Result<models::AddChatModeratorResponse, Error<AddChatModeratorError>> {
 
     let uri_str = format!("{}/2/broadcasts/chat/moderators", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -316,7 +574,7 @@ pub async fn add_chat_moderator(configuration: &configuration::Configuration, ad
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_add_chat_moderator_request);
+    req_builder = req_builder.json(&params.add_chat_moderator_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -344,9 +602,7 @@ pub async fn add_chat_moderator(configuration: &configuration::Configuration, ad
 }
 
 /// Schedules a broadcast for the authenticated user. A `source_id` (ingest) is required at create time.
-pub async fn create_scheduled_broadcast(configuration: &configuration::Configuration, create_scheduled_broadcast_request: models::CreateScheduledBroadcastRequest) -> Result<models::CreateScheduledBroadcastResponse, Error<CreateScheduledBroadcastError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_create_scheduled_broadcast_request = create_scheduled_broadcast_request;
+pub async fn create_scheduled_broadcast(configuration: &configuration::Configuration, params: CreateScheduledBroadcastParams) -> Result<models::CreateScheduledBroadcastResponse, Error<CreateScheduledBroadcastError>> {
 
     let uri_str = format!("{}/2/broadcasts/scheduled", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -363,7 +619,7 @@ pub async fn create_scheduled_broadcast(configuration: &configuration::Configura
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_scheduled_broadcast_request);
+    req_builder = req_builder.json(&params.create_scheduled_broadcast_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -391,9 +647,7 @@ pub async fn create_scheduled_broadcast(configuration: &configuration::Configura
 }
 
 /// Creates a persistent RTMP/RTMPS ingest point for the authenticated user. Push an encoder to `rtmps_url` with the source's stream key.
-pub async fn create_source(configuration: &configuration::Configuration, create_source_request: models::CreateSourceRequest) -> Result<models::CreateSourceResponse, Error<CreateSourceError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_create_source_request = create_source_request;
+pub async fn create_source(configuration: &configuration::Configuration, params: CreateSourceParams) -> Result<models::CreateSourceResponse, Error<CreateSourceError>> {
 
     let uri_str = format!("{}/2/sources", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -410,7 +664,7 @@ pub async fn create_source(configuration: &configuration::Configuration, create_
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_source_request);
+    req_builder = req_builder.json(&params.create_source_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -438,12 +692,9 @@ pub async fn create_source(configuration: &configuration::Configuration, create_
 }
 
 /// Creates a persistent RTMP/RTMPS ingest point for the authenticated user. `id` must be the authenticated user.
-pub async fn create_user_source(configuration: &configuration::Configuration, id: &str, create_user_source_request: models::CreateUserSourceRequest) -> Result<models::CreateUserSourceResponse, Error<CreateUserSourceError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_create_user_source_request = create_user_source_request;
+pub async fn create_user_source(configuration: &configuration::Configuration, params: CreateUserSourceParams) -> Result<models::CreateUserSourceResponse, Error<CreateUserSourceError>> {
 
-    let uri_str = format!("{}/2/users/{id}/sources", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/users/{id}/sources", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -458,7 +709,7 @@ pub async fn create_user_source(configuration: &configuration::Configuration, id
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_user_source_request);
+    req_builder = req_builder.json(&params.create_user_source_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -486,11 +737,9 @@ pub async fn create_user_source(configuration: &configuration::Configuration, id
 }
 
 /// Deletes one of the authenticated user's broadcasts, scheduled or ended, including its replay. A running broadcast must be ended first.
-pub async fn delete_broadcast(configuration: &configuration::Configuration, id: &str) -> Result<models::DeleteBroadcastResponse, Error<DeleteBroadcastError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
+pub async fn delete_broadcast(configuration: &configuration::Configuration, params: DeleteBroadcastParams) -> Result<models::DeleteBroadcastResponse, Error<DeleteBroadcastError>> {
 
-    let uri_str = format!("{}/2/broadcasts/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/broadcasts/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -532,12 +781,9 @@ pub async fn delete_broadcast(configuration: &configuration::Configuration, id: 
 }
 
 /// Removes a specific chat message from a running broadcast where the authenticated user is the host or a moderator.
-pub async fn delete_broadcast_chat_message(configuration: &configuration::Configuration, id: &str, message_id: &str) -> Result<models::DeleteBroadcastChatMessageResponse, Error<DeleteBroadcastChatMessageError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_path_message_id = message_id;
+pub async fn delete_broadcast_chat_message(configuration: &configuration::Configuration, params: DeleteBroadcastChatMessageParams) -> Result<models::DeleteBroadcastChatMessageResponse, Error<DeleteBroadcastChatMessageError>> {
 
-    let uri_str = format!("{}/2/broadcasts/{id}/chat/{message_id}", configuration.base_path, id=crate::apis::urlencode(p_path_id), message_id=crate::apis::urlencode(p_path_message_id));
+    let uri_str = format!("{}/2/broadcasts/{id}/chat/{message_id}", configuration.base_path, id=crate::apis::urlencode(params.id), message_id=crate::apis::urlencode(params.message_id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -579,15 +825,12 @@ pub async fn delete_broadcast_chat_message(configuration: &configuration::Config
 }
 
 /// Deletes a scheduled broadcast by its alphanumeric broadcast id.
-pub async fn delete_scheduled_broadcast(configuration: &configuration::Configuration, id: &str, roll_forward: Option<bool>) -> Result<models::DeleteScheduledBroadcastResponse, Error<DeleteScheduledBroadcastError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_roll_forward = roll_forward;
+pub async fn delete_scheduled_broadcast(configuration: &configuration::Configuration, params: DeleteScheduledBroadcastParams) -> Result<models::DeleteScheduledBroadcastResponse, Error<DeleteScheduledBroadcastError>> {
 
-    let uri_str = format!("{}/2/broadcasts/scheduled/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/broadcasts/scheduled/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
-    if let Some(ref param_value) = p_query_roll_forward {
+    if let Some(ref param_value) = params.roll_forward {
         req_builder = req_builder.query(&[("roll_forward", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -629,11 +872,9 @@ pub async fn delete_scheduled_broadcast(configuration: &configuration::Configura
 }
 
 /// Deletes one of the authenticated user's stream sources.
-pub async fn delete_source(configuration: &configuration::Configuration, id: &str) -> Result<models::DeleteSourceResponse, Error<DeleteSourceError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
+pub async fn delete_source(configuration: &configuration::Configuration, params: DeleteSourceParams) -> Result<models::DeleteSourceResponse, Error<DeleteSourceError>> {
 
-    let uri_str = format!("{}/2/sources/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/sources/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -675,12 +916,9 @@ pub async fn delete_source(configuration: &configuration::Configuration, id: &st
 }
 
 /// Deletes one of the authenticated user's broadcasts. `id` must be the authenticated user. Deprecated: use DELETE /2/broadcasts/:id.
-pub async fn delete_user_broadcast(configuration: &configuration::Configuration, id: &str, broadcast_id: &str) -> Result<models::DeleteUserBroadcastResponse, Error<DeleteUserBroadcastError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_path_broadcast_id = broadcast_id;
+pub async fn delete_user_broadcast(configuration: &configuration::Configuration, params: DeleteUserBroadcastParams) -> Result<models::DeleteUserBroadcastResponse, Error<DeleteUserBroadcastError>> {
 
-    let uri_str = format!("{}/2/users/{id}/broadcasts/{broadcast_id}", configuration.base_path, id=crate::apis::urlencode(p_path_id), broadcast_id=crate::apis::urlencode(p_path_broadcast_id));
+    let uri_str = format!("{}/2/users/{id}/broadcasts/{broadcast_id}", configuration.base_path, id=crate::apis::urlencode(params.id), broadcast_id=crate::apis::urlencode(params.broadcast_id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -722,12 +960,9 @@ pub async fn delete_user_broadcast(configuration: &configuration::Configuration,
 }
 
 /// Deletes one of the authenticated user's stream sources. `id` must be the authenticated user. Success is an empty object.
-pub async fn delete_user_source(configuration: &configuration::Configuration, id: &str, source_id: &str) -> Result<models::DeleteUserSourceResponse, Error<DeleteUserSourceError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_path_source_id = source_id;
+pub async fn delete_user_source(configuration: &configuration::Configuration, params: DeleteUserSourceParams) -> Result<models::DeleteUserSourceResponse, Error<DeleteUserSourceError>> {
 
-    let uri_str = format!("{}/2/users/{id}/sources/{source_id}", configuration.base_path, id=crate::apis::urlencode(p_path_id), source_id=crate::apis::urlencode(p_path_source_id));
+    let uri_str = format!("{}/2/users/{id}/sources/{source_id}", configuration.base_path, id=crate::apis::urlencode(params.id), source_id=crate::apis::urlencode(params.source_id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -769,15 +1004,12 @@ pub async fn delete_user_source(configuration: &configuration::Configuration, id
 }
 
 /// Returns a broadcast owned by the authenticated user.
-pub async fn get_broadcast(configuration: &configuration::Configuration, id: &str, broadcast_fields: Option<Vec<models::BroadcastField>>) -> Result<models::GetBroadcastResponse, Error<GetBroadcastError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_broadcast_fields = broadcast_fields;
+pub async fn get_broadcast(configuration: &configuration::Configuration, params: GetBroadcastParams) -> Result<models::GetBroadcastResponse, Error<GetBroadcastError>> {
 
-    let uri_str = format!("{}/2/broadcasts/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/broadcasts/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_broadcast_fields {
+    if let Some(ref param_value) = params.broadcast_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("broadcast.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("broadcast.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -822,37 +1054,30 @@ pub async fn get_broadcast(configuration: &configuration::Configuration, id: &st
 }
 
 /// Returns newest-first chat messages for a broadcast owned by the authenticated user.
-pub async fn get_broadcast_chat(configuration: &configuration::Configuration, id: &str, max_results: Option<i32>, pagination_token: Option<&str>, broadcast_chat_message_fields: Option<Vec<models::BroadcastChatMessageField>>, expansions: Option<Vec<models::BroadcastChatMessageExpansion>>, user_fields: Option<Vec<models::UserField>>) -> Result<models::GetBroadcastChatResponse, Error<GetBroadcastChatError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_broadcast_chat_message_fields = broadcast_chat_message_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
+pub async fn get_broadcast_chat(configuration: &configuration::Configuration, params: GetBroadcastChatParams) -> Result<models::GetBroadcastChatResponse, Error<GetBroadcastChatError>> {
 
-    let uri_str = format!("{}/2/broadcasts/{id}/chat", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/broadcasts/{id}/chat", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_broadcast_chat_message_fields {
+    if let Some(ref param_value) = params.broadcast_chat_message_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("broadcast_chat_message.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("broadcast_chat_message.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -897,28 +1122,24 @@ pub async fn get_broadcast_chat(configuration: &configuration::Configuration, id
 }
 
 /// Returns the authenticated broadcaster's persistent moderators as User resources. The list applies to all of their current and future broadcast chats.
-pub async fn get_chat_moderators(configuration: &configuration::Configuration, user_fields: Option<Vec<models::UserField>>, expansions: Option<Vec<models::UserExpansion>>, post_fields: Option<Vec<models::PostField>>) -> Result<models::GetChatModeratorsResponse, Error<GetChatModeratorsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_user_fields = user_fields;
-    let p_query_expansions = expansions;
-    let p_query_post_fields = post_fields;
+pub async fn get_chat_moderators(configuration: &configuration::Configuration, params: GetChatModeratorsParams) -> Result<models::GetChatModeratorsResponse, Error<GetChatModeratorsError>> {
 
     let uri_str = format!("{}/2/broadcasts/chat/moderators", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -963,36 +1184,30 @@ pub async fn get_chat_moderators(configuration: &configuration::Configuration, u
 }
 
 /// Returns the users muted in the authenticated broadcaster's chat, with the expiry time of timed mutes. Mutes apply to all of their broadcasts. Expired timed mutes are omitted. Use `expansions=user_id` to include the muted users.
-pub async fn get_chat_muted_users(configuration: &configuration::Configuration, max_results: Option<i32>, pagination_token: Option<&str>, broadcast_chat_mute_fields: Option<Vec<models::BroadcastChatMuteField>>, expansions: Option<Vec<models::BroadcastChatMuteExpansion>>, user_fields: Option<Vec<models::UserField>>) -> Result<models::GetChatMutedUsersResponse, Error<GetChatMutedUsersError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_broadcast_chat_mute_fields = broadcast_chat_mute_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
+pub async fn get_chat_muted_users(configuration: &configuration::Configuration, params: GetChatMutedUsersParams) -> Result<models::GetChatMutedUsersResponse, Error<GetChatMutedUsersError>> {
 
     let uri_str = format!("{}/2/broadcasts/chat/mutes", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_broadcast_chat_mute_fields {
+    if let Some(ref param_value) = params.broadcast_chat_mute_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("broadcast_chat_mute.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("broadcast_chat_mute.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -1037,11 +1252,9 @@ pub async fn get_chat_muted_users(configuration: &configuration::Configuration, 
 }
 
 /// Returns a single scheduled broadcast by its alphanumeric broadcast id.
-pub async fn get_scheduled_broadcast(configuration: &configuration::Configuration, id: &str) -> Result<models::GetScheduledBroadcastResponse, Error<GetScheduledBroadcastError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
+pub async fn get_scheduled_broadcast(configuration: &configuration::Configuration, params: GetScheduledBroadcastParams) -> Result<models::GetScheduledBroadcastResponse, Error<GetScheduledBroadcastError>> {
 
-    let uri_str = format!("{}/2/broadcasts/scheduled/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/broadcasts/scheduled/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1083,11 +1296,9 @@ pub async fn get_scheduled_broadcast(configuration: &configuration::Configuratio
 }
 
 /// Returns one of the authenticated user's stream sources.
-pub async fn get_source(configuration: &configuration::Configuration, id: &str) -> Result<models::GetSourceResponse, Error<GetSourceError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
+pub async fn get_source(configuration: &configuration::Configuration, params: GetSourceParams) -> Result<models::GetSourceResponse, Error<GetSourceError>> {
 
-    let uri_str = format!("{}/2/sources/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/sources/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1129,12 +1340,9 @@ pub async fn get_source(configuration: &configuration::Configuration, id: &str) 
 }
 
 /// Returns one of the authenticated user's broadcasts. `id` must be the authenticated user. Deprecated: use GET /2/broadcasts/:id.
-pub async fn get_user_broadcast(configuration: &configuration::Configuration, id: &str, broadcast_id: &str) -> Result<models::GetUserBroadcastResponse, Error<GetUserBroadcastError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_path_broadcast_id = broadcast_id;
+pub async fn get_user_broadcast(configuration: &configuration::Configuration, params: GetUserBroadcastParams) -> Result<models::GetUserBroadcastResponse, Error<GetUserBroadcastError>> {
 
-    let uri_str = format!("{}/2/users/{id}/broadcasts/{broadcast_id}", configuration.base_path, id=crate::apis::urlencode(p_path_id), broadcast_id=crate::apis::urlencode(p_path_broadcast_id));
+    let uri_str = format!("{}/2/users/{id}/broadcasts/{broadcast_id}", configuration.base_path, id=crate::apis::urlencode(params.id), broadcast_id=crate::apis::urlencode(params.broadcast_id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1176,12 +1384,9 @@ pub async fn get_user_broadcast(configuration: &configuration::Configuration, id
 }
 
 /// Returns one of the authenticated user's stream sources. `id` must be the authenticated user.
-pub async fn get_user_source(configuration: &configuration::Configuration, id: &str, source_id: &str) -> Result<models::GetUserSourceResponse, Error<GetUserSourceError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_path_source_id = source_id;
+pub async fn get_user_source(configuration: &configuration::Configuration, params: GetUserSourceParams) -> Result<models::GetUserSourceResponse, Error<GetUserSourceError>> {
 
-    let uri_str = format!("{}/2/users/{id}/sources/{source_id}", configuration.base_path, id=crate::apis::urlencode(p_path_id), source_id=crate::apis::urlencode(p_path_source_id));
+    let uri_str = format!("{}/2/users/{id}/sources/{source_id}", configuration.base_path, id=crate::apis::urlencode(params.id), source_id=crate::apis::urlencode(params.source_id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1223,11 +1428,9 @@ pub async fn get_user_source(configuration: &configuration::Configuration, id: &
 }
 
 /// Publishes a schedule that was created or updated with `manual_publish: true`. Without that flag the coordinator auto-publishes at start and this call is rejected.
-pub async fn go_live_scheduled_broadcast(configuration: &configuration::Configuration, id: &str) -> Result<models::GoLiveScheduledBroadcastResponse, Error<GoLiveScheduledBroadcastError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
+pub async fn go_live_scheduled_broadcast(configuration: &configuration::Configuration, params: GoLiveScheduledBroadcastParams) -> Result<models::GoLiveScheduledBroadcastResponse, Error<GoLiveScheduledBroadcastError>> {
 
-    let uri_str = format!("{}/2/broadcasts/scheduled/{id}/live", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/broadcasts/scheduled/{id}/live", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1269,29 +1472,24 @@ pub async fn go_live_scheduled_broadcast(configuration: &configuration::Configur
 }
 
 /// Returns the authenticated user's live-video broadcasts, or selected owned broadcasts when ids are provided.  At most one of `ids`, `max_results` may be provided. At most one of `ids`, `pagination_token` may be provided.
-pub async fn list_broadcasts(configuration: &configuration::Configuration, ids: Option<Vec<String>>, max_results: Option<i32>, pagination_token: Option<&str>, broadcast_fields: Option<Vec<models::BroadcastField>>) -> Result<models::ListBroadcastsResponse, Error<ListBroadcastsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_ids = ids;
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_broadcast_fields = broadcast_fields;
+pub async fn list_broadcasts(configuration: &configuration::Configuration, params: ListBroadcastsParams) -> Result<models::ListBroadcastsResponse, Error<ListBroadcastsError>> {
 
     let uri_str = format!("{}/2/broadcasts", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_ids {
+    if let Some(ref param_value) = params.ids {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("ids".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("ids", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_broadcast_fields {
+    if let Some(ref param_value) = params.broadcast_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("broadcast.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("broadcast.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -1336,26 +1534,21 @@ pub async fn list_broadcasts(configuration: &configuration::Configuration, ids: 
 }
 
 /// Returns scheduled broadcasts owned by the authenticated user.
-pub async fn list_scheduled_broadcasts(configuration: &configuration::Configuration, max_results: Option<i32>, oldest_start_time: Option<&str>, newest_start_time: Option<&str>, pagination_token: Option<&str>) -> Result<models::ListScheduledBroadcastsResponse, Error<ListScheduledBroadcastsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_max_results = max_results;
-    let p_query_oldest_start_time = oldest_start_time;
-    let p_query_newest_start_time = newest_start_time;
-    let p_query_pagination_token = pagination_token;
+pub async fn list_scheduled_broadcasts(configuration: &configuration::Configuration, params: ListScheduledBroadcastsParams) -> Result<models::ListScheduledBroadcastsResponse, Error<ListScheduledBroadcastsError>> {
 
     let uri_str = format!("{}/2/broadcasts/scheduled", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_oldest_start_time {
+    if let Some(ref param_value) = params.oldest_start_time {
         req_builder = req_builder.query(&[("oldest_start_time", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_newest_start_time {
+    if let Some(ref param_value) = params.newest_start_time {
         req_builder = req_builder.query(&[("newest_start_time", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1397,7 +1590,7 @@ pub async fn list_scheduled_broadcasts(configuration: &configuration::Configurat
 }
 
 /// Returns the authenticated user's RTMP/RTMPS stream sources. A source's `id` is the `source_id` a scheduled broadcast binds to.
-pub async fn list_sources(configuration: &configuration::Configuration, ) -> Result<models::ListSourcesResponse, Error<ListSourcesError>> {
+pub async fn list_sources(configuration: &configuration::Configuration) -> Result<models::ListSourcesResponse, Error<ListSourcesError>> {
 
     let uri_str = format!("{}/2/sources", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
@@ -1441,15 +1634,12 @@ pub async fn list_sources(configuration: &configuration::Configuration, ) -> Res
 }
 
 /// Returns the authenticated user's broadcasts, 100 per page. `id` must be the authenticated user. Deprecated: use GET /2/broadcasts.
-pub async fn list_user_broadcasts(configuration: &configuration::Configuration, id: &str, pagination_token: Option<&str>) -> Result<models::ListUserBroadcastsResponse, Error<ListUserBroadcastsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_pagination_token = pagination_token;
+pub async fn list_user_broadcasts(configuration: &configuration::Configuration, params: ListUserBroadcastsParams) -> Result<models::ListUserBroadcastsResponse, Error<ListUserBroadcastsError>> {
 
-    let uri_str = format!("{}/2/users/{id}/broadcasts", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/users/{id}/broadcasts", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1491,11 +1681,9 @@ pub async fn list_user_broadcasts(configuration: &configuration::Configuration, 
 }
 
 /// Returns the authenticated user's RTMP/RTMPS stream sources (empty array if none). `id` must be the authenticated user.
-pub async fn list_user_sources(configuration: &configuration::Configuration, id: &str) -> Result<models::ListUserSourcesResponse, Error<ListUserSourcesError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
+pub async fn list_user_sources(configuration: &configuration::Configuration, params: ListUserSourcesParams) -> Result<models::ListUserSourcesResponse, Error<ListUserSourcesError>> {
 
-    let uri_str = format!("{}/2/users/{id}/sources", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/users/{id}/sources", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1537,12 +1725,9 @@ pub async fn list_user_sources(configuration: &configuration::Configuration, id:
 }
 
 /// Prevents a user from posting further messages in a running broadcast chat. When `end_at_ms` is provided, the mute expires at that time. The authenticated user must be the broadcast host or a moderator.
-pub async fn mute_broadcast_chat_user(configuration: &configuration::Configuration, id: &str, mute_broadcast_chat_user_request: models::MuteBroadcastChatUserRequest) -> Result<models::MuteBroadcastChatUserResponse, Error<MuteBroadcastChatUserError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_mute_broadcast_chat_user_request = mute_broadcast_chat_user_request;
+pub async fn mute_broadcast_chat_user(configuration: &configuration::Configuration, params: MuteBroadcastChatUserParams) -> Result<models::MuteBroadcastChatUserResponse, Error<MuteBroadcastChatUserError>> {
 
-    let uri_str = format!("{}/2/broadcasts/{id}/chat/mutes", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/broadcasts/{id}/chat/mutes", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1557,7 +1742,7 @@ pub async fn mute_broadcast_chat_user(configuration: &configuration::Configurati
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_mute_broadcast_chat_user_request);
+    req_builder = req_builder.json(&params.mute_broadcast_chat_user_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1585,9 +1770,7 @@ pub async fn mute_broadcast_chat_user(configuration: &configuration::Configurati
 }
 
 /// Prevents a user from posting messages in all of a broadcaster's chats. Without `broadcast_id`, the user is muted in the authenticated user's own chats. Moderators pass `broadcast_id` to mute the user in that broadcast host's chats. When `end_at_ms` is provided, the mute expires at that time.
-pub async fn mute_chat_user(configuration: &configuration::Configuration, mute_chat_user_request: models::MuteChatUserRequest) -> Result<models::MuteChatUserResponse, Error<MuteChatUserError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_mute_chat_user_request = mute_chat_user_request;
+pub async fn mute_chat_user(configuration: &configuration::Configuration, params: MuteChatUserParams) -> Result<models::MuteChatUserResponse, Error<MuteChatUserError>> {
 
     let uri_str = format!("{}/2/broadcasts/chat/mutes", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -1604,7 +1787,7 @@ pub async fn mute_chat_user(configuration: &configuration::Configuration, mute_c
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_mute_chat_user_request);
+    req_builder = req_builder.json(&params.mute_chat_user_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1632,11 +1815,9 @@ pub async fn mute_chat_user(configuration: &configuration::Configuration, mute_c
 }
 
 /// Removes a moderator from the authenticated broadcaster's persistent list and returns the updated moderator user IDs.
-pub async fn remove_chat_moderator(configuration: &configuration::Configuration, user_id: &str) -> Result<models::RemoveChatModeratorResponse, Error<RemoveChatModeratorError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_user_id = user_id;
+pub async fn remove_chat_moderator(configuration: &configuration::Configuration, params: RemoveChatModeratorParams) -> Result<models::RemoveChatModeratorResponse, Error<RemoveChatModeratorError>> {
 
-    let uri_str = format!("{}/2/broadcasts/chat/moderators/{user_id}", configuration.base_path, user_id=crate::apis::urlencode(p_path_user_id));
+    let uri_str = format!("{}/2/broadcasts/chat/moderators/{user_id}", configuration.base_path, user_id=crate::apis::urlencode(params.user_id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1678,12 +1859,9 @@ pub async fn remove_chat_moderator(configuration: &configuration::Configuration,
 }
 
 /// Posts a chat message to a running broadcast, attributed to the authenticated user.
-pub async fn send_broadcast_chat(configuration: &configuration::Configuration, id: &str, send_broadcast_chat_request: models::SendBroadcastChatRequest) -> Result<models::SendBroadcastChatResponse, Error<SendBroadcastChatError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_send_broadcast_chat_request = send_broadcast_chat_request;
+pub async fn send_broadcast_chat(configuration: &configuration::Configuration, params: SendBroadcastChatParams) -> Result<models::SendBroadcastChatResponse, Error<SendBroadcastChatError>> {
 
-    let uri_str = format!("{}/2/broadcasts/{id}/chat", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/broadcasts/{id}/chat", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1698,7 +1876,7 @@ pub async fn send_broadcast_chat(configuration: &configuration::Configuration, i
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_send_broadcast_chat_request);
+    req_builder = req_builder.json(&params.send_broadcast_chat_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1726,12 +1904,9 @@ pub async fn send_broadcast_chat(configuration: &configuration::Configuration, i
 }
 
 /// Allows a muted user to post messages in a running broadcast chat again. The authenticated user must be the broadcast host or a moderator.
-pub async fn unmute_broadcast_chat_user(configuration: &configuration::Configuration, id: &str, user_id: &str) -> Result<models::UnmuteBroadcastChatUserResponse, Error<UnmuteBroadcastChatUserError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_path_user_id = user_id;
+pub async fn unmute_broadcast_chat_user(configuration: &configuration::Configuration, params: UnmuteBroadcastChatUserParams) -> Result<models::UnmuteBroadcastChatUserResponse, Error<UnmuteBroadcastChatUserError>> {
 
-    let uri_str = format!("{}/2/broadcasts/{id}/chat/mutes/{user_id}", configuration.base_path, id=crate::apis::urlencode(p_path_id), user_id=crate::apis::urlencode(p_path_user_id));
+    let uri_str = format!("{}/2/broadcasts/{id}/chat/mutes/{user_id}", configuration.base_path, id=crate::apis::urlencode(params.id), user_id=crate::apis::urlencode(params.user_id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1773,15 +1948,12 @@ pub async fn unmute_broadcast_chat_user(configuration: &configuration::Configura
 }
 
 /// Allows a muted user to post messages in a broadcaster's chats again. Without `broadcast_id`, the user is unmuted in the authenticated user's own chats. Moderators pass `broadcast_id` to unmute the user in that broadcast host's chats.
-pub async fn unmute_chat_user(configuration: &configuration::Configuration, user_id: &str, broadcast_id: Option<&str>) -> Result<models::UnmuteChatUserResponse, Error<UnmuteChatUserError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_user_id = user_id;
-    let p_query_broadcast_id = broadcast_id;
+pub async fn unmute_chat_user(configuration: &configuration::Configuration, params: UnmuteChatUserParams) -> Result<models::UnmuteChatUserResponse, Error<UnmuteChatUserError>> {
 
-    let uri_str = format!("{}/2/broadcasts/chat/mutes/{user_id}", configuration.base_path, user_id=crate::apis::urlencode(p_path_user_id));
+    let uri_str = format!("{}/2/broadcasts/chat/mutes/{user_id}", configuration.base_path, user_id=crate::apis::urlencode(params.user_id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
-    if let Some(ref param_value) = p_query_broadcast_id {
+    if let Some(ref param_value) = params.broadcast_id {
         req_builder = req_builder.query(&[("broadcast_id", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1823,12 +1995,9 @@ pub async fn unmute_chat_user(configuration: &configuration::Configuration, user
 }
 
 /// Ends one of the authenticated user's broadcasts. Only `state: END` is supported.
-pub async fn update_broadcast_state(configuration: &configuration::Configuration, id: &str, update_broadcast_state_request: models::UpdateBroadcastStateRequest) -> Result<models::UpdateBroadcastStateResponse, Error<UpdateBroadcastStateError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_update_broadcast_state_request = update_broadcast_state_request;
+pub async fn update_broadcast_state(configuration: &configuration::Configuration, params: UpdateBroadcastStateParams) -> Result<models::UpdateBroadcastStateResponse, Error<UpdateBroadcastStateError>> {
 
-    let uri_str = format!("{}/2/broadcasts/{id}/state", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/broadcasts/{id}/state", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1843,7 +2012,7 @@ pub async fn update_broadcast_state(configuration: &configuration::Configuration
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_update_broadcast_state_request);
+    req_builder = req_builder.json(&params.update_broadcast_state_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1871,12 +2040,9 @@ pub async fn update_broadcast_state(configuration: &configuration::Configuration
 }
 
 /// Updates a scheduled broadcast. Path `:id` is the broadcast id; the body must include `scheduled_broadcast_id`. Re-send every field that should be kept.
-pub async fn update_scheduled_broadcast(configuration: &configuration::Configuration, id: &str, update_scheduled_broadcast_request: models::UpdateScheduledBroadcastRequest) -> Result<models::UpdateScheduledBroadcastResponse, Error<UpdateScheduledBroadcastError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_update_scheduled_broadcast_request = update_scheduled_broadcast_request;
+pub async fn update_scheduled_broadcast(configuration: &configuration::Configuration, params: UpdateScheduledBroadcastParams) -> Result<models::UpdateScheduledBroadcastResponse, Error<UpdateScheduledBroadcastError>> {
 
-    let uri_str = format!("{}/2/broadcasts/scheduled/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/broadcasts/scheduled/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1891,7 +2057,7 @@ pub async fn update_scheduled_broadcast(configuration: &configuration::Configura
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_update_scheduled_broadcast_request);
+    req_builder = req_builder.json(&params.update_scheduled_broadcast_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1919,12 +2085,9 @@ pub async fn update_scheduled_broadcast(configuration: &configuration::Configura
 }
 
 /// Renames one of the authenticated user's stream sources.
-pub async fn update_source(configuration: &configuration::Configuration, id: &str, update_source_request: models::UpdateSourceRequest) -> Result<models::UpdateSourceResponse, Error<UpdateSourceError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_update_source_request = update_source_request;
+pub async fn update_source(configuration: &configuration::Configuration, params: UpdateSourceParams) -> Result<models::UpdateSourceResponse, Error<UpdateSourceError>> {
 
-    let uri_str = format!("{}/2/sources/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/sources/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1939,7 +2102,7 @@ pub async fn update_source(configuration: &configuration::Configuration, id: &st
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_update_source_request);
+    req_builder = req_builder.json(&params.update_source_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1967,13 +2130,9 @@ pub async fn update_source(configuration: &configuration::Configuration, id: &st
 }
 
 /// Ends one of the authenticated user's broadcasts. `id` must be the authenticated user. Only `state: END` is supported. Deprecated: use PUT /2/broadcasts/:id/state.
-pub async fn update_user_broadcast_state(configuration: &configuration::Configuration, id: &str, broadcast_id: &str, update_user_broadcast_state_request: models::UpdateUserBroadcastStateRequest) -> Result<models::UpdateUserBroadcastStateResponse, Error<UpdateUserBroadcastStateError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_path_broadcast_id = broadcast_id;
-    let p_body_update_user_broadcast_state_request = update_user_broadcast_state_request;
+pub async fn update_user_broadcast_state(configuration: &configuration::Configuration, params: UpdateUserBroadcastStateParams) -> Result<models::UpdateUserBroadcastStateResponse, Error<UpdateUserBroadcastStateError>> {
 
-    let uri_str = format!("{}/2/users/{id}/broadcasts/{broadcast_id}/state", configuration.base_path, id=crate::apis::urlencode(p_path_id), broadcast_id=crate::apis::urlencode(p_path_broadcast_id));
+    let uri_str = format!("{}/2/users/{id}/broadcasts/{broadcast_id}/state", configuration.base_path, id=crate::apis::urlencode(params.id), broadcast_id=crate::apis::urlencode(params.broadcast_id));
     let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -1988,7 +2147,7 @@ pub async fn update_user_broadcast_state(configuration: &configuration::Configur
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_update_user_broadcast_state_request);
+    req_builder = req_builder.json(&params.update_user_broadcast_state_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -2016,13 +2175,9 @@ pub async fn update_user_broadcast_state(configuration: &configuration::Configur
 }
 
 /// Renames one of the authenticated user's stream sources. `id` must be the authenticated user.
-pub async fn update_user_source(configuration: &configuration::Configuration, id: &str, source_id: &str, update_user_source_request: models::UpdateUserSourceRequest) -> Result<models::UpdateUserSourceResponse, Error<UpdateUserSourceError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_path_source_id = source_id;
-    let p_body_update_user_source_request = update_user_source_request;
+pub async fn update_user_source(configuration: &configuration::Configuration, params: UpdateUserSourceParams) -> Result<models::UpdateUserSourceResponse, Error<UpdateUserSourceError>> {
 
-    let uri_str = format!("{}/2/users/{id}/sources/{source_id}", configuration.base_path, id=crate::apis::urlencode(p_path_id), source_id=crate::apis::urlencode(p_path_source_id));
+    let uri_str = format!("{}/2/users/{id}/sources/{source_id}", configuration.base_path, id=crate::apis::urlencode(params.id), source_id=crate::apis::urlencode(params.source_id));
     let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -2037,7 +2192,7 @@ pub async fn update_user_source(configuration: &configuration::Configuration, id
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_update_user_source_request);
+    req_builder = req_builder.json(&params.update_user_source_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;

@@ -14,6 +14,102 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`cancel_scheduled_call`]
+#[derive(Clone, Debug, Default)]
+pub struct CancelScheduledCallParams {
+    pub id: String,
+    /// Which occurrences: all (the default without occurrence_start_time), this (the default with it), or this_and_following.
+    pub scope: Option<String>,
+    /// Start of the occurrence that scope this or this_and_following refers to (RFC 3339).
+    pub occurrence_start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// Whether invitees get an email about it. Defaults to true.
+    pub notify_invitees: Option<bool>
+}
+
+/// struct for passing parameters to the method [`create_call`]
+#[derive(Clone, Debug)]
+pub struct CreateCallParams {
+    pub create_call_request: models::CreateCallRequest
+}
+
+/// struct for passing parameters to the method [`get_call`]
+#[derive(Clone, Debug, Default)]
+pub struct GetCallParams {
+    pub id: String,
+    /// A comma separated list of Call fields to display.
+    pub call_fields: Option<Vec<models::CallField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::CallExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>
+}
+
+/// struct for passing parameters to the method [`get_scheduled_call`]
+#[derive(Clone, Debug, Default)]
+pub struct GetScheduledCallParams {
+    pub id: String,
+    /// A comma separated list of ScheduledCall fields to display.
+    pub scheduled_call_fields: Option<Vec<models::ScheduledCallField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::ScheduledCallExpansion>>,
+    /// A comma separated list of Call fields to display.
+    pub call_fields: Option<Vec<models::CallField>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>
+}
+
+/// struct for passing parameters to the method [`join_call`]
+#[derive(Clone, Debug)]
+pub struct JoinCallParams {
+    pub id: String,
+    pub join_call_request: models::JoinCallRequest
+}
+
+/// struct for passing parameters to the method [`leave_call`]
+#[derive(Clone, Debug, Default)]
+pub struct LeaveCallParams {
+    pub id: String
+}
+
+/// struct for passing parameters to the method [`list_scheduled_calls`]
+#[derive(Clone, Debug, Default)]
+pub struct ListScheduledCallsParams {
+    /// Calls still running at this time or starting after it (RFC 3339). Defaults to now.
+    pub start_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// Calls starting before this time (RFC 3339). Defaults to 24 hours after start_time.
+    pub end_time: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// The most calls to return. Defaults to 20.
+    pub max_results: Option<i32>,
+    /// A comma separated list of ScheduledCall fields to display.
+    pub scheduled_call_fields: Option<Vec<models::ScheduledCallField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::ScheduledCallExpansion>>,
+    /// A comma separated list of Call fields to display.
+    pub call_fields: Option<Vec<models::CallField>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>
+}
+
+/// struct for passing parameters to the method [`respond_to_scheduled_call`]
+#[derive(Clone, Debug)]
+pub struct RespondToScheduledCallParams {
+    pub id: String,
+    pub respond_to_scheduled_call_request: models::RespondToScheduledCallRequest
+}
+
+/// struct for passing parameters to the method [`schedule_call`]
+#[derive(Clone, Debug)]
+pub struct ScheduleCallParams {
+    pub schedule_call_request: models::ScheduleCallRequest
+}
+
+/// struct for passing parameters to the method [`update_scheduled_call`]
+#[derive(Clone, Debug)]
+pub struct UpdateScheduledCallParams {
+    pub id: String,
+    pub update_scheduled_call_request: Option<models::UpdateScheduledCallRequest>
+}
+
 
 /// struct for typed errors of method [`cancel_scheduled_call`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -97,23 +193,18 @@ pub enum UpdateScheduledCallError {
 
 
 /// Cancels a scheduled call the authenticated user organizes, and takes it off invitees' calendars. For a recurring call, scope and occurrence_start_time pick the occurrences: all of them (the default), one, or one and every one after it. Cancelling what is already cancelled succeeds.
-pub async fn cancel_scheduled_call(configuration: &configuration::Configuration, id: &str, scope: Option<&str>, occurrence_start_time: Option<chrono::DateTime<chrono::FixedOffset>>, notify_invitees: Option<bool>) -> Result<models::CancelScheduledCallResponse, Error<CancelScheduledCallError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_scope = scope;
-    let p_query_occurrence_start_time = occurrence_start_time;
-    let p_query_notify_invitees = notify_invitees;
+pub async fn cancel_scheduled_call(configuration: &configuration::Configuration, params: CancelScheduledCallParams) -> Result<models::CancelScheduledCallResponse, Error<CancelScheduledCallError>> {
 
-    let uri_str = format!("{}/2/calls/scheduled/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/calls/scheduled/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
-    if let Some(ref param_value) = p_query_scope {
+    if let Some(ref param_value) = params.scope {
         req_builder = req_builder.query(&[("scope", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_occurrence_start_time {
+    if let Some(ref param_value) = params.occurrence_start_time {
         req_builder = req_builder.query(&[("occurrence_start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_notify_invitees {
+    if let Some(ref param_value) = params.notify_invitees {
         req_builder = req_builder.query(&[("notify_invitees", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -155,9 +246,7 @@ pub async fn cancel_scheduled_call(configuration: &configuration::Configuration,
 }
 
 /// Starts an X call hosted by the authenticated user (typically a bot). Pass an XChat conversation_id to start the call in that conversation, or omit it for a standalone call anyone can join with the returned join_url (subject to join_policy). The call starts empty: put an agent in it with POST /2/calls/:id/join. When the host joins a conversation call, the other members are rung.
-pub async fn create_call(configuration: &configuration::Configuration, create_call_request: models::CreateCallRequest) -> Result<models::CreateCallResponse, Error<CreateCallError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_create_call_request = create_call_request;
+pub async fn create_call(configuration: &configuration::Configuration, params: CreateCallParams) -> Result<models::CreateCallResponse, Error<CreateCallError>> {
 
     let uri_str = format!("{}/2/calls", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -174,7 +263,7 @@ pub async fn create_call(configuration: &configuration::Configuration, create_ca
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_call_request);
+    req_builder = req_builder.json(&params.create_call_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -202,29 +291,24 @@ pub async fn create_call(configuration: &configuration::Configuration, create_ca
 }
 
 /// Returns a call's title, join policy, host and participant count, and whether the authenticated user may join it without asking the host.
-pub async fn get_call(configuration: &configuration::Configuration, id: &str, call_fields: Option<Vec<models::CallField>>, expansions: Option<Vec<models::CallExpansion>>, user_fields: Option<Vec<models::UserField>>) -> Result<models::GetCallResponse, Error<GetCallError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_call_fields = call_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
+pub async fn get_call(configuration: &configuration::Configuration, params: GetCallParams) -> Result<models::GetCallResponse, Error<GetCallError>> {
 
-    let uri_str = format!("{}/2/calls/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/calls/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_call_fields {
+    if let Some(ref param_value) = params.call_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("call.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("call.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -269,36 +353,30 @@ pub async fn get_call(configuration: &configuration::Configuration, id: &str, ca
 }
 
 /// Returns a scheduled call the authenticated user organizes or is invited to, at its occurrence running now or its next one within a year: its time, call, recurrence and who is invited and how they answered. Changes can take a few seconds to show here. Use scheduled_call.fields to select which fields are returned.
-pub async fn get_scheduled_call(configuration: &configuration::Configuration, id: &str, scheduled_call_fields: Option<Vec<models::ScheduledCallField>>, expansions: Option<Vec<models::ScheduledCallExpansion>>, call_fields: Option<Vec<models::CallField>>, user_fields: Option<Vec<models::UserField>>) -> Result<models::GetScheduledCallResponse, Error<GetScheduledCallError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_scheduled_call_fields = scheduled_call_fields;
-    let p_query_expansions = expansions;
-    let p_query_call_fields = call_fields;
-    let p_query_user_fields = user_fields;
+pub async fn get_scheduled_call(configuration: &configuration::Configuration, params: GetScheduledCallParams) -> Result<models::GetScheduledCallResponse, Error<GetScheduledCallError>> {
 
-    let uri_str = format!("{}/2/calls/scheduled/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/calls/scheduled/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_scheduled_call_fields {
+    if let Some(ref param_value) = params.scheduled_call_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("scheduled_call.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("scheduled_call.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_call_fields {
+    if let Some(ref param_value) = params.call_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("call.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("call.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -343,12 +421,9 @@ pub async fn get_scheduled_call(configuration: &configuration::Configuration, id
 }
 
 /// Starts a media session that takes part in the call as the authenticated user. The response carries a media_url and a short-lived media_token: open a WebSocket to media_url with the token as a Bearer credential to exchange PCM16 audio and events with the call; the user enters the call when the WebSocket connects. On a closed or trusted call the session asks the host first (admission: requires_approval).
-pub async fn join_call(configuration: &configuration::Configuration, id: &str, join_call_request: models::JoinCallRequest) -> Result<models::JoinCallResponse, Error<JoinCallError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_join_call_request = join_call_request;
+pub async fn join_call(configuration: &configuration::Configuration, params: JoinCallParams) -> Result<models::JoinCallResponse, Error<JoinCallError>> {
 
-    let uri_str = format!("{}/2/calls/{id}/join", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/calls/{id}/join", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -363,7 +438,7 @@ pub async fn join_call(configuration: &configuration::Configuration, id: &str, j
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_join_call_request);
+    req_builder = req_builder.json(&params.join_call_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -391,11 +466,9 @@ pub async fn join_call(configuration: &configuration::Configuration, id: &str, j
 }
 
 /// Ends the authenticated user's media session in the call (its WebSocket receives session.ended with reason left) and removes the user from the call.
-pub async fn leave_call(configuration: &configuration::Configuration, id: &str) -> Result<models::LeaveCallResponse, Error<LeaveCallError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
+pub async fn leave_call(configuration: &configuration::Configuration, params: LeaveCallParams) -> Result<models::LeaveCallResponse, Error<LeaveCallError>> {
 
-    let uri_str = format!("{}/2/calls/{id}/leave", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/calls/{id}/leave", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -437,47 +510,39 @@ pub async fn leave_call(configuration: &configuration::Configuration, id: &str) 
 }
 
 /// Returns the X calls on the authenticated user's calendar, earliest first: events on their X Calls calendar, and events on the Microsoft Outlook calendars they linked to X whose conference is an X call. Calls still running at start_time are included. The window defaults to the next 24 hours and may span at most 7 days. Use scheduled_call.fields to select which fields are returned.  When both are provided, `start_time` must be earlier than `end_time`.
-pub async fn list_scheduled_calls(configuration: &configuration::Configuration, start_time: Option<chrono::DateTime<chrono::FixedOffset>>, end_time: Option<chrono::DateTime<chrono::FixedOffset>>, max_results: Option<i32>, scheduled_call_fields: Option<Vec<models::ScheduledCallField>>, expansions: Option<Vec<models::ScheduledCallExpansion>>, call_fields: Option<Vec<models::CallField>>, user_fields: Option<Vec<models::UserField>>) -> Result<models::ListScheduledCallsResponse, Error<ListScheduledCallsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_start_time = start_time;
-    let p_query_end_time = end_time;
-    let p_query_max_results = max_results;
-    let p_query_scheduled_call_fields = scheduled_call_fields;
-    let p_query_expansions = expansions;
-    let p_query_call_fields = call_fields;
-    let p_query_user_fields = user_fields;
+pub async fn list_scheduled_calls(configuration: &configuration::Configuration, params: ListScheduledCallsParams) -> Result<models::ListScheduledCallsResponse, Error<ListScheduledCallsError>> {
 
     let uri_str = format!("{}/2/calls/scheduled", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_start_time {
+    if let Some(ref param_value) = params.start_time {
         req_builder = req_builder.query(&[("start_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_end_time {
+    if let Some(ref param_value) = params.end_time {
         req_builder = req_builder.query(&[("end_time", &param_value.to_rfc3339())]);
     }
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_scheduled_call_fields {
+    if let Some(ref param_value) = params.scheduled_call_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("scheduled_call.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("scheduled_call.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_call_fields {
+    if let Some(ref param_value) = params.call_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("call.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("call.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -522,12 +587,9 @@ pub async fn list_scheduled_calls(configuration: &configuration::Configuration, 
 }
 
 /// Accepts, declines or tentatively accepts an invitation to a scheduled call for the authenticated user. For a recurring call, scope and occurrence_start_time pick the occurrences the answer is for: all of them (the default), one, or one and every one after it.
-pub async fn respond_to_scheduled_call(configuration: &configuration::Configuration, id: &str, respond_to_scheduled_call_request: models::RespondToScheduledCallRequest) -> Result<models::RespondToScheduledCallResponse, Error<RespondToScheduledCallError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_respond_to_scheduled_call_request = respond_to_scheduled_call_request;
+pub async fn respond_to_scheduled_call(configuration: &configuration::Configuration, params: RespondToScheduledCallParams) -> Result<models::RespondToScheduledCallResponse, Error<RespondToScheduledCallError>> {
 
-    let uri_str = format!("{}/2/calls/scheduled/{id}/rsvp", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/calls/scheduled/{id}/rsvp", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -542,7 +604,7 @@ pub async fn respond_to_scheduled_call(configuration: &configuration::Configurat
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_respond_to_scheduled_call_request);
+    req_builder = req_builder.json(&params.respond_to_scheduled_call_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -570,9 +632,7 @@ pub async fn respond_to_scheduled_call(configuration: &configuration::Configurat
 }
 
 /// Puts an X call on the authenticated user's X Calls calendar, with them as its organizer, and invites people to it. The call exists right away: share its join_url, or put an agent in it at start time with POST /2/calls/:id/join. A recurrence (an RFC 5545 RRULE) repeats it. Invitees get an email unless notify_invitees is false.
-pub async fn schedule_call(configuration: &configuration::Configuration, schedule_call_request: models::ScheduleCallRequest) -> Result<models::ScheduleCallResponse, Error<ScheduleCallError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_schedule_call_request = schedule_call_request;
+pub async fn schedule_call(configuration: &configuration::Configuration, params: ScheduleCallParams) -> Result<models::ScheduleCallResponse, Error<ScheduleCallError>> {
 
     let uri_str = format!("{}/2/calls/scheduled", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -589,7 +649,7 @@ pub async fn schedule_call(configuration: &configuration::Configuration, schedul
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_schedule_call_request);
+    req_builder = req_builder.json(&params.schedule_call_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -617,12 +677,9 @@ pub async fn schedule_call(configuration: &configuration::Configuration, schedul
 }
 
 /// Moves, renames or re-invites a scheduled call the authenticated user organizes. Only the fields sent change. For a recurring call, scope and occurrence_start_time pick the occurrences: all of them (the default), one, or one and every one after it.
-pub async fn update_scheduled_call(configuration: &configuration::Configuration, id: &str, update_scheduled_call_request: Option<models::UpdateScheduledCallRequest>) -> Result<models::UpdateScheduledCallResponse, Error<UpdateScheduledCallError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_body_update_scheduled_call_request = update_scheduled_call_request;
+pub async fn update_scheduled_call(configuration: &configuration::Configuration, params: UpdateScheduledCallParams) -> Result<models::UpdateScheduledCallResponse, Error<UpdateScheduledCallError>> {
 
-    let uri_str = format!("{}/2/calls/scheduled/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/calls/scheduled/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -637,7 +694,7 @@ pub async fn update_scheduled_call(configuration: &configuration::Configuration,
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_update_scheduled_call_request);
+    req_builder = req_builder.json(&params.update_scheduled_call_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;

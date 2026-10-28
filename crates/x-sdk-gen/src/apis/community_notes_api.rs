@@ -14,6 +14,55 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`create_community_notes`]
+#[derive(Clone, Debug)]
+pub struct CreateCommunityNotesParams {
+    pub create_community_notes_request: models::CreateCommunityNotesRequest
+}
+
+/// struct for passing parameters to the method [`delete_community_notes`]
+#[derive(Clone, Debug, Default)]
+pub struct DeleteCommunityNotesParams {
+    pub id: String
+}
+
+/// struct for passing parameters to the method [`evaluate_community_notes`]
+#[derive(Clone, Debug)]
+pub struct EvaluateCommunityNotesParams {
+    pub evaluate_community_notes_request: models::EvaluateCommunityNotesRequest
+}
+
+/// struct for passing parameters to the method [`search_community_notes_written`]
+#[derive(Clone, Debug, Default)]
+pub struct SearchCommunityNotesWrittenParams {
+    pub test_mode: bool,
+    pub max_results: Option<i32>,
+    pub pagination_token: Option<String>,
+    /// A comma separated list of Note fields to display.
+    pub note_fields: Option<Vec<models::NoteField>>
+}
+
+/// struct for passing parameters to the method [`search_eligible_posts`]
+#[derive(Clone, Debug, Default)]
+pub struct SearchEligiblePostsParams {
+    pub test_mode: bool,
+    pub max_results: Option<i32>,
+    pub pagination_token: Option<String>,
+    pub post_selection: Option<String>,
+    /// A comma separated list of Post fields to display.
+    pub post_fields: Option<Vec<models::PostField>>,
+    /// A comma separated list of fields to expand.
+    pub expansions: Option<Vec<models::PostExpansion>>,
+    /// A comma separated list of User fields to display.
+    pub user_fields: Option<Vec<models::UserField>>,
+    /// A comma separated list of Media fields to display.
+    pub media_fields: Option<Vec<models::MediaField>>,
+    /// A comma separated list of Poll fields to display.
+    pub poll_fields: Option<Vec<models::PollField>>,
+    /// A comma separated list of Place fields to display.
+    pub place_fields: Option<Vec<models::PlaceField>>
+}
+
 
 /// struct for typed errors of method [`create_community_notes`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -56,9 +105,7 @@ pub enum SearchEligiblePostsError {
 }
 
 
-pub async fn create_community_notes(configuration: &configuration::Configuration, create_community_notes_request: models::CreateCommunityNotesRequest) -> Result<models::CreateCommunityNotesResponse, Error<CreateCommunityNotesError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_create_community_notes_request = create_community_notes_request;
+pub async fn create_community_notes(configuration: &configuration::Configuration, params: CreateCommunityNotesParams) -> Result<models::CreateCommunityNotesResponse, Error<CreateCommunityNotesError>> {
 
     let uri_str = format!("{}/2/notes", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -75,7 +122,7 @@ pub async fn create_community_notes(configuration: &configuration::Configuration
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_community_notes_request);
+    req_builder = req_builder.json(&params.create_community_notes_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -103,11 +150,9 @@ pub async fn create_community_notes(configuration: &configuration::Configuration
 }
 
 /// Deletes a community note.
-pub async fn delete_community_notes(configuration: &configuration::Configuration, id: &str) -> Result<models::DeleteCommunityNotesResponse, Error<DeleteCommunityNotesError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
+pub async fn delete_community_notes(configuration: &configuration::Configuration, params: DeleteCommunityNotesParams) -> Result<models::DeleteCommunityNotesResponse, Error<DeleteCommunityNotesError>> {
 
-    let uri_str = format!("{}/2/notes/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/notes/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -148,9 +193,7 @@ pub async fn delete_community_notes(configuration: &configuration::Configuration
     }
 }
 
-pub async fn evaluate_community_notes(configuration: &configuration::Configuration, evaluate_community_notes_request: models::EvaluateCommunityNotesRequest) -> Result<models::EvaluateCommunityNotesResponse, Error<EvaluateCommunityNotesError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_evaluate_community_notes_request = evaluate_community_notes_request;
+pub async fn evaluate_community_notes(configuration: &configuration::Configuration, params: EvaluateCommunityNotesParams) -> Result<models::EvaluateCommunityNotesResponse, Error<EvaluateCommunityNotesError>> {
 
     let uri_str = format!("{}/2/notes/evaluate", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -167,7 +210,7 @@ pub async fn evaluate_community_notes(configuration: &configuration::Configurati
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_evaluate_community_notes_request);
+    req_builder = req_builder.json(&params.evaluate_community_notes_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -194,24 +237,19 @@ pub async fn evaluate_community_notes(configuration: &configuration::Configurati
     }
 }
 
-pub async fn search_community_notes_written(configuration: &configuration::Configuration, test_mode: bool, max_results: Option<i32>, pagination_token: Option<&str>, note_fields: Option<Vec<models::NoteField>>) -> Result<models::SearchCommunityNotesWrittenResponse, Error<SearchCommunityNotesWrittenError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_test_mode = test_mode;
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_note_fields = note_fields;
+pub async fn search_community_notes_written(configuration: &configuration::Configuration, params: SearchCommunityNotesWrittenParams) -> Result<models::SearchCommunityNotesWrittenResponse, Error<SearchCommunityNotesWrittenError>> {
 
     let uri_str = format!("{}/2/notes/search/notes_written", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    req_builder = req_builder.query(&[("test_mode", &p_query_test_mode.to_string())]);
-    if let Some(ref param_value) = p_query_max_results {
+    req_builder = req_builder.query(&[("test_mode", &params.test_mode.to_string())]);
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_note_fields {
+    if let Some(ref param_value) = params.note_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("note.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("note.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -255,63 +293,52 @@ pub async fn search_community_notes_written(configuration: &configuration::Confi
     }
 }
 
-pub async fn search_eligible_posts(configuration: &configuration::Configuration, test_mode: bool, max_results: Option<i32>, pagination_token: Option<&str>, post_selection: Option<&str>, post_fields: Option<Vec<models::PostField>>, expansions: Option<Vec<models::PostExpansion>>, user_fields: Option<Vec<models::UserField>>, media_fields: Option<Vec<models::MediaField>>, poll_fields: Option<Vec<models::PollField>>, place_fields: Option<Vec<models::PlaceField>>) -> Result<models::SearchEligiblePostsResponse, Error<SearchEligiblePostsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_test_mode = test_mode;
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_post_selection = post_selection;
-    let p_query_post_fields = post_fields;
-    let p_query_expansions = expansions;
-    let p_query_user_fields = user_fields;
-    let p_query_media_fields = media_fields;
-    let p_query_poll_fields = poll_fields;
-    let p_query_place_fields = place_fields;
+pub async fn search_eligible_posts(configuration: &configuration::Configuration, params: SearchEligiblePostsParams) -> Result<models::SearchEligiblePostsResponse, Error<SearchEligiblePostsError>> {
 
     let uri_str = format!("{}/2/notes/search/posts_eligible_for_notes", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    req_builder = req_builder.query(&[("test_mode", &p_query_test_mode.to_string())]);
-    if let Some(ref param_value) = p_query_max_results {
+    req_builder = req_builder.query(&[("test_mode", &params.test_mode.to_string())]);
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_post_selection {
+    if let Some(ref param_value) = params.post_selection {
         req_builder = req_builder.query(&[("post_selection", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_post_fields {
+    if let Some(ref param_value) = params.post_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("post.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("post.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_expansions {
+    if let Some(ref param_value) = params.expansions {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("expansions".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("expansions", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_user_fields {
+    if let Some(ref param_value) = params.user_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("user.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("user.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_media_fields {
+    if let Some(ref param_value) = params.media_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("media.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("media.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_poll_fields {
+    if let Some(ref param_value) = params.poll_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("poll.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("poll.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_place_fields {
+    if let Some(ref param_value) = params.place_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("place.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("place.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),

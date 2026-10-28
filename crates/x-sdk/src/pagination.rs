@@ -7,7 +7,15 @@
 //! # async fn run(cfg: x_sdk::apis::configuration::Configuration) -> Result<(), Box<dyn std::error::Error>> {
 //! let cfg = &cfg;
 //! let mut pages = Pager::new(|token| async move {
-//!     users_api::get_users_me_following(cfg, Some(1000), token.as_deref(), None, None, None).await
+//!     users_api::get_users_me_following(
+//!         cfg,
+//!         users_api::GetUsersMeFollowingParams {
+//!             max_results: Some(1000),
+//!             pagination_token: token,
+//!             ..Default::default()
+//!         },
+//!     )
+//!     .await
 //! });
 //! while let Some(page) = pages.next_page().await {
 //!     let page = page?;

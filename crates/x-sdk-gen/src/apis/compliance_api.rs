@@ -16,6 +16,60 @@ use super::{Error, configuration, ContentType};
 use tokio::fs::File as TokioFile;
 use tokio_util::codec::{BytesCodec, FramedRead};
 
+/// struct for passing parameters to the method [`create_compliance_jobs`]
+#[derive(Clone, Debug)]
+pub struct CreateComplianceJobsParams {
+    pub create_compliance_jobs_request: models::CreateComplianceJobsRequest,
+    /// A comma separated list of ComplianceJob fields to display.
+    pub compliance_job_fields: Option<Vec<models::ComplianceJobField>>
+}
+
+/// struct for passing parameters to the method [`delete_compliance_jobs_by_id`]
+#[derive(Clone, Debug, Default)]
+pub struct DeleteComplianceJobsByIdParams {
+    pub id: String,
+    /// A comma separated list of ComplianceJob fields to display.
+    pub compliance_job_fields: Option<Vec<models::ComplianceJobField>>
+}
+
+/// struct for passing parameters to the method [`download_compliance_job_results`]
+#[derive(Clone, Debug, Default)]
+pub struct DownloadComplianceJobResultsParams {
+    pub id: String,
+    /// Signed download token from the job's download_url.
+    pub token: String,
+    /// A comma separated list of ComplianceJob fields to display.
+    pub compliance_job_fields: Option<Vec<models::ComplianceJobField>>
+}
+
+/// struct for passing parameters to the method [`get_compliance_jobs`]
+#[derive(Clone, Debug, Default)]
+pub struct GetComplianceJobsParams {
+    pub r#type: String,
+    pub status: Option<String>,
+    /// A comma separated list of ComplianceJob fields to display.
+    pub compliance_job_fields: Option<Vec<models::ComplianceJobField>>
+}
+
+/// struct for passing parameters to the method [`get_compliance_jobs_by_id`]
+#[derive(Clone, Debug, Default)]
+pub struct GetComplianceJobsByIdParams {
+    pub id: String,
+    /// A comma separated list of ComplianceJob fields to display.
+    pub compliance_job_fields: Option<Vec<models::ComplianceJobField>>
+}
+
+/// struct for passing parameters to the method [`upload_compliance_job_submission`]
+#[derive(Clone, Debug)]
+pub struct UploadComplianceJobSubmissionParams {
+    pub id: String,
+    /// Signed upload token from the job's upload_url.
+    pub token: String,
+    pub body: std::path::PathBuf,
+    /// A comma separated list of ComplianceJob fields to display.
+    pub compliance_job_fields: Option<Vec<models::ComplianceJobField>>
+}
+
 
 /// struct for typed errors of method [`create_compliance_jobs`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -67,15 +121,12 @@ pub enum UploadComplianceJobSubmissionError {
 
 
 /// Creates a new Compliance Job for the specified job type.
-pub async fn create_compliance_jobs(configuration: &configuration::Configuration, create_compliance_jobs_request: models::CreateComplianceJobsRequest, compliance_job_fields: Option<Vec<models::ComplianceJobField>>) -> Result<models::CreateComplianceJobsResponse, Error<CreateComplianceJobsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_create_compliance_jobs_request = create_compliance_jobs_request;
-    let p_query_compliance_job_fields = compliance_job_fields;
+pub async fn create_compliance_jobs(configuration: &configuration::Configuration, params: CreateComplianceJobsParams) -> Result<models::CreateComplianceJobsResponse, Error<CreateComplianceJobsError>> {
 
     let uri_str = format!("{}/2/compliance/jobs", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    if let Some(ref param_value) = p_query_compliance_job_fields {
+    if let Some(ref param_value) = params.compliance_job_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("compliance_job.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("compliance_job.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -93,7 +144,7 @@ pub async fn create_compliance_jobs(configuration: &configuration::Configuration
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_create_compliance_jobs_request);
+    req_builder = req_builder.json(&params.create_compliance_jobs_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -121,15 +172,12 @@ pub async fn create_compliance_jobs(configuration: &configuration::Configuration
 }
 
 /// Cancels a Compliance Job that has not finished processing; its status becomes failed and a new job of the same type can be created.
-pub async fn delete_compliance_jobs_by_id(configuration: &configuration::Configuration, id: &str, compliance_job_fields: Option<Vec<models::ComplianceJobField>>) -> Result<models::DeleteComplianceJobsByIdResponse, Error<DeleteComplianceJobsByIdError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_compliance_job_fields = compliance_job_fields;
+pub async fn delete_compliance_jobs_by_id(configuration: &configuration::Configuration, params: DeleteComplianceJobsByIdParams) -> Result<models::DeleteComplianceJobsByIdResponse, Error<DeleteComplianceJobsByIdError>> {
 
-    let uri_str = format!("{}/2/compliance/jobs/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/compliance/jobs/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
-    if let Some(ref param_value) = p_query_compliance_job_fields {
+    if let Some(ref param_value) = params.compliance_job_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("compliance_job.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("compliance_job.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -174,17 +222,13 @@ pub async fn delete_compliance_jobs_by_id(configuration: &configuration::Configu
 }
 
 /// Downloads the results file of a completed Compliance Job using the signed URL returned at job creation.
-pub async fn download_compliance_job_results(configuration: &configuration::Configuration, id: &str, token: &str, compliance_job_fields: Option<Vec<models::ComplianceJobField>>) -> Result<reqwest::Response, Error<DownloadComplianceJobResultsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_token = token;
-    let p_query_compliance_job_fields = compliance_job_fields;
+pub async fn download_compliance_job_results(configuration: &configuration::Configuration, params: DownloadComplianceJobResultsParams) -> Result<reqwest::Response, Error<DownloadComplianceJobResultsError>> {
 
-    let uri_str = format!("{}/2/compliance/jobs/{id}/download", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/compliance/jobs/{id}/download", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    req_builder = req_builder.query(&[("token", &p_query_token.to_string())]);
-    if let Some(ref param_value) = p_query_compliance_job_fields {
+    req_builder = req_builder.query(&[("token", &params.token.to_string())]);
+    if let Some(ref param_value) = params.compliance_job_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("compliance_job.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("compliance_job.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -218,20 +262,16 @@ pub async fn download_compliance_job_results(configuration: &configuration::Conf
 }
 
 /// Retrieves a list of Compliance Jobs filtered by job type and optional status.
-pub async fn get_compliance_jobs(configuration: &configuration::Configuration, r#type: &str, status: Option<&str>, compliance_job_fields: Option<Vec<models::ComplianceJobField>>) -> Result<models::GetComplianceJobsResponse, Error<GetComplianceJobsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_type = r#type;
-    let p_query_status = status;
-    let p_query_compliance_job_fields = compliance_job_fields;
+pub async fn get_compliance_jobs(configuration: &configuration::Configuration, params: GetComplianceJobsParams) -> Result<models::GetComplianceJobsResponse, Error<GetComplianceJobsError>> {
 
     let uri_str = format!("{}/2/compliance/jobs", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    req_builder = req_builder.query(&[("type", &p_query_type.to_string())]);
-    if let Some(ref param_value) = p_query_status {
+    req_builder = req_builder.query(&[("type", &params.r#type.to_string())]);
+    if let Some(ref param_value) = params.status {
         req_builder = req_builder.query(&[("status", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_compliance_job_fields {
+    if let Some(ref param_value) = params.compliance_job_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("compliance_job.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("compliance_job.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -276,15 +316,12 @@ pub async fn get_compliance_jobs(configuration: &configuration::Configuration, r
 }
 
 /// Retrieves details of a specific Compliance Job by its ID.
-pub async fn get_compliance_jobs_by_id(configuration: &configuration::Configuration, id: &str, compliance_job_fields: Option<Vec<models::ComplianceJobField>>) -> Result<models::GetComplianceJobsByIdResponse, Error<GetComplianceJobsByIdError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_compliance_job_fields = compliance_job_fields;
+pub async fn get_compliance_jobs_by_id(configuration: &configuration::Configuration, params: GetComplianceJobsByIdParams) -> Result<models::GetComplianceJobsByIdResponse, Error<GetComplianceJobsByIdError>> {
 
-    let uri_str = format!("{}/2/compliance/jobs/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/compliance/jobs/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_compliance_job_fields {
+    if let Some(ref param_value) = params.compliance_job_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("compliance_job.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("compliance_job.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -329,18 +366,13 @@ pub async fn get_compliance_jobs_by_id(configuration: &configuration::Configurat
 }
 
 /// Uploads the newline-delimited ID file for a Compliance Job using the signed URL returned at job creation.
-pub async fn upload_compliance_job_submission(configuration: &configuration::Configuration, id: &str, token: &str, body: std::path::PathBuf, compliance_job_fields: Option<Vec<models::ComplianceJobField>>) -> Result<models::UploadComplianceJobSubmissionResponse, Error<UploadComplianceJobSubmissionError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_token = token;
-    let p_body_body = body;
-    let p_query_compliance_job_fields = compliance_job_fields;
+pub async fn upload_compliance_job_submission(configuration: &configuration::Configuration, params: UploadComplianceJobSubmissionParams) -> Result<models::UploadComplianceJobSubmissionResponse, Error<UploadComplianceJobSubmissionError>> {
 
-    let uri_str = format!("{}/2/compliance/jobs/{id}/upload", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/compliance/jobs/{id}/upload", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
 
-    req_builder = req_builder.query(&[("token", &p_query_token.to_string())]);
-    if let Some(ref param_value) = p_query_compliance_job_fields {
+    req_builder = req_builder.query(&[("token", &params.token.to_string())]);
+    if let Some(ref param_value) = params.compliance_job_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("compliance_job.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("compliance_job.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -358,7 +390,7 @@ pub async fn upload_compliance_job_submission(configuration: &configuration::Con
         authorized = true;
     };
     let _ = authorized;
-    let file = TokioFile::open(p_body_body).await?;
+    let file = TokioFile::open(params.body).await?;
     let stream = FramedRead::new(file, BytesCodec::new());
     req_builder = req_builder.body(reqwest::Body::wrap_stream(stream));
 

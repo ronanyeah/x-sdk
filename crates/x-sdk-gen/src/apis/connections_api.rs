@@ -14,6 +14,29 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`delete_connections_by_endpoint`]
+#[derive(Clone, Debug, Default)]
+pub struct DeleteConnectionsByEndpointParams {
+    pub endpoint_id: String
+}
+
+/// struct for passing parameters to the method [`delete_connections_by_uuids`]
+#[derive(Clone, Debug)]
+pub struct DeleteConnectionsByUuidsParams {
+    pub delete_connections_by_uuids_request: models::DeleteConnectionsByUuidsRequest
+}
+
+/// struct for passing parameters to the method [`get_connection_history`]
+#[derive(Clone, Debug, Default)]
+pub struct GetConnectionHistoryParams {
+    pub status: Option<String>,
+    pub endpoints: Option<Vec<String>>,
+    pub max_results: Option<i32>,
+    pub pagination_token: Option<String>,
+    /// A comma separated list of Connection fields to display.
+    pub connection_fields: Option<Vec<models::ConnectionField>>
+}
+
 
 /// struct for typed errors of method [`delete_all_connections`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -49,7 +72,7 @@ pub enum GetConnectionHistoryError {
 
 
 /// Terminates all active streaming connections for the authenticated application.
-pub async fn delete_all_connections(configuration: &configuration::Configuration, ) -> Result<models::DeleteAllConnectionsResponse, Error<DeleteAllConnectionsError>> {
+pub async fn delete_all_connections(configuration: &configuration::Configuration) -> Result<models::DeleteAllConnectionsResponse, Error<DeleteAllConnectionsError>> {
 
     let uri_str = format!("{}/2/connections/all", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
@@ -93,11 +116,9 @@ pub async fn delete_all_connections(configuration: &configuration::Configuration
 }
 
 /// Terminates all streaming connections for a specific endpoint ID for the authenticated application.
-pub async fn delete_connections_by_endpoint(configuration: &configuration::Configuration, endpoint_id: &str) -> Result<models::DeleteConnectionsByEndpointResponse, Error<DeleteConnectionsByEndpointError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_endpoint_id = endpoint_id;
+pub async fn delete_connections_by_endpoint(configuration: &configuration::Configuration, params: DeleteConnectionsByEndpointParams) -> Result<models::DeleteConnectionsByEndpointResponse, Error<DeleteConnectionsByEndpointError>> {
 
-    let uri_str = format!("{}/2/connections/{endpoint_id}", configuration.base_path, endpoint_id=crate::apis::urlencode(p_path_endpoint_id));
+    let uri_str = format!("{}/2/connections/{endpoint_id}", configuration.base_path, endpoint_id=crate::apis::urlencode(params.endpoint_id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -139,9 +160,7 @@ pub async fn delete_connections_by_endpoint(configuration: &configuration::Confi
 }
 
 /// Terminates multiple streaming connections by their UUIDs for the authenticated application.
-pub async fn delete_connections_by_uuids(configuration: &configuration::Configuration, delete_connections_by_uuids_request: models::DeleteConnectionsByUuidsRequest) -> Result<models::DeleteConnectionsByUuidsResponse, Error<DeleteConnectionsByUuidsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_delete_connections_by_uuids_request = delete_connections_by_uuids_request;
+pub async fn delete_connections_by_uuids(configuration: &configuration::Configuration, params: DeleteConnectionsByUuidsParams) -> Result<models::DeleteConnectionsByUuidsResponse, Error<DeleteConnectionsByUuidsError>> {
 
     let uri_str = format!("{}/2/connections", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
@@ -158,7 +177,7 @@ pub async fn delete_connections_by_uuids(configuration: &configuration::Configur
         authorized = true;
     };
     let _ = authorized;
-    req_builder = req_builder.json(&p_body_delete_connections_by_uuids_request);
+    req_builder = req_builder.json(&params.delete_connections_by_uuids_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -186,33 +205,27 @@ pub async fn delete_connections_by_uuids(configuration: &configuration::Configur
 }
 
 /// Returns active and historical streaming connections with disconnect reasons for the authenticated application.
-pub async fn get_connection_history(configuration: &configuration::Configuration, status: Option<&str>, endpoints: Option<Vec<String>>, max_results: Option<i32>, pagination_token: Option<&str>, connection_fields: Option<Vec<models::ConnectionField>>) -> Result<models::GetConnectionHistoryResponse, Error<GetConnectionHistoryError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_status = status;
-    let p_query_endpoints = endpoints;
-    let p_query_max_results = max_results;
-    let p_query_pagination_token = pagination_token;
-    let p_query_connection_fields = connection_fields;
+pub async fn get_connection_history(configuration: &configuration::Configuration, params: GetConnectionHistoryParams) -> Result<models::GetConnectionHistoryResponse, Error<GetConnectionHistoryError>> {
 
     let uri_str = format!("{}/2/connections", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_status {
+    if let Some(ref param_value) = params.status {
         req_builder = req_builder.query(&[("status", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_endpoints {
+    if let Some(ref param_value) = params.endpoints {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("endpoints".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("endpoints", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
         };
     }
-    if let Some(ref param_value) = p_query_max_results {
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_connection_fields {
+    if let Some(ref param_value) = params.connection_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("connection.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("connection.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),

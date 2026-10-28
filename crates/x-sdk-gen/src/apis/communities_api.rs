@@ -14,6 +14,25 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+/// struct for passing parameters to the method [`get_communities_by_id`]
+#[derive(Clone, Debug, Default)]
+pub struct GetCommunitiesByIdParams {
+    pub id: String,
+    /// A comma separated list of Community fields to display.
+    pub community_fields: Option<Vec<models::CommunityField>>
+}
+
+/// struct for passing parameters to the method [`search_communities`]
+#[derive(Clone, Debug, Default)]
+pub struct SearchCommunitiesParams {
+    pub query: String,
+    pub max_results: Option<i32>,
+    pub next_token: Option<String>,
+    pub pagination_token: Option<String>,
+    /// A comma separated list of Community fields to display.
+    pub community_fields: Option<Vec<models::CommunityField>>
+}
+
 
 /// struct for typed errors of method [`get_communities_by_id`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -32,15 +51,12 @@ pub enum SearchCommunitiesError {
 }
 
 
-pub async fn get_communities_by_id(configuration: &configuration::Configuration, id: &str, community_fields: Option<Vec<models::CommunityField>>) -> Result<models::GetCommunitiesByIdResponse, Error<GetCommunitiesByIdError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_id = id;
-    let p_query_community_fields = community_fields;
+pub async fn get_communities_by_id(configuration: &configuration::Configuration, params: GetCommunitiesByIdParams) -> Result<models::GetCommunitiesByIdResponse, Error<GetCommunitiesByIdError>> {
 
-    let uri_str = format!("{}/2/communities/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let uri_str = format!("{}/2/communities/{id}", configuration.base_path, id=crate::apis::urlencode(params.id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_query_community_fields {
+    if let Some(ref param_value) = params.community_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("community.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("community.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
@@ -88,28 +104,22 @@ pub async fn get_communities_by_id(configuration: &configuration::Configuration,
     }
 }
 
-pub async fn search_communities(configuration: &configuration::Configuration, query: &str, max_results: Option<i32>, next_token: Option<&str>, pagination_token: Option<&str>, community_fields: Option<Vec<models::CommunityField>>) -> Result<models::SearchCommunitiesResponse, Error<SearchCommunitiesError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_query_query = query;
-    let p_query_max_results = max_results;
-    let p_query_next_token = next_token;
-    let p_query_pagination_token = pagination_token;
-    let p_query_community_fields = community_fields;
+pub async fn search_communities(configuration: &configuration::Configuration, params: SearchCommunitiesParams) -> Result<models::SearchCommunitiesResponse, Error<SearchCommunitiesError>> {
 
     let uri_str = format!("{}/2/communities/search", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    req_builder = req_builder.query(&[("query", &p_query_query.to_string())]);
-    if let Some(ref param_value) = p_query_max_results {
+    req_builder = req_builder.query(&[("query", &params.query.to_string())]);
+    if let Some(ref param_value) = params.max_results {
         req_builder = req_builder.query(&[("max_results", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_next_token {
+    if let Some(ref param_value) = params.next_token {
         req_builder = req_builder.query(&[("next_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_pagination_token {
+    if let Some(ref param_value) = params.pagination_token {
         req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_query_community_fields {
+    if let Some(ref param_value) = params.community_fields {
         req_builder = match "csv" {
             "multi" => req_builder.query(&param_value.into_iter().map(|p| ("community.fields".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
             _ => req_builder.query(&[("community.fields", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
