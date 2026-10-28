@@ -7,25 +7,32 @@ Method | HTTP request | Description
 [**add_chat_moderator**](BroadcastsApi.md#add_chat_moderator) | **POST** /2/broadcasts/chat/moderators | Add a chat moderator
 [**create_scheduled_broadcast**](BroadcastsApi.md#create_scheduled_broadcast) | **POST** /2/broadcasts/scheduled | Create a scheduled broadcast
 [**create_source**](BroadcastsApi.md#create_source) | **POST** /2/sources | Create a stream source
+[**create_user_source**](BroadcastsApi.md#create_user_source) | **POST** /2/users/{id}/sources | Create a stream source for a user
 [**delete_broadcast_chat_message**](BroadcastsApi.md#delete_broadcast_chat_message) | **DELETE** /2/broadcasts/{id}/chat/{message_id} | Remove a chat message from a live broadcast
 [**delete_scheduled_broadcast**](BroadcastsApi.md#delete_scheduled_broadcast) | **DELETE** /2/broadcasts/scheduled/{id} | Delete a scheduled broadcast
 [**delete_source**](BroadcastsApi.md#delete_source) | **DELETE** /2/sources/{id} | Delete a stream source
+[**delete_user_source**](BroadcastsApi.md#delete_user_source) | **DELETE** /2/users/{id}/sources/{source_id} | Delete a user's stream source
 [**get_broadcast**](BroadcastsApi.md#get_broadcast) | **GET** /2/broadcasts/{id} | Get a broadcast
 [**get_broadcast_chat**](BroadcastsApi.md#get_broadcast_chat) | **GET** /2/broadcasts/{id}/chat | Get broadcast chat history
 [**get_chat_moderators**](BroadcastsApi.md#get_chat_moderators) | **GET** /2/broadcasts/chat/moderators | Get chat moderators
 [**get_chat_muted_users**](BroadcastsApi.md#get_chat_muted_users) | **GET** /2/broadcasts/chat/mutes | Get muted chat users
 [**get_scheduled_broadcast**](BroadcastsApi.md#get_scheduled_broadcast) | **GET** /2/broadcasts/scheduled/{id} | Get a scheduled broadcast
 [**get_source**](BroadcastsApi.md#get_source) | **GET** /2/sources/{id} | Get a stream source
+[**get_user_source**](BroadcastsApi.md#get_user_source) | **GET** /2/users/{id}/sources/{source_id} | Get a user's stream source
 [**go_live_scheduled_broadcast**](BroadcastsApi.md#go_live_scheduled_broadcast) | **POST** /2/broadcasts/scheduled/{id}/live | Go live on a scheduled broadcast
 [**list_broadcasts**](BroadcastsApi.md#list_broadcasts) | **GET** /2/broadcasts | List broadcasts
 [**list_scheduled_broadcasts**](BroadcastsApi.md#list_scheduled_broadcasts) | **GET** /2/broadcasts/scheduled | List scheduled broadcasts
 [**list_sources**](BroadcastsApi.md#list_sources) | **GET** /2/sources | List stream sources
+[**list_user_sources**](BroadcastsApi.md#list_user_sources) | **GET** /2/users/{id}/sources | List a user's stream sources
 [**mute_broadcast_chat_user**](BroadcastsApi.md#mute_broadcast_chat_user) | **POST** /2/broadcasts/{id}/chat/mutes | Mute or time out a user in a broadcast chat
+[**mute_chat_user**](BroadcastsApi.md#mute_chat_user) | **POST** /2/broadcasts/chat/mutes | Mute or time out a user in chat
 [**remove_chat_moderator**](BroadcastsApi.md#remove_chat_moderator) | **DELETE** /2/broadcasts/chat/moderators/{user_id} | Remove a chat moderator
 [**send_broadcast_chat**](BroadcastsApi.md#send_broadcast_chat) | **POST** /2/broadcasts/{id}/chat | Send a chat message to a live broadcast
 [**unmute_broadcast_chat_user**](BroadcastsApi.md#unmute_broadcast_chat_user) | **DELETE** /2/broadcasts/{id}/chat/mutes/{user_id} | Unmute a user in a broadcast chat
+[**unmute_chat_user**](BroadcastsApi.md#unmute_chat_user) | **DELETE** /2/broadcasts/chat/mutes/{user_id} | Unmute a user in chat
 [**update_scheduled_broadcast**](BroadcastsApi.md#update_scheduled_broadcast) | **PUT** /2/broadcasts/scheduled/{id} | Update a scheduled broadcast
 [**update_source**](BroadcastsApi.md#update_source) | **PUT** /2/sources/{id} | Rename a stream source
+[**update_user_source**](BroadcastsApi.md#update_user_source) | **PUT** /2/users/{id}/sources/{source_id} | Rename a user's stream source
 
 
 
@@ -94,7 +101,7 @@ Name | Type | Description  | Required | Notes
 > models::CreateSourceResponse create_source(create_source_request)
 Create a stream source
 
-Creates a persistent RTMP/RTMPS ingest point for the authenticated user. Push an encoder to `rtmps_url` with the source `id` as the stream key.
+Creates a persistent RTMP/RTMPS ingest point for the authenticated user. Push an encoder to `rtmps_url` with the source's stream key.
 
 ### Parameters
 
@@ -106,6 +113,37 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**models::CreateSourceResponse**](CreateSourceResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## create_user_source
+
+> models::CreateUserSourceResponse create_user_source(id, create_user_source_request)
+Create a stream source for a user
+
+Creates a persistent RTMP/RTMPS ingest point for the authenticated user. `id` must be the authenticated user.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **String** |  | [required] |
+**create_user_source_request** | [**CreateUserSourceRequest**](CreateUserSourceRequest.md) |  | [required] |
+
+### Return type
+
+[**models::CreateUserSourceResponse**](CreateUserSourceResponse.md)
 
 ### Authorization
 
@@ -186,7 +224,7 @@ Name | Type | Description  | Required | Notes
 > models::DeleteSourceResponse delete_source(id)
 Delete a stream source
 
-Deletes one of the authenticated user's stream sources. Success is an empty object.
+Deletes one of the authenticated user's stream sources.
 
 ### Parameters
 
@@ -198,6 +236,37 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**models::DeleteSourceResponse**](DeleteSourceResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## delete_user_source
+
+> models::DeleteUserSourceResponse delete_user_source(id, source_id)
+Delete a user's stream source
+
+Deletes one of the authenticated user's stream sources. `id` must be the authenticated user. Success is an empty object.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **String** |  | [required] |
+**source_id** | **String** |  | [required] |
+
+### Return type
+
+[**models::DeleteUserSourceResponse**](DeleteUserSourceResponse.md)
 
 ### Authorization
 
@@ -378,7 +447,7 @@ Name | Type | Description  | Required | Notes
 > models::GetSourceResponse get_source(id)
 Get a stream source
 
-Returns one of the authenticated user's stream sources. Poll it after starting an encoder and wait for `is_stream_active` before going live.
+Returns one of the authenticated user's stream sources.
 
 ### Parameters
 
@@ -390,6 +459,37 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**models::GetSourceResponse**](GetSourceResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## get_user_source
+
+> models::GetUserSourceResponse get_user_source(id, source_id)
+Get a user's stream source
+
+Returns one of the authenticated user's stream sources. `id` must be the authenticated user.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **String** |  | [required] |
+**source_id** | **String** |  | [required] |
+
+### Return type
+
+[**models::GetUserSourceResponse**](GetUserSourceResponse.md)
 
 ### Authorization
 
@@ -504,7 +604,7 @@ Name | Type | Description  | Required | Notes
 > models::ListSourcesResponse list_sources()
 List stream sources
 
-Returns the authenticated user's RTMP/RTMPS stream sources (empty array if none). A source's `id` is also its stream key and is the `source_id` a scheduled broadcast binds to.
+Returns the authenticated user's RTMP/RTMPS stream sources. A source's `id` is the `source_id` a scheduled broadcast binds to.
 
 ### Parameters
 
@@ -513,6 +613,36 @@ This endpoint does not need any parameter.
 ### Return type
 
 [**models::ListSourcesResponse**](ListSourcesResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## list_user_sources
+
+> models::ListUserSourcesResponse list_user_sources(id)
+List a user's stream sources
+
+Returns the authenticated user's RTMP/RTMPS stream sources (empty array if none). `id` must be the authenticated user.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **String** |  | [required] |
+
+### Return type
+
+[**models::ListUserSourcesResponse**](ListUserSourcesResponse.md)
 
 ### Authorization
 
@@ -544,6 +674,36 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**models::MuteBroadcastChatUserResponse**](MuteBroadcastChatUserResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## mute_chat_user
+
+> models::MuteChatUserResponse mute_chat_user(mute_chat_user_request)
+Mute or time out a user in chat
+
+Prevents a user from posting messages in all of a broadcaster's chats. Without `broadcast_id`, the user is muted in the authenticated user's own chats. Moderators pass `broadcast_id` to mute the user in that broadcast host's chats. When `end_at_ms` is provided, the mute expires at that time.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**mute_chat_user_request** | [**MuteChatUserRequest**](MuteChatUserRequest.md) |  | [required] |
+
+### Return type
+
+[**models::MuteChatUserResponse**](MuteChatUserResponse.md)
 
 ### Authorization
 
@@ -649,6 +809,37 @@ Name | Type | Description  | Required | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
+## unmute_chat_user
+
+> models::UnmuteChatUserResponse unmute_chat_user(user_id, broadcast_id)
+Unmute a user in chat
+
+Allows a muted user to post messages in a broadcaster's chats again. Without `broadcast_id`, the user is unmuted in the authenticated user's own chats. Moderators pass `broadcast_id` to unmute the user in that broadcast host's chats.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**user_id** | **String** | A 64-bit signed integer. | [required] |
+**broadcast_id** | Option<**String**> | A broadcast whose host's chats the user is unmuted in. |  |
+
+### Return type
+
+[**models::UnmuteChatUserResponse**](UnmuteChatUserResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
 ## update_scheduled_broadcast
 
 > models::UpdateScheduledBroadcastResponse update_scheduled_broadcast(id, update_scheduled_broadcast_request)
@@ -698,6 +889,38 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**models::UpdateSourceResponse**](UpdateSourceResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## update_user_source
+
+> models::UpdateUserSourceResponse update_user_source(id, source_id, update_user_source_request)
+Rename a user's stream source
+
+Renames one of the authenticated user's stream sources. `id` must be the authenticated user.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **String** |  | [required] |
+**source_id** | **String** |  | [required] |
+**update_user_source_request** | [**UpdateUserSourceRequest**](UpdateUserSourceRequest.md) |  | [required] |
+
+### Return type
+
+[**models::UpdateUserSourceResponse**](UpdateUserSourceResponse.md)
 
 ### Authorization
 
