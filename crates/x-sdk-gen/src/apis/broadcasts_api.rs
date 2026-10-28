@@ -47,6 +47,14 @@ pub enum CreateUserSourceError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`delete_broadcast`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum DeleteBroadcastError {
+    DefaultResponse(models::Error),
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`delete_broadcast_chat_message`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -67,6 +75,14 @@ pub enum DeleteScheduledBroadcastError {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum DeleteSourceError {
+    DefaultResponse(models::Error),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`delete_user_broadcast`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum DeleteUserBroadcastError {
     DefaultResponse(models::Error),
     UnknownValue(serde_json::Value),
 }
@@ -127,6 +143,14 @@ pub enum GetSourceError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`get_user_broadcast`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum GetUserBroadcastError {
+    DefaultResponse(models::Error),
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`get_user_source`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -163,6 +187,14 @@ pub enum ListScheduledBroadcastsError {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ListSourcesError {
+    DefaultResponse(models::Error),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`list_user_broadcasts`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ListUserBroadcastsError {
     DefaultResponse(models::Error),
     UnknownValue(serde_json::Value),
 }
@@ -223,6 +255,14 @@ pub enum UnmuteChatUserError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`update_broadcast_state`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum UpdateBroadcastStateError {
+    DefaultResponse(models::Error),
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`update_scheduled_broadcast`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -235,6 +275,14 @@ pub enum UpdateScheduledBroadcastError {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum UpdateSourceError {
+    DefaultResponse(models::Error),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`update_user_broadcast_state`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum UpdateUserBroadcastStateError {
     DefaultResponse(models::Error),
     UnknownValue(serde_json::Value),
 }
@@ -437,6 +485,52 @@ pub async fn create_user_source(configuration: &configuration::Configuration, id
     }
 }
 
+/// Deletes one of the authenticated user's broadcasts, scheduled or ended, including its replay. A running broadcast must be ended first.
+pub async fn delete_broadcast(configuration: &configuration::Configuration, id: &str) -> Result<models::DeleteBroadcastResponse, Error<DeleteBroadcastError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_id = id;
+
+    let uri_str = format!("{}/2/broadcasts/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
+    };
+    let _ = authorized;
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::DeleteBroadcastResponse`"))),
+            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::DeleteBroadcastResponse`")))),
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<DeleteBroadcastError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
 /// Removes a specific chat message from a running broadcast where the authenticated user is the host or a moderator.
 pub async fn delete_broadcast_chat_message(configuration: &configuration::Configuration, id: &str, message_id: &str) -> Result<models::DeleteBroadcastChatMessageResponse, Error<DeleteBroadcastChatMessageError>> {
     // add a prefix to parameters to efficiently prevent name collisions
@@ -576,6 +670,53 @@ pub async fn delete_source(configuration: &configuration::Configuration, id: &st
     } else {
         let content = resp.text().await?;
         let entity: Option<DeleteSourceError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
+/// Deletes one of the authenticated user's broadcasts. `id` must be the authenticated user. Deprecated: use DELETE /2/broadcasts/:id.
+pub async fn delete_user_broadcast(configuration: &configuration::Configuration, id: &str, broadcast_id: &str) -> Result<models::DeleteUserBroadcastResponse, Error<DeleteUserBroadcastError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_id = id;
+    let p_path_broadcast_id = broadcast_id;
+
+    let uri_str = format!("{}/2/users/{id}/broadcasts/{broadcast_id}", configuration.base_path, id=crate::apis::urlencode(p_path_id), broadcast_id=crate::apis::urlencode(p_path_broadcast_id));
+    let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
+    };
+    let _ = authorized;
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::DeleteUserBroadcastResponse`"))),
+            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::DeleteUserBroadcastResponse`")))),
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<DeleteUserBroadcastError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
@@ -987,6 +1128,53 @@ pub async fn get_source(configuration: &configuration::Configuration, id: &str) 
     }
 }
 
+/// Returns one of the authenticated user's broadcasts. `id` must be the authenticated user. Deprecated: use GET /2/broadcasts/:id.
+pub async fn get_user_broadcast(configuration: &configuration::Configuration, id: &str, broadcast_id: &str) -> Result<models::GetUserBroadcastResponse, Error<GetUserBroadcastError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_id = id;
+    let p_path_broadcast_id = broadcast_id;
+
+    let uri_str = format!("{}/2/users/{id}/broadcasts/{broadcast_id}", configuration.base_path, id=crate::apis::urlencode(p_path_id), broadcast_id=crate::apis::urlencode(p_path_broadcast_id));
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
+    };
+    let _ = authorized;
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::GetUserBroadcastResponse`"))),
+            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::GetUserBroadcastResponse`")))),
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<GetUserBroadcastError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
 /// Returns one of the authenticated user's stream sources. `id` must be the authenticated user.
 pub async fn get_user_source(configuration: &configuration::Configuration, id: &str, source_id: &str) -> Result<models::GetUserSourceResponse, Error<GetUserSourceError>> {
     // add a prefix to parameters to efficiently prevent name collisions
@@ -1248,6 +1436,56 @@ pub async fn list_sources(configuration: &configuration::Configuration, ) -> Res
     } else {
         let content = resp.text().await?;
         let entity: Option<ListSourcesError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
+/// Returns the authenticated user's broadcasts, 100 per page. `id` must be the authenticated user. Deprecated: use GET /2/broadcasts.
+pub async fn list_user_broadcasts(configuration: &configuration::Configuration, id: &str, pagination_token: Option<&str>) -> Result<models::ListUserBroadcastsResponse, Error<ListUserBroadcastsError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_id = id;
+    let p_query_pagination_token = pagination_token;
+
+    let uri_str = format!("{}/2/users/{id}/broadcasts", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref param_value) = p_query_pagination_token {
+        req_builder = req_builder.query(&[("pagination_token", &param_value.to_string())]);
+    }
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
+    };
+    let _ = authorized;
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::ListUserBroadcastsResponse`"))),
+            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::ListUserBroadcastsResponse`")))),
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ListUserBroadcastsError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
@@ -1584,6 +1822,54 @@ pub async fn unmute_chat_user(configuration: &configuration::Configuration, user
     }
 }
 
+/// Ends one of the authenticated user's broadcasts. Only `state: END` is supported.
+pub async fn update_broadcast_state(configuration: &configuration::Configuration, id: &str, update_broadcast_state_request: models::UpdateBroadcastStateRequest) -> Result<models::UpdateBroadcastStateResponse, Error<UpdateBroadcastStateError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_id = id;
+    let p_body_update_broadcast_state_request = update_broadcast_state_request;
+
+    let uri_str = format!("{}/2/broadcasts/{id}/state", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
+    };
+    let _ = authorized;
+    req_builder = req_builder.json(&p_body_update_broadcast_state_request);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::UpdateBroadcastStateResponse`"))),
+            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::UpdateBroadcastStateResponse`")))),
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<UpdateBroadcastStateError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
 /// Updates a scheduled broadcast. Path `:id` is the broadcast id; the body must include `scheduled_broadcast_id`. Re-send every field that should be kept.
 pub async fn update_scheduled_broadcast(configuration: &configuration::Configuration, id: &str, update_scheduled_broadcast_request: models::UpdateScheduledBroadcastRequest) -> Result<models::UpdateScheduledBroadcastResponse, Error<UpdateScheduledBroadcastError>> {
     // add a prefix to parameters to efficiently prevent name collisions
@@ -1676,6 +1962,55 @@ pub async fn update_source(configuration: &configuration::Configuration, id: &st
     } else {
         let content = resp.text().await?;
         let entity: Option<UpdateSourceError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
+/// Ends one of the authenticated user's broadcasts. `id` must be the authenticated user. Only `state: END` is supported. Deprecated: use PUT /2/broadcasts/:id/state.
+pub async fn update_user_broadcast_state(configuration: &configuration::Configuration, id: &str, broadcast_id: &str, update_user_broadcast_state_request: models::UpdateUserBroadcastStateRequest) -> Result<models::UpdateUserBroadcastStateResponse, Error<UpdateUserBroadcastStateError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_id = id;
+    let p_path_broadcast_id = broadcast_id;
+    let p_body_update_user_broadcast_state_request = update_user_broadcast_state_request;
+
+    let uri_str = format!("{}/2/users/{id}/broadcasts/{broadcast_id}/state", configuration.base_path, id=crate::apis::urlencode(p_path_id), broadcast_id=crate::apis::urlencode(p_path_broadcast_id));
+    let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
+    };
+    let _ = authorized;
+    req_builder = req_builder.json(&p_body_update_user_broadcast_state_request);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::UpdateUserBroadcastStateResponse`"))),
+            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::UpdateUserBroadcastStateResponse`")))),
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<UpdateUserBroadcastStateError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }

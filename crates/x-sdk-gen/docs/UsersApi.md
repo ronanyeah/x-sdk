@@ -8,7 +8,6 @@ Method | HTTP request | Description
 [**create_users_bookmark**](UsersApi.md#create_users_bookmark) | **POST** /2/users/{id}/bookmarks | Create Bookmark
 [**create_users_bookmark_folder**](UsersApi.md#create_users_bookmark_folder) | **POST** /2/users/{id}/bookmarks/folders | Create Bookmark Folder
 [**delete_users_bookmark**](UsersApi.md#delete_users_bookmark) | **DELETE** /2/users/{id}/bookmarks/{tweet_id} | Delete Bookmark
-[**delete_users_me_profile_banner**](UsersApi.md#delete_users_me_profile_banner) | **DELETE** /2/users/me/profile_banner | Delete profile banner
 [**follow_list**](UsersApi.md#follow_list) | **POST** /2/users/{id}/followed_lists | Follow List
 [**follow_user**](UsersApi.md#follow_user) | **POST** /2/users/{id}/following | Follow User
 [**get_users_affiliates**](UsersApi.md#get_users_affiliates) | **GET** /2/users/{id}/affiliates | Get Users Affiliates
@@ -28,7 +27,6 @@ Method | HTTP request | Description
 [**get_users_me**](UsersApi.md#get_users_me) | **GET** /2/users/me | Get Users Me
 [**get_users_me_followers**](UsersApi.md#get_users_me_followers) | **GET** /2/users/me/followers | Get the authenticated user's followers
 [**get_users_me_following**](UsersApi.md#get_users_me_following) | **GET** /2/users/me/following | Get the users the authenticated user follows
-[**get_users_me_settings**](UsersApi.md#get_users_me_settings) | **GET** /2/users/me/settings | Get account settings
 [**get_users_mentions**](UsersApi.md#get_users_mentions) | **GET** /2/users/{id}/mentions | Get Users Mentions
 [**get_users_muting**](UsersApi.md#get_users_muting) | **GET** /2/users/{id}/muting | Get Users Muting
 [**get_users_owned_lists**](UsersApi.md#get_users_owned_lists) | **GET** /2/users/{id}/owned_lists | Get Users Owned Lists
@@ -50,10 +48,6 @@ Method | HTTP request | Description
 [**unmute_user**](UsersApi.md#unmute_user) | **DELETE** /2/users/{source_user_id}/muting/{target_user_id} | Unmute User
 [**unpin_list**](UsersApi.md#unpin_list) | **DELETE** /2/users/{id}/pinned_lists/{list_id} | Unpin a List
 [**unrepost_post**](UsersApi.md#unrepost_post) | **DELETE** /2/users/{id}/retweets/{source_tweet_id} | Unrepost Post
-[**update_users_me**](UsersApi.md#update_users_me) | **PUT** /2/users/me | Update profile
-[**update_users_me_profile_banner**](UsersApi.md#update_users_me_profile_banner) | **PUT** /2/users/me/profile_banner | Update profile banner
-[**update_users_me_profile_image**](UsersApi.md#update_users_me_profile_image) | **PUT** /2/users/me/profile_image | Update profile image
-[**update_users_me_settings**](UsersApi.md#update_users_me_settings) | **PUT** /2/users/me/settings | Update account settings
 [**users_id_block**](UsersApi.md#users_id_block) | **POST** /2/users/{id}/blocking | Block User
 [**users_id_unblock**](UsersApi.md#users_id_unblock) | **DELETE** /2/users/{source_user_id}/blocking/{target_user_id} | Unblock User
 
@@ -171,33 +165,6 @@ Name | Type | Description  | Required | Notes
 ### Authorization
 
 [OAuth2UserToken](../README.md#OAuth2UserToken)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json, application/problem+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-
-## delete_users_me_profile_banner
-
-> models::DeleteUsersMeProfileBannerResponse delete_users_me_profile_banner()
-Delete profile banner
-
-Removes the profile banner of the authenticated user.
-
-### Parameters
-
-This endpoint does not need any parameter.
-
-### Return type
-
-[**models::DeleteUsersMeProfileBannerResponse**](DeleteUsersMeProfileBannerResponse.md)
-
-### Authorization
-
-[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
 
 ### HTTP request headers
 
@@ -807,36 +774,6 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**models::GetUsersMeFollowingResponse**](GetUsersMeFollowingResponse.md)
-
-### Authorization
-
-[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json, application/problem+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-
-## get_users_me_settings
-
-> models::GetUsersMeSettingsResponse get_users_me_settings(user_settings_fields)
-Get account settings
-
-Returns the account settings of the authenticated user: language, time zone, protected status, location tagging, discoverability, sensitive media, quiet hours, personalization, and who may tag or message them.
-
-### Parameters
-
-
-Name | Type | Description  | Required | Notes
-------------- | ------------- | ------------- | ------------- | -------------
-**user_settings_fields** | Option<[**Vec<models::UserSettingsField>**](Models__UserSettingsField.md)> | A comma separated list of UserSettings fields to display. |  |
-
-### Return type
-
-[**models::GetUsersMeSettingsResponse**](GetUsersMeSettingsResponse.md)
 
 ### Authorization
 
@@ -1532,126 +1469,6 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: application/json, application/problem+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-
-## update_users_me
-
-> models::UpdateUsersMeResponse update_users_me(update_users_me_request)
-Update profile
-
-Updates the profile of the authenticated user: display name, bio, website URL, and location. Only the fields present in the request are changed.
-
-### Parameters
-
-
-Name | Type | Description  | Required | Notes
-------------- | ------------- | ------------- | ------------- | -------------
-**update_users_me_request** | [**UpdateUsersMeRequest**](UpdateUsersMeRequest.md) |  | [required] |
-
-### Return type
-
-[**models::UpdateUsersMeResponse**](UpdateUsersMeResponse.md)
-
-### Authorization
-
-[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json, application/problem+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-
-## update_users_me_profile_banner
-
-> models::UpdateUsersMeProfileBannerResponse update_users_me_profile_banner(update_users_me_profile_banner_request)
-Update profile banner
-
-Sets the profile banner of the authenticated user from an uploaded media ID, optionally cropped to a region of the image.
-
-### Parameters
-
-
-Name | Type | Description  | Required | Notes
-------------- | ------------- | ------------- | ------------- | -------------
-**update_users_me_profile_banner_request** | [**UpdateUsersMeProfileBannerRequest**](UpdateUsersMeProfileBannerRequest.md) |  | [required] |
-
-### Return type
-
-[**models::UpdateUsersMeProfileBannerResponse**](UpdateUsersMeProfileBannerResponse.md)
-
-### Authorization
-
-[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json, application/problem+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-
-## update_users_me_profile_image
-
-> models::UpdateUsersMeProfileImageResponse update_users_me_profile_image(update_users_me_profile_image_request)
-Update profile image
-
-Sets the profile image of the authenticated user from an uploaded media ID. The image is cropped to a centered square.
-
-### Parameters
-
-
-Name | Type | Description  | Required | Notes
-------------- | ------------- | ------------- | ------------- | -------------
-**update_users_me_profile_image_request** | [**UpdateUsersMeProfileImageRequest**](UpdateUsersMeProfileImageRequest.md) |  | [required] |
-
-### Return type
-
-[**models::UpdateUsersMeProfileImageResponse**](UpdateUsersMeProfileImageResponse.md)
-
-### Authorization
-
-[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json, application/problem+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-
-## update_users_me_settings
-
-> models::UpdateUsersMeSettingsResponse update_users_me_settings(update_users_me_settings_request)
-Update account settings
-
-Updates the account settings of the authenticated user. Only the settings present in the request are changed. allow_media_tagging and allow_dms_from accept only their listed values, matched exactly; quiet_hours hours are 0–23 in the user's time zone; time_zone.name and language are checked by the account store.
-
-### Parameters
-
-
-Name | Type | Description  | Required | Notes
-------------- | ------------- | ------------- | ------------- | -------------
-**update_users_me_settings_request** | [**UpdateUsersMeSettingsRequest**](UpdateUsersMeSettingsRequest.md) |  | [required] |
-
-### Return type
-
-[**models::UpdateUsersMeSettingsResponse**](UpdateUsersMeSettingsResponse.md)
-
-### Authorization
-
-[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
 - **Accept**: application/json, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

@@ -42,6 +42,10 @@ pub enum Scope {
     ListRead,
     /// Create and manage Lists on your behalf.
     ListWrite,
+    /// View your media library, its analytics, and its monetization settings.
+    MediaLibraryRead,
+    /// Add media to your media library and manage its monetization settings.
+    MediaLibraryWrite,
     /// Upload media, such as photos and videos, on your behalf.
     MediaWrite,
     /// View accounts you have muted.
@@ -98,6 +102,8 @@ impl Scope {
             Scope::LikeWrite => "like.write",
             Scope::ListRead => "list.read",
             Scope::ListWrite => "list.write",
+            Scope::MediaLibraryRead => "media.library.read",
+            Scope::MediaLibraryWrite => "media.library.write",
             Scope::MediaWrite => "media.write",
             Scope::MuteRead => "mute.read",
             Scope::MuteWrite => "mute.write",
@@ -140,6 +146,8 @@ impl From<&str> for Scope {
             "like.write" => Scope::LikeWrite,
             "list.read" => Scope::ListRead,
             "list.write" => Scope::ListWrite,
+            "media.library.read" => Scope::MediaLibraryRead,
+            "media.library.write" => Scope::MediaLibraryWrite,
             "media.write" => Scope::MediaWrite,
             "mute.read" => Scope::MuteRead,
             "mute.write" => Scope::MuteWrite,

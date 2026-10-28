@@ -51,9 +51,11 @@ Class | Method | HTTP request | Description
 *BroadcastsApi* | [**create_scheduled_broadcast**](docs/BroadcastsApi.md#create_scheduled_broadcast) | **POST** /2/broadcasts/scheduled | Create a scheduled broadcast
 *BroadcastsApi* | [**create_source**](docs/BroadcastsApi.md#create_source) | **POST** /2/sources | Create a stream source
 *BroadcastsApi* | [**create_user_source**](docs/BroadcastsApi.md#create_user_source) | **POST** /2/users/{id}/sources | Create a stream source for a user
+*BroadcastsApi* | [**delete_broadcast**](docs/BroadcastsApi.md#delete_broadcast) | **DELETE** /2/broadcasts/{id} | Delete a broadcast
 *BroadcastsApi* | [**delete_broadcast_chat_message**](docs/BroadcastsApi.md#delete_broadcast_chat_message) | **DELETE** /2/broadcasts/{id}/chat/{message_id} | Remove a chat message from a live broadcast
 *BroadcastsApi* | [**delete_scheduled_broadcast**](docs/BroadcastsApi.md#delete_scheduled_broadcast) | **DELETE** /2/broadcasts/scheduled/{id} | Delete a scheduled broadcast
 *BroadcastsApi* | [**delete_source**](docs/BroadcastsApi.md#delete_source) | **DELETE** /2/sources/{id} | Delete a stream source
+*BroadcastsApi* | [**delete_user_broadcast**](docs/BroadcastsApi.md#delete_user_broadcast) | **DELETE** /2/users/{id}/broadcasts/{broadcast_id} | Delete a user's broadcast
 *BroadcastsApi* | [**delete_user_source**](docs/BroadcastsApi.md#delete_user_source) | **DELETE** /2/users/{id}/sources/{source_id} | Delete a user's stream source
 *BroadcastsApi* | [**get_broadcast**](docs/BroadcastsApi.md#get_broadcast) | **GET** /2/broadcasts/{id} | Get a broadcast
 *BroadcastsApi* | [**get_broadcast_chat**](docs/BroadcastsApi.md#get_broadcast_chat) | **GET** /2/broadcasts/{id}/chat | Get broadcast chat history
@@ -61,11 +63,13 @@ Class | Method | HTTP request | Description
 *BroadcastsApi* | [**get_chat_muted_users**](docs/BroadcastsApi.md#get_chat_muted_users) | **GET** /2/broadcasts/chat/mutes | Get muted chat users
 *BroadcastsApi* | [**get_scheduled_broadcast**](docs/BroadcastsApi.md#get_scheduled_broadcast) | **GET** /2/broadcasts/scheduled/{id} | Get a scheduled broadcast
 *BroadcastsApi* | [**get_source**](docs/BroadcastsApi.md#get_source) | **GET** /2/sources/{id} | Get a stream source
+*BroadcastsApi* | [**get_user_broadcast**](docs/BroadcastsApi.md#get_user_broadcast) | **GET** /2/users/{id}/broadcasts/{broadcast_id} | Get a user's broadcast
 *BroadcastsApi* | [**get_user_source**](docs/BroadcastsApi.md#get_user_source) | **GET** /2/users/{id}/sources/{source_id} | Get a user's stream source
 *BroadcastsApi* | [**go_live_scheduled_broadcast**](docs/BroadcastsApi.md#go_live_scheduled_broadcast) | **POST** /2/broadcasts/scheduled/{id}/live | Go live on a scheduled broadcast
 *BroadcastsApi* | [**list_broadcasts**](docs/BroadcastsApi.md#list_broadcasts) | **GET** /2/broadcasts | List broadcasts
 *BroadcastsApi* | [**list_scheduled_broadcasts**](docs/BroadcastsApi.md#list_scheduled_broadcasts) | **GET** /2/broadcasts/scheduled | List scheduled broadcasts
 *BroadcastsApi* | [**list_sources**](docs/BroadcastsApi.md#list_sources) | **GET** /2/sources | List stream sources
+*BroadcastsApi* | [**list_user_broadcasts**](docs/BroadcastsApi.md#list_user_broadcasts) | **GET** /2/users/{id}/broadcasts | List a user's broadcasts
 *BroadcastsApi* | [**list_user_sources**](docs/BroadcastsApi.md#list_user_sources) | **GET** /2/users/{id}/sources | List a user's stream sources
 *BroadcastsApi* | [**mute_broadcast_chat_user**](docs/BroadcastsApi.md#mute_broadcast_chat_user) | **POST** /2/broadcasts/{id}/chat/mutes | Mute or time out a user in a broadcast chat
 *BroadcastsApi* | [**mute_chat_user**](docs/BroadcastsApi.md#mute_chat_user) | **POST** /2/broadcasts/chat/mutes | Mute or time out a user in chat
@@ -73,8 +77,10 @@ Class | Method | HTTP request | Description
 *BroadcastsApi* | [**send_broadcast_chat**](docs/BroadcastsApi.md#send_broadcast_chat) | **POST** /2/broadcasts/{id}/chat | Send a chat message to a live broadcast
 *BroadcastsApi* | [**unmute_broadcast_chat_user**](docs/BroadcastsApi.md#unmute_broadcast_chat_user) | **DELETE** /2/broadcasts/{id}/chat/mutes/{user_id} | Unmute a user in a broadcast chat
 *BroadcastsApi* | [**unmute_chat_user**](docs/BroadcastsApi.md#unmute_chat_user) | **DELETE** /2/broadcasts/chat/mutes/{user_id} | Unmute a user in chat
+*BroadcastsApi* | [**update_broadcast_state**](docs/BroadcastsApi.md#update_broadcast_state) | **PUT** /2/broadcasts/{id}/state | End a broadcast
 *BroadcastsApi* | [**update_scheduled_broadcast**](docs/BroadcastsApi.md#update_scheduled_broadcast) | **PUT** /2/broadcasts/scheduled/{id} | Update a scheduled broadcast
 *BroadcastsApi* | [**update_source**](docs/BroadcastsApi.md#update_source) | **PUT** /2/sources/{id} | Rename a stream source
+*BroadcastsApi* | [**update_user_broadcast_state**](docs/BroadcastsApi.md#update_user_broadcast_state) | **PUT** /2/users/{id}/broadcasts/{broadcast_id}/state | End a user's broadcast
 *BroadcastsApi* | [**update_user_source**](docs/BroadcastsApi.md#update_user_source) | **PUT** /2/users/{id}/sources/{source_id} | Rename a user's stream source
 *CallsApi* | [**cancel_scheduled_call**](docs/CallsApi.md#cancel_scheduled_call) | **DELETE** /2/calls/scheduled/{id} | Cancel a scheduled call
 *CallsApi* | [**create_call**](docs/CallsApi.md#create_call) | **POST** /2/calls | Create a call
@@ -226,7 +232,6 @@ Class | Method | HTTP request | Description
 *UsersApi* | [**create_users_bookmark**](docs/UsersApi.md#create_users_bookmark) | **POST** /2/users/{id}/bookmarks | Create Bookmark
 *UsersApi* | [**create_users_bookmark_folder**](docs/UsersApi.md#create_users_bookmark_folder) | **POST** /2/users/{id}/bookmarks/folders | Create Bookmark Folder
 *UsersApi* | [**delete_users_bookmark**](docs/UsersApi.md#delete_users_bookmark) | **DELETE** /2/users/{id}/bookmarks/{tweet_id} | Delete Bookmark
-*UsersApi* | [**delete_users_me_profile_banner**](docs/UsersApi.md#delete_users_me_profile_banner) | **DELETE** /2/users/me/profile_banner | Delete profile banner
 *UsersApi* | [**follow_list**](docs/UsersApi.md#follow_list) | **POST** /2/users/{id}/followed_lists | Follow List
 *UsersApi* | [**follow_user**](docs/UsersApi.md#follow_user) | **POST** /2/users/{id}/following | Follow User
 *UsersApi* | [**get_users_affiliates**](docs/UsersApi.md#get_users_affiliates) | **GET** /2/users/{id}/affiliates | Get Users Affiliates
@@ -246,7 +251,6 @@ Class | Method | HTTP request | Description
 *UsersApi* | [**get_users_me**](docs/UsersApi.md#get_users_me) | **GET** /2/users/me | Get Users Me
 *UsersApi* | [**get_users_me_followers**](docs/UsersApi.md#get_users_me_followers) | **GET** /2/users/me/followers | Get the authenticated user's followers
 *UsersApi* | [**get_users_me_following**](docs/UsersApi.md#get_users_me_following) | **GET** /2/users/me/following | Get the users the authenticated user follows
-*UsersApi* | [**get_users_me_settings**](docs/UsersApi.md#get_users_me_settings) | **GET** /2/users/me/settings | Get account settings
 *UsersApi* | [**get_users_mentions**](docs/UsersApi.md#get_users_mentions) | **GET** /2/users/{id}/mentions | Get Users Mentions
 *UsersApi* | [**get_users_muting**](docs/UsersApi.md#get_users_muting) | **GET** /2/users/{id}/muting | Get Users Muting
 *UsersApi* | [**get_users_owned_lists**](docs/UsersApi.md#get_users_owned_lists) | **GET** /2/users/{id}/owned_lists | Get Users Owned Lists
@@ -268,10 +272,6 @@ Class | Method | HTTP request | Description
 *UsersApi* | [**unmute_user**](docs/UsersApi.md#unmute_user) | **DELETE** /2/users/{source_user_id}/muting/{target_user_id} | Unmute User
 *UsersApi* | [**unpin_list**](docs/UsersApi.md#unpin_list) | **DELETE** /2/users/{id}/pinned_lists/{list_id} | Unpin a List
 *UsersApi* | [**unrepost_post**](docs/UsersApi.md#unrepost_post) | **DELETE** /2/users/{id}/retweets/{source_tweet_id} | Unrepost Post
-*UsersApi* | [**update_users_me**](docs/UsersApi.md#update_users_me) | **PUT** /2/users/me | Update profile
-*UsersApi* | [**update_users_me_profile_banner**](docs/UsersApi.md#update_users_me_profile_banner) | **PUT** /2/users/me/profile_banner | Update profile banner
-*UsersApi* | [**update_users_me_profile_image**](docs/UsersApi.md#update_users_me_profile_image) | **PUT** /2/users/me/profile_image | Update profile image
-*UsersApi* | [**update_users_me_settings**](docs/UsersApi.md#update_users_me_settings) | **PUT** /2/users/me/settings | Update account settings
 *UsersApi* | [**users_id_block**](docs/UsersApi.md#users_id_block) | **POST** /2/users/{id}/blocking | Block User
 *UsersApi* | [**users_id_unblock**](docs/UsersApi.md#users_id_unblock) | **DELETE** /2/users/{source_user_id}/blocking/{target_user_id} | Unblock User
 *WebhooksApi* | [**create_webhook_replay_job**](docs/WebhooksApi.md#create_webhook_replay_job) | **POST** /2/webhooks/replay | Create replay job for webhook
@@ -541,6 +541,8 @@ Class | Method | HTTP request | Description
  - [DeleteBotResponseData](docs/DeleteBotResponseData.md)
  - [DeleteBroadcastChatMessageResponse](docs/DeleteBroadcastChatMessageResponse.md)
  - [DeleteBroadcastChatMessageResponseData](docs/DeleteBroadcastChatMessageResponseData.md)
+ - [DeleteBroadcastResponse](docs/DeleteBroadcastResponse.md)
+ - [DeleteBroadcastResponseData](docs/DeleteBroadcastResponseData.md)
  - [DeleteChatConversationActionSignatures](docs/DeleteChatConversationActionSignatures.md)
  - [DeleteChatConversationActionSignaturesMessageEventSignature](docs/DeleteChatConversationActionSignaturesMessageEventSignature.md)
  - [DeleteChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList](docs/DeleteChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList.md)
@@ -582,11 +584,11 @@ Class | Method | HTTP request | Description
  - [DeleteScheduledBroadcastResponseData](docs/DeleteScheduledBroadcastResponseData.md)
  - [DeleteSourceResponse](docs/DeleteSourceResponse.md)
  - [DeleteSourceResponseData](docs/DeleteSourceResponseData.md)
+ - [DeleteUserBroadcastResponse](docs/DeleteUserBroadcastResponse.md)
+ - [DeleteUserBroadcastResponseData](docs/DeleteUserBroadcastResponseData.md)
  - [DeleteUserSourceResponse](docs/DeleteUserSourceResponse.md)
  - [DeleteUsersBookmarkResponse](docs/DeleteUsersBookmarkResponse.md)
  - [DeleteUsersBookmarkResponseData](docs/DeleteUsersBookmarkResponseData.md)
- - [DeleteUsersMeProfileBannerResponse](docs/DeleteUsersMeProfileBannerResponse.md)
- - [DeleteUsersMeProfileBannerResponseData](docs/DeleteUsersMeProfileBannerResponseData.md)
  - [DeleteWebhooksResponse](docs/DeleteWebhooksResponse.md)
  - [DeleteWebhooksResponseData](docs/DeleteWebhooksResponseData.md)
  - [DeleteWebhooksStreamLinkResponse](docs/DeleteWebhooksStreamLinkResponse.md)
@@ -766,6 +768,9 @@ Class | Method | HTTP request | Description
  - [GetUsageCreditsResponseData](docs/GetUsageCreditsResponseData.md)
  - [GetUsageCreditsResponseDataFreeGrants](docs/GetUsageCreditsResponseDataFreeGrants.md)
  - [GetUsageResponse](docs/GetUsageResponse.md)
+ - [GetUserBroadcastResponse](docs/GetUserBroadcastResponse.md)
+ - [GetUserBroadcastResponseData](docs/GetUserBroadcastResponseData.md)
+ - [GetUserBroadcastResponseDataBroadcast](docs/GetUserBroadcastResponseDataBroadcast.md)
  - [GetUserSourceResponse](docs/GetUserSourceResponse.md)
  - [GetUserSourceResponseData](docs/GetUserSourceResponseData.md)
  - [GetUserSourceResponseDataSource](docs/GetUserSourceResponseDataSource.md)
@@ -790,7 +795,6 @@ Class | Method | HTTP request | Description
  - [GetUsersMeFollowersResponse](docs/GetUsersMeFollowersResponse.md)
  - [GetUsersMeFollowingResponse](docs/GetUsersMeFollowingResponse.md)
  - [GetUsersMeResponse](docs/GetUsersMeResponse.md)
- - [GetUsersMeSettingsResponse](docs/GetUsersMeSettingsResponse.md)
  - [GetUsersMentionsResponse](docs/GetUsersMentionsResponse.md)
  - [GetUsersMentionsResponseMeta](docs/GetUsersMentionsResponseMeta.md)
  - [GetUsersMutingResponse](docs/GetUsersMutingResponse.md)
@@ -839,6 +843,10 @@ Class | Method | HTTP request | Description
  - [ListScheduledCallsResponse](docs/ListScheduledCallsResponse.md)
  - [ListSourcesResponse](docs/ListSourcesResponse.md)
  - [ListSourcesResponseData](docs/ListSourcesResponseData.md)
+ - [ListUserBroadcastsResponse](docs/ListUserBroadcastsResponse.md)
+ - [ListUserBroadcastsResponseData](docs/ListUserBroadcastsResponseData.md)
+ - [ListUserBroadcastsResponseDataBroadcasts](docs/ListUserBroadcastsResponseDataBroadcasts.md)
+ - [ListUserBroadcastsResponseDataNextToken](docs/ListUserBroadcastsResponseDataNextToken.md)
  - [ListUserSourcesResponse](docs/ListUserSourcesResponse.md)
  - [ListUserSourcesResponseData](docs/ListUserSourcesResponseData.md)
  - [ListUserSourcesResponseDataSources](docs/ListUserSourcesResponseDataSources.md)
@@ -1099,6 +1107,9 @@ Class | Method | HTTP request | Description
  - [UpdateBotRequest](docs/UpdateBotRequest.md)
  - [UpdateBotResponse](docs/UpdateBotResponse.md)
  - [UpdateBotResponseData](docs/UpdateBotResponseData.md)
+ - [UpdateBroadcastStateRequest](docs/UpdateBroadcastStateRequest.md)
+ - [UpdateBroadcastStateResponse](docs/UpdateBroadcastStateResponse.md)
+ - [UpdateBroadcastStateResponseData](docs/UpdateBroadcastStateResponseData.md)
  - [UpdateChatConversationMessageTtlActionSignatures](docs/UpdateChatConversationMessageTtlActionSignatures.md)
  - [UpdateChatConversationMessageTtlActionSignaturesMessageEventSignature](docs/UpdateChatConversationMessageTtlActionSignaturesMessageEventSignature.md)
  - [UpdateChatConversationMessageTtlActionSignaturesMessageEventSignatureMessageSigningKeyInfoList](docs/UpdateChatConversationMessageTtlActionSignaturesMessageEventSignatureMessageSigningKeyInfoList.md)
@@ -1154,27 +1165,15 @@ Class | Method | HTTP request | Description
  - [UpdateSourceRequest](docs/UpdateSourceRequest.md)
  - [UpdateSourceResponse](docs/UpdateSourceResponse.md)
  - [UpdateSourceResponseData](docs/UpdateSourceResponseData.md)
+ - [UpdateUserBroadcastStateRequest](docs/UpdateUserBroadcastStateRequest.md)
+ - [UpdateUserBroadcastStateResponse](docs/UpdateUserBroadcastStateResponse.md)
+ - [UpdateUserBroadcastStateResponseData](docs/UpdateUserBroadcastStateResponseData.md)
  - [UpdateUserSourceRequest](docs/UpdateUserSourceRequest.md)
  - [UpdateUserSourceResponse](docs/UpdateUserSourceResponse.md)
  - [UpdateUserSourceResponseData](docs/UpdateUserSourceResponseData.md)
  - [UpdateUserSourceResponseDataSource](docs/UpdateUserSourceResponseDataSource.md)
  - [UpdateUserSourceResponseDataSourceCreationOrigin](docs/UpdateUserSourceResponseDataSourceCreationOrigin.md)
  - [UpdateUserSourceResponseDataSourceVideoService](docs/UpdateUserSourceResponseDataSourceVideoService.md)
- - [UpdateUsersMeProfileBannerCrop](docs/UpdateUsersMeProfileBannerCrop.md)
- - [UpdateUsersMeProfileBannerRequest](docs/UpdateUsersMeProfileBannerRequest.md)
- - [UpdateUsersMeProfileBannerResponse](docs/UpdateUsersMeProfileBannerResponse.md)
- - [UpdateUsersMeProfileBannerResponseData](docs/UpdateUsersMeProfileBannerResponseData.md)
- - [UpdateUsersMeProfileImageRequest](docs/UpdateUsersMeProfileImageRequest.md)
- - [UpdateUsersMeProfileImageResponse](docs/UpdateUsersMeProfileImageResponse.md)
- - [UpdateUsersMeProfileImageResponseData](docs/UpdateUsersMeProfileImageResponseData.md)
- - [UpdateUsersMeRequest](docs/UpdateUsersMeRequest.md)
- - [UpdateUsersMeResponse](docs/UpdateUsersMeResponse.md)
- - [UpdateUsersMeResponseData](docs/UpdateUsersMeResponseData.md)
- - [UpdateUsersMeSettingsQuietHours](docs/UpdateUsersMeSettingsQuietHours.md)
- - [UpdateUsersMeSettingsRequest](docs/UpdateUsersMeSettingsRequest.md)
- - [UpdateUsersMeSettingsResponse](docs/UpdateUsersMeSettingsResponse.md)
- - [UpdateUsersMeSettingsResponseData](docs/UpdateUsersMeSettingsResponseData.md)
- - [UpdateUsersMeSettingsTimeZone](docs/UpdateUsersMeSettingsTimeZone.md)
  - [UploadComplianceJobSubmissionRequest](docs/UploadComplianceJobSubmissionRequest.md)
  - [UploadComplianceJobSubmissionResponse](docs/UploadComplianceJobSubmissionResponse.md)
  - [Usage](docs/Usage.md)
@@ -1200,10 +1199,6 @@ Class | Method | HTTP request | Description
  - [UserPublicMetrics](docs/UserPublicMetrics.md)
  - [UserScrubGeoObjectSchema](docs/UserScrubGeoObjectSchema.md)
  - [UserScrubGeoSchema](docs/UserScrubGeoSchema.md)
- - [UserSettings](docs/UserSettings.md)
- - [UserSettingsField](docs/UserSettingsField.md)
- - [UserSettingsQuietHours](docs/UserSettingsQuietHours.md)
- - [UserSettingsTimeZone](docs/UserSettingsTimeZone.md)
  - [UserSubscription](docs/UserSubscription.md)
  - [UserSuspendComplianceSchema](docs/UserSuspendComplianceSchema.md)
  - [UserTakedownComplianceSchema](docs/UserTakedownComplianceSchema.md)

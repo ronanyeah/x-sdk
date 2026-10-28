@@ -8,9 +8,11 @@ Method | HTTP request | Description
 [**create_scheduled_broadcast**](BroadcastsApi.md#create_scheduled_broadcast) | **POST** /2/broadcasts/scheduled | Create a scheduled broadcast
 [**create_source**](BroadcastsApi.md#create_source) | **POST** /2/sources | Create a stream source
 [**create_user_source**](BroadcastsApi.md#create_user_source) | **POST** /2/users/{id}/sources | Create a stream source for a user
+[**delete_broadcast**](BroadcastsApi.md#delete_broadcast) | **DELETE** /2/broadcasts/{id} | Delete a broadcast
 [**delete_broadcast_chat_message**](BroadcastsApi.md#delete_broadcast_chat_message) | **DELETE** /2/broadcasts/{id}/chat/{message_id} | Remove a chat message from a live broadcast
 [**delete_scheduled_broadcast**](BroadcastsApi.md#delete_scheduled_broadcast) | **DELETE** /2/broadcasts/scheduled/{id} | Delete a scheduled broadcast
 [**delete_source**](BroadcastsApi.md#delete_source) | **DELETE** /2/sources/{id} | Delete a stream source
+[**delete_user_broadcast**](BroadcastsApi.md#delete_user_broadcast) | **DELETE** /2/users/{id}/broadcasts/{broadcast_id} | Delete a user's broadcast
 [**delete_user_source**](BroadcastsApi.md#delete_user_source) | **DELETE** /2/users/{id}/sources/{source_id} | Delete a user's stream source
 [**get_broadcast**](BroadcastsApi.md#get_broadcast) | **GET** /2/broadcasts/{id} | Get a broadcast
 [**get_broadcast_chat**](BroadcastsApi.md#get_broadcast_chat) | **GET** /2/broadcasts/{id}/chat | Get broadcast chat history
@@ -18,11 +20,13 @@ Method | HTTP request | Description
 [**get_chat_muted_users**](BroadcastsApi.md#get_chat_muted_users) | **GET** /2/broadcasts/chat/mutes | Get muted chat users
 [**get_scheduled_broadcast**](BroadcastsApi.md#get_scheduled_broadcast) | **GET** /2/broadcasts/scheduled/{id} | Get a scheduled broadcast
 [**get_source**](BroadcastsApi.md#get_source) | **GET** /2/sources/{id} | Get a stream source
+[**get_user_broadcast**](BroadcastsApi.md#get_user_broadcast) | **GET** /2/users/{id}/broadcasts/{broadcast_id} | Get a user's broadcast
 [**get_user_source**](BroadcastsApi.md#get_user_source) | **GET** /2/users/{id}/sources/{source_id} | Get a user's stream source
 [**go_live_scheduled_broadcast**](BroadcastsApi.md#go_live_scheduled_broadcast) | **POST** /2/broadcasts/scheduled/{id}/live | Go live on a scheduled broadcast
 [**list_broadcasts**](BroadcastsApi.md#list_broadcasts) | **GET** /2/broadcasts | List broadcasts
 [**list_scheduled_broadcasts**](BroadcastsApi.md#list_scheduled_broadcasts) | **GET** /2/broadcasts/scheduled | List scheduled broadcasts
 [**list_sources**](BroadcastsApi.md#list_sources) | **GET** /2/sources | List stream sources
+[**list_user_broadcasts**](BroadcastsApi.md#list_user_broadcasts) | **GET** /2/users/{id}/broadcasts | List a user's broadcasts
 [**list_user_sources**](BroadcastsApi.md#list_user_sources) | **GET** /2/users/{id}/sources | List a user's stream sources
 [**mute_broadcast_chat_user**](BroadcastsApi.md#mute_broadcast_chat_user) | **POST** /2/broadcasts/{id}/chat/mutes | Mute or time out a user in a broadcast chat
 [**mute_chat_user**](BroadcastsApi.md#mute_chat_user) | **POST** /2/broadcasts/chat/mutes | Mute or time out a user in chat
@@ -30,8 +34,10 @@ Method | HTTP request | Description
 [**send_broadcast_chat**](BroadcastsApi.md#send_broadcast_chat) | **POST** /2/broadcasts/{id}/chat | Send a chat message to a live broadcast
 [**unmute_broadcast_chat_user**](BroadcastsApi.md#unmute_broadcast_chat_user) | **DELETE** /2/broadcasts/{id}/chat/mutes/{user_id} | Unmute a user in a broadcast chat
 [**unmute_chat_user**](BroadcastsApi.md#unmute_chat_user) | **DELETE** /2/broadcasts/chat/mutes/{user_id} | Unmute a user in chat
+[**update_broadcast_state**](BroadcastsApi.md#update_broadcast_state) | **PUT** /2/broadcasts/{id}/state | End a broadcast
 [**update_scheduled_broadcast**](BroadcastsApi.md#update_scheduled_broadcast) | **PUT** /2/broadcasts/scheduled/{id} | Update a scheduled broadcast
 [**update_source**](BroadcastsApi.md#update_source) | **PUT** /2/sources/{id} | Rename a stream source
+[**update_user_broadcast_state**](BroadcastsApi.md#update_user_broadcast_state) | **PUT** /2/users/{id}/broadcasts/{broadcast_id}/state | End a user's broadcast
 [**update_user_source**](BroadcastsApi.md#update_user_source) | **PUT** /2/users/{id}/sources/{source_id} | Rename a user's stream source
 
 
@@ -157,6 +163,36 @@ Name | Type | Description  | Required | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
+## delete_broadcast
+
+> models::DeleteBroadcastResponse delete_broadcast(id)
+Delete a broadcast
+
+Deletes one of the authenticated user's broadcasts, scheduled or ended, including its replay. A running broadcast must be ended first.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **String** |  | [required] |
+
+### Return type
+
+[**models::DeleteBroadcastResponse**](DeleteBroadcastResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
 ## delete_broadcast_chat_message
 
 > models::DeleteBroadcastChatMessageResponse delete_broadcast_chat_message(id, message_id)
@@ -236,6 +272,37 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**models::DeleteSourceResponse**](DeleteSourceResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## delete_user_broadcast
+
+> models::DeleteUserBroadcastResponse delete_user_broadcast(id, broadcast_id)
+Delete a user's broadcast
+
+Deletes one of the authenticated user's broadcasts. `id` must be the authenticated user. Deprecated: use DELETE /2/broadcasts/:id.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **String** |  | [required] |
+**broadcast_id** | **String** |  | [required] |
+
+### Return type
+
+[**models::DeleteUserBroadcastResponse**](DeleteUserBroadcastResponse.md)
 
 ### Authorization
 
@@ -472,6 +539,37 @@ Name | Type | Description  | Required | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
+## get_user_broadcast
+
+> models::GetUserBroadcastResponse get_user_broadcast(id, broadcast_id)
+Get a user's broadcast
+
+Returns one of the authenticated user's broadcasts. `id` must be the authenticated user. Deprecated: use GET /2/broadcasts/:id.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **String** |  | [required] |
+**broadcast_id** | **String** |  | [required] |
+
+### Return type
+
+[**models::GetUserBroadcastResponse**](GetUserBroadcastResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
 ## get_user_source
 
 > models::GetUserSourceResponse get_user_source(id, source_id)
@@ -613,6 +711,37 @@ This endpoint does not need any parameter.
 ### Return type
 
 [**models::ListSourcesResponse**](ListSourcesResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## list_user_broadcasts
+
+> models::ListUserBroadcastsResponse list_user_broadcasts(id, pagination_token)
+List a user's broadcasts
+
+Returns the authenticated user's broadcasts, 100 per page. `id` must be the authenticated user. Deprecated: use GET /2/broadcasts.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **String** |  | [required] |
+**pagination_token** | Option<**String**> | `next_token.offset` from the previous page. |  |
+
+### Return type
+
+[**models::ListUserBroadcastsResponse**](ListUserBroadcastsResponse.md)
 
 ### Authorization
 
@@ -840,6 +969,37 @@ Name | Type | Description  | Required | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
+## update_broadcast_state
+
+> models::UpdateBroadcastStateResponse update_broadcast_state(id, update_broadcast_state_request)
+End a broadcast
+
+Ends one of the authenticated user's broadcasts. Only `state: END` is supported.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **String** |  | [required] |
+**update_broadcast_state_request** | [**UpdateBroadcastStateRequest**](UpdateBroadcastStateRequest.md) |  | [required] |
+
+### Return type
+
+[**models::UpdateBroadcastStateResponse**](UpdateBroadcastStateResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
 ## update_scheduled_broadcast
 
 > models::UpdateScheduledBroadcastResponse update_scheduled_broadcast(id, update_scheduled_broadcast_request)
@@ -889,6 +1049,38 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**models::UpdateSourceResponse**](UpdateSourceResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## update_user_broadcast_state
+
+> models::UpdateUserBroadcastStateResponse update_user_broadcast_state(id, broadcast_id, update_user_broadcast_state_request)
+End a user's broadcast
+
+Ends one of the authenticated user's broadcasts. `id` must be the authenticated user. Only `state: END` is supported. Deprecated: use PUT /2/broadcasts/:id/state.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **String** |  | [required] |
+**broadcast_id** | **String** |  | [required] |
+**update_user_broadcast_state_request** | [**UpdateUserBroadcastStateRequest**](UpdateUserBroadcastStateRequest.md) |  | [required] |
+
+### Return type
+
+[**models::UpdateUserBroadcastStateResponse**](UpdateUserBroadcastStateResponse.md)
 
 ### Authorization
 
