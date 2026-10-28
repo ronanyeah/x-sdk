@@ -5,9 +5,21 @@ description = "X API v2 client"
 edition = "2024"
 
 [dependencies]
+base64 = "0.23.1"
+getrandom = "0.4.3"
+reqwest = { version = "0.13.5", default-features = false, features = [
+  "form",
+  "json",
+] }
+serde = { version = "1.0.229", features = ["derive"] }
+sha2 = "0.11.1"
+tokio = { version = "1.54.1", features = ["io-util", "net"], optional = true }
+url = "2.5.8"
 x-sdk-gen = { path = "../x-sdk-gen", default-features = false }
 
 [features]
 default = ["rustls"]
-rustls = ["x-sdk-gen/rustls"]
+# `OAuth2Client::authorize_local`: a one-shot localhost listener for the redirect.
+local = ["dep:tokio"]
 native-tls = ["x-sdk-gen/native-tls"]
+rustls = ["x-sdk-gen/rustls"]
