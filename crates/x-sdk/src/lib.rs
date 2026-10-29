@@ -9,4 +9,6 @@ mod paginated;
 pub mod pagination;
 #[cfg(feature = "stream")]
 pub mod stream;
+#[cfg(feature = "stream")]
+mod stream_endpoints;
 mod scope;

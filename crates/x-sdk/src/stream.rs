@@ -1,19 +1,10 @@
 //! Streaming endpoints: newline-delimited JSON that stays open.
 //!
-//! The generated stream functions return the raw `reqwest::Response`. [`ndjson`] decodes it,
-//! and [`reconnecting`] keeps a stream going across disconnects.
+//! [`connect`] opens an endpoint from its params and yields the endpoint's own response type,
+//! reconnecting when the connection drops.
 //!
-//! ```no_run
-//! use x_sdk::models::StreamPostsSampleResponse;
-//! use x_sdk::stream::{self, StreamExt};
-//!
-//! # async fn run(response: reqwest::Response) {
-//! let mut posts = std::pin::pin!(stream::ndjson::<StreamPostsSampleResponse>(response));
-//! while let Some(post) = posts.next().await {
-//!     println!("{:?}", post.unwrap().data);
-//! }
-//! # }
-//! ```
+//! The generated stream functions return the raw `reqwest::Response`. To drive one yourself,
+//! [`ndjson`] decodes it and [`reconnecting`] keeps a stream going across disconnects.
 
 use std::fmt;
 use std::future::Future;
@@ -24,7 +15,7 @@ use futures_util::stream;
 pub use futures_util::{Stream, StreamExt};
 use reqwest::StatusCode;
 use serde::de::DeserializeOwned;
-use x_sdk_gen::apis;
+use x_sdk_gen::apis::{self, configuration::Configuration};
 
 #[derive(Debug)]
 pub enum Error {
@@ -102,6 +93,42 @@ fn parse<T: DeserializeOwned>(line: &[u8]) -> Option<Result<T, Error>> {
         source,
         line: String::from_utf8_lossy(line).into_owned(),
     }))
+}
+
+/// The params of a streaming endpoint, which know what the endpoint yields. Implemented for
+/// every generated streaming `*Params` struct; use [`connect`].
+#[allow(async_fn_in_trait)]
+pub trait StreamEndpoint: Clone {
+    /// One decoded line.
+    type Item: DeserializeOwned + Send + 'static;
+    type Error;
+
+    /// Call the generated stream function.
+    async fn open(
+        self,
+        cfg: &Configuration,
+    ) -> Result<reqwest::Response, apis::Error<Self::Error>>;
+}
+
+/// Open a streaming endpoint and keep it open: decoded as the endpoint's own response type and
+/// reconnected as described on [`reconnecting`].
+///
+/// ```no_run
+/// use x_sdk::apis::stream_api::StreamPostsSampleParams;
+/// use x_sdk::stream::{self, StreamExt};
+///
+/// # async fn run(cfg: x_sdk::Config) {
+/// let mut posts = std::pin::pin!(stream::connect(&cfg, StreamPostsSampleParams::default()));
+/// while let Some(post) = posts.next().await {
+///     println!("{:?}", post.unwrap().data);
+/// }
+/// # }
+/// ```
+pub fn connect<'a, P: StreamEndpoint + 'a>(
+    cfg: &'a Configuration,
+    params: P,
+) -> impl Stream<Item = Result<P::Item, Error>> + 'a {
+    reconnecting(move || params.clone().open(cfg))
 }
 
 type Inner<T> = Pin<Box<dyn Stream<Item = Result<T, Error>> + Send>>;

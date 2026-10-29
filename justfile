@@ -13,3 +13,8 @@ gen-scopes:
 gen-paginated:
     jq -r -f scripts/gen-paginated.jq openapi.json > crates/x-sdk/src/paginated.rs
     rustfmt --edition 2024 crates/x-sdk/src/paginated.rs
+
+# x-twitter-streaming operations in openapi.json -> crates/x-sdk/src/stream_endpoints.rs
+gen-streams:
+    jq -r -f scripts/gen-streams.jq openapi.json > crates/x-sdk/src/stream_endpoints.rs
+    rustfmt --edition 2024 crates/x-sdk/src/stream_endpoints.rs
