@@ -21,6 +21,7 @@ impl Config {
         let mut cfg = Configuration::new();
         cfg.bearer_access_token = Some(token.clone());
         cfg.oauth_access_token = Some(token);
+        cfg.user_agent = Some(concat!("x-sdk/", env!("CARGO_PKG_VERSION")).to_owned());
         Self(cfg)
     }
 
@@ -30,6 +31,7 @@ impl Config {
         self
     }
 
+    /// Replace the default `x-sdk/<version>` user agent.
     pub fn user_agent(mut self, user_agent: impl Into<String>) -> Self {
         self.0.user_agent = Some(user_agent.into());
         self
