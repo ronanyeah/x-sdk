@@ -4,7 +4,7 @@
 //! Needs `X_USER_TOKEN`, and an `X_USER_ID` that follows at least two accounts.
 
 use x_sdk::apis::users_api;
-use x_sdk::config;
+use x_sdk::Config;
 use x_sdk::pagination::Pager;
 
 fn env(k: &str) -> String {
@@ -14,7 +14,7 @@ fn env(k: &str) -> String {
 #[tokio::test]
 #[ignore]
 async fn following_pages_do_not_repeat() {
-    let cfg = config::bearer(env("X_USER_TOKEN"));
+    let cfg = Config::bearer(env("X_USER_TOKEN"));
     let cfg = &cfg;
     let id = env("X_USER_ID");
     let id = &id;

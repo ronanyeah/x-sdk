@@ -118,9 +118,9 @@ pub struct Tokens {
 }
 
 impl Tokens {
-    /// A [`Configuration`](x_sdk_gen::apis::configuration::Configuration) that sends the access token.
-    pub fn configuration(&self) -> x_sdk_gen::apis::configuration::Configuration {
-        crate::config::bearer(self.access_token.as_str())
+    /// A [`Config`](crate::Config) that sends the access token.
+    pub fn configuration(&self) -> crate::Config {
+        crate::Config::bearer(self.access_token.as_str())
     }
 }
 
