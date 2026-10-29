@@ -24,12 +24,19 @@
 //! # Ok(()) }
 //! ```
 
+use std::collections::VecDeque;
 use std::future::Future;
 
 /// A response that may be followed by another page.
 pub trait Paginated {
+    /// What one page holds, e.g. `User` or `Post`.
+    type Item;
+
     /// The token to request the next page with, if there is one.
     fn next_token(&self) -> Option<&str>;
+
+    /// The page's `data`, empty if the page has none.
+    fn into_items(self) -> Vec<Self::Item>;
 }
 
 /// Fetches pages one at a time. `fetch` gets the pagination token to request (`None` for the
@@ -102,6 +109,63 @@ where
     }
 }
 
+impl<F> Pager<F> {
+    /// Walk the items of each page instead of the pages themselves.
+    pub fn items<Fut, T, E>(self) -> Items<F, T::Item>
+    where
+        F: FnMut(Option<String>) -> Fut,
+        Fut: Future<Output = Result<T, E>>,
+        T: Paginated,
+    {
+        Items {
+            pager: self,
+            buffer: VecDeque::new(),
+        }
+    }
+}
+
+/// Items from successive pages, fetching the next page when the current one runs out. Made by
+/// [`Pager::items`].
+pub struct Items<F, I> {
+    pager: Pager<F>,
+    buffer: VecDeque<I>,
+}
+
+impl<F, Fut, T, E> Items<F, T::Item>
+where
+    F: FnMut(Option<String>) -> Fut,
+    Fut: Future<Output = Result<T, E>>,
+    T: Paginated,
+{
+    /// The next item, or `None` once the last page is used up. An error ends the iteration.
+    pub async fn next_item(&mut self) -> Option<Result<T::Item, E>> {
+        loop {
+            if let Some(item) = self.buffer.pop_front() {
+                return Some(Ok(item));
+            }
+            match self.pager.next_page().await? {
+                Ok(page) => self.buffer.extend(page.into_items()),
+                Err(e) => return Some(Err(e)),
+            }
+        }
+    }
+
+    /// The token for the next page not yet fetched. Items already buffered from the previous
+    /// page are not covered, so resume from here only once `next_item` has returned everything.
+    pub fn next_token(&self) -> Option<&str> {
+        self.pager.next_token()
+    }
+
+    /// The items as a `Stream`.
+    #[cfg(feature = "stream")]
+    pub fn into_stream(self) -> impl futures_util::Stream<Item = Result<T::Item, E>> {
+        futures_util::stream::unfold(self, |mut items| async move {
+            let item = items.next_item().await?;
+            Some((item, items))
+        })
+    }
+}
+
 #[cfg(feature = "stream")]
 impl<F, Fut, T, E> Pager<F>
 where
@@ -125,8 +189,15 @@ mod tests {
     struct Page(Option<&'static str>);
 
     impl Paginated for Page {
+        type Item = u32;
+
         fn next_token(&self) -> Option<&str> {
             self.0
+        }
+
+        // Two items per page.
+        fn into_items(self) -> Vec<u32> {
+            vec![1, 2]
         }
     }
 
@@ -166,6 +237,23 @@ mod tests {
     #[tokio::test]
     async fn start_at_resumes() {
         assert_eq!(count(Pager::new(fetch).start_at("a")).await, 2);
+    }
+
+    #[tokio::test]
+    async fn items_flatten_pages() {
+        let mut items = Pager::new(fetch).items();
+        let mut n = 0;
+        while let Some(Ok(_)) = items.next_item().await {
+            n += 1;
+        }
+        assert_eq!(n, 6);
+    }
+
+    #[tokio::test]
+    async fn items_surface_error_then_end() {
+        let mut items = Pager::new(fetch).start_at("bad").items();
+        assert_eq!(items.next_item().await.unwrap().err(), Some("boom"));
+        assert!(items.next_item().await.is_none());
     }
 
     #[tokio::test]

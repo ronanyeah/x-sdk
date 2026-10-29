@@ -5,60 +5,66 @@ use x_sdk_gen::models;
 use crate::pagination::Paginated;
 
 macro_rules! paginated {
-    ($($t:ty),* $(,)?) => {$(
+    ($($t:ty => $item:ty),* $(,)?) => {$(
         impl Paginated for $t {
+            type Item = $item;
+
             fn next_token(&self) -> Option<&str> {
                 self.meta.as_deref()?.next_token.as_deref()
+            }
+
+            fn into_items(self) -> Vec<$item> {
+                self.data.unwrap_or_default()
             }
         }
     )*};
 }
 
 paginated!(
-    models::GetBroadcastChatResponse,
-    models::GetChatConversationEventsResponse,
-    models::GetChatConversationPinnedMessagesResponse,
-    models::GetChatConversationsResponse,
-    models::GetChatGroupAdminRequestsResponse,
-    models::GetChatMessageRequestsResponse,
-    models::GetChatMutedUsersResponse,
-    models::GetConnectionHistoryResponse,
-    models::GetDirectMessagesEventsByConversationIdResponse,
-    models::GetDirectMessagesEventsByParticipantIdResponse,
-    models::GetDirectMessagesEventsResponse,
-    models::GetListsFollowersResponse,
-    models::GetListsMembersResponse,
-    models::GetListsPostsResponse,
-    models::GetPostsCountsAllResponse,
-    models::GetPostsCountsRecentResponse,
-    models::GetPostsLikingUsersResponse,
-    models::GetPostsQuotedPostsResponse,
-    models::GetPostsRepostedByResponse,
-    models::GetPostsRepostsResponse,
-    models::GetRulesResponse,
-    models::GetSpacesBuyersResponse,
-    models::GetSpacesPostsResponse,
-    models::GetUsersAffiliatesResponse,
-    models::GetUsersBlockingResponse,
-    models::GetUsersBookmarksResponse,
-    models::GetUsersFollowedListsResponse,
-    models::GetUsersFollowersResponse,
-    models::GetUsersFollowingResponse,
-    models::GetUsersLikedPostsResponse,
-    models::GetUsersListMembershipsResponse,
-    models::GetUsersMeFollowersResponse,
-    models::GetUsersMeFollowingResponse,
-    models::GetUsersMentionsResponse,
-    models::GetUsersMutingResponse,
-    models::GetUsersOwnedListsResponse,
-    models::GetUsersPostsResponse,
-    models::GetUsersRepostsOfMeResponse,
-    models::GetUsersTimelineResponse,
-    models::ListBroadcastsResponse,
-    models::SearchCommunitiesResponse,
-    models::SearchCommunityNotesWrittenResponse,
-    models::SearchEligiblePostsResponse,
-    models::SearchPostsAllResponse,
-    models::SearchPostsRecentResponse,
-    models::SearchUsersResponse,
+    models::GetBroadcastChatResponse => models::BroadcastChatMessage,
+    models::GetChatConversationEventsResponse => models::ChatMessageEvent,
+    models::GetChatConversationPinnedMessagesResponse => models::ChatPinnedMessage,
+    models::GetChatConversationsResponse => models::ChatConversation,
+    models::GetChatGroupAdminRequestsResponse => models::User,
+    models::GetChatMessageRequestsResponse => models::ChatMessageRequest,
+    models::GetChatMutedUsersResponse => models::BroadcastChatMute,
+    models::GetConnectionHistoryResponse => models::Connection,
+    models::GetDirectMessagesEventsByConversationIdResponse => models::DmEvent,
+    models::GetDirectMessagesEventsByParticipantIdResponse => models::DmEvent,
+    models::GetDirectMessagesEventsResponse => models::DmEvent,
+    models::GetListsFollowersResponse => models::User,
+    models::GetListsMembersResponse => models::User,
+    models::GetListsPostsResponse => models::Post,
+    models::GetPostsCountsAllResponse => models::GetPostsCountsAllResponseData,
+    models::GetPostsCountsRecentResponse => models::GetPostsCountsRecentResponseData,
+    models::GetPostsLikingUsersResponse => models::User,
+    models::GetPostsQuotedPostsResponse => models::Post,
+    models::GetPostsRepostedByResponse => models::User,
+    models::GetPostsRepostsResponse => models::Post,
+    models::GetRulesResponse => models::GetRulesResponseData,
+    models::GetSpacesBuyersResponse => models::User,
+    models::GetSpacesPostsResponse => models::Post,
+    models::GetUsersAffiliatesResponse => models::User,
+    models::GetUsersBlockingResponse => models::User,
+    models::GetUsersBookmarksResponse => models::Post,
+    models::GetUsersFollowedListsResponse => models::List,
+    models::GetUsersFollowersResponse => models::User,
+    models::GetUsersFollowingResponse => models::User,
+    models::GetUsersLikedPostsResponse => models::Post,
+    models::GetUsersListMembershipsResponse => models::List,
+    models::GetUsersMeFollowersResponse => models::User,
+    models::GetUsersMeFollowingResponse => models::User,
+    models::GetUsersMentionsResponse => models::Post,
+    models::GetUsersMutingResponse => models::User,
+    models::GetUsersOwnedListsResponse => models::List,
+    models::GetUsersPostsResponse => models::Post,
+    models::GetUsersRepostsOfMeResponse => models::Post,
+    models::GetUsersTimelineResponse => models::Post,
+    models::ListBroadcastsResponse => models::Broadcast,
+    models::SearchCommunitiesResponse => models::Community,
+    models::SearchCommunityNotesWrittenResponse => models::Note,
+    models::SearchEligiblePostsResponse => models::Post,
+    models::SearchPostsAllResponse => models::Post,
+    models::SearchPostsRecentResponse => models::Post,
+    models::SearchUsersResponse => models::User,
 );
