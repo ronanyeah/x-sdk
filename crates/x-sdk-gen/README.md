@@ -50,6 +50,7 @@ Class | Method | HTTP request | Description
 *BroadcastsApi* | [**add_chat_moderator**](docs/BroadcastsApi.md#add_chat_moderator) | **POST** /2/broadcasts/chat/moderators | Add a chat moderator
 *BroadcastsApi* | [**create_scheduled_broadcast**](docs/BroadcastsApi.md#create_scheduled_broadcast) | **POST** /2/broadcasts/scheduled | Create a scheduled broadcast
 *BroadcastsApi* | [**create_source**](docs/BroadcastsApi.md#create_source) | **POST** /2/sources | Create a stream source
+*BroadcastsApi* | [**create_user_broadcast**](docs/BroadcastsApi.md#create_user_broadcast) | **POST** /2/users/{id}/broadcasts | Create a broadcast on a user's source
 *BroadcastsApi* | [**create_user_source**](docs/BroadcastsApi.md#create_user_source) | **POST** /2/users/{id}/sources | Create a stream source for a user
 *BroadcastsApi* | [**delete_broadcast**](docs/BroadcastsApi.md#delete_broadcast) | **DELETE** /2/broadcasts/{id} | Delete a broadcast
 *BroadcastsApi* | [**delete_broadcast_chat_message**](docs/BroadcastsApi.md#delete_broadcast_chat_message) | **DELETE** /2/broadcasts/{id}/chat/{message_id} | Remove a chat message from a live broadcast
@@ -61,6 +62,7 @@ Class | Method | HTTP request | Description
 *BroadcastsApi* | [**get_broadcast_chat**](docs/BroadcastsApi.md#get_broadcast_chat) | **GET** /2/broadcasts/{id}/chat | Get broadcast chat history
 *BroadcastsApi* | [**get_chat_moderators**](docs/BroadcastsApi.md#get_chat_moderators) | **GET** /2/broadcasts/chat/moderators | Get chat moderators
 *BroadcastsApi* | [**get_chat_muted_users**](docs/BroadcastsApi.md#get_chat_muted_users) | **GET** /2/broadcasts/chat/mutes | Get muted chat users
+*BroadcastsApi* | [**get_region**](docs/BroadcastsApi.md#get_region) | **GET** /2/region | Get the ingest region
 *BroadcastsApi* | [**get_scheduled_broadcast**](docs/BroadcastsApi.md#get_scheduled_broadcast) | **GET** /2/broadcasts/scheduled/{id} | Get a scheduled broadcast
 *BroadcastsApi* | [**get_source**](docs/BroadcastsApi.md#get_source) | **GET** /2/sources/{id} | Get a stream source
 *BroadcastsApi* | [**get_user_broadcast**](docs/BroadcastsApi.md#get_user_broadcast) | **GET** /2/users/{id}/broadcasts/{broadcast_id} | Get a user's broadcast
@@ -80,7 +82,7 @@ Class | Method | HTTP request | Description
 *BroadcastsApi* | [**update_broadcast_state**](docs/BroadcastsApi.md#update_broadcast_state) | **PUT** /2/broadcasts/{id}/state | End a broadcast
 *BroadcastsApi* | [**update_scheduled_broadcast**](docs/BroadcastsApi.md#update_scheduled_broadcast) | **PUT** /2/broadcasts/scheduled/{id} | Update a scheduled broadcast
 *BroadcastsApi* | [**update_source**](docs/BroadcastsApi.md#update_source) | **PUT** /2/sources/{id} | Rename a stream source
-*BroadcastsApi* | [**update_user_broadcast_state**](docs/BroadcastsApi.md#update_user_broadcast_state) | **PUT** /2/users/{id}/broadcasts/{broadcast_id}/state | End a user's broadcast
+*BroadcastsApi* | [**update_user_broadcast_state**](docs/BroadcastsApi.md#update_user_broadcast_state) | **PUT** /2/users/{id}/broadcasts/{broadcast_id}/state | Publish or end a user's broadcast
 *BroadcastsApi* | [**update_user_source**](docs/BroadcastsApi.md#update_user_source) | **PUT** /2/users/{id}/sources/{source_id} | Rename a user's stream source
 *CallsApi* | [**cancel_scheduled_call**](docs/CallsApi.md#cancel_scheduled_call) | **DELETE** /2/calls/scheduled/{id} | Cancel a scheduled call
 *CallsApi* | [**create_call**](docs/CallsApi.md#create_call) | **POST** /2/calls | Create a call
@@ -502,6 +504,10 @@ Class | Method | HTTP request | Description
  - [CreateSourceRequest](docs/CreateSourceRequest.md)
  - [CreateSourceResponse](docs/CreateSourceResponse.md)
  - [CreateSourceResponseData](docs/CreateSourceResponseData.md)
+ - [CreateUserBroadcastRequest](docs/CreateUserBroadcastRequest.md)
+ - [CreateUserBroadcastResponse](docs/CreateUserBroadcastResponse.md)
+ - [CreateUserBroadcastResponseData](docs/CreateUserBroadcastResponseData.md)
+ - [CreateUserBroadcastResponseDataBroadcast](docs/CreateUserBroadcastResponseDataBroadcast.md)
  - [CreateUserSourceRequest](docs/CreateUserSourceRequest.md)
  - [CreateUserSourceResponse](docs/CreateUserSourceResponse.md)
  - [CreateUserSourceResponseData](docs/CreateUserSourceResponseData.md)
@@ -746,6 +752,7 @@ Class | Method | HTTP request | Description
  - [GetPostsQuotedPostsResponse](docs/GetPostsQuotedPostsResponse.md)
  - [GetPostsRepostedByResponse](docs/GetPostsRepostedByResponse.md)
  - [GetPostsRepostsResponse](docs/GetPostsRepostsResponse.md)
+ - [GetRegionResponse](docs/GetRegionResponse.md)
  - [GetRuleCountsResponse](docs/GetRuleCountsResponse.md)
  - [GetRuleCountsResponseData](docs/GetRuleCountsResponseData.md)
  - [GetRuleCountsResponseDataAllProjectClientApps](docs/GetRuleCountsResponseDataAllProjectClientApps.md)
@@ -1168,6 +1175,7 @@ Class | Method | HTTP request | Description
  - [UpdateUserBroadcastStateRequest](docs/UpdateUserBroadcastStateRequest.md)
  - [UpdateUserBroadcastStateResponse](docs/UpdateUserBroadcastStateResponse.md)
  - [UpdateUserBroadcastStateResponseData](docs/UpdateUserBroadcastStateResponseData.md)
+ - [UpdateUserBroadcastStateResponseDataBroadcast](docs/UpdateUserBroadcastStateResponseDataBroadcast.md)
  - [UpdateUserSourceRequest](docs/UpdateUserSourceRequest.md)
  - [UpdateUserSourceResponse](docs/UpdateUserSourceResponse.md)
  - [UpdateUserSourceResponseData](docs/UpdateUserSourceResponseData.md)

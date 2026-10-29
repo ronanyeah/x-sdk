@@ -227,6 +227,10 @@ docs/CreateScheduledBroadcastResponseData.md
 docs/CreateSourceRequest.md
 docs/CreateSourceResponse.md
 docs/CreateSourceResponseData.md
+docs/CreateUserBroadcastRequest.md
+docs/CreateUserBroadcastResponse.md
+docs/CreateUserBroadcastResponseData.md
+docs/CreateUserBroadcastResponseDataBroadcast.md
 docs/CreateUserSourceRequest.md
 docs/CreateUserSourceResponse.md
 docs/CreateUserSourceResponseData.md
@@ -473,6 +477,7 @@ docs/GetPostsLikingUsersResponse.md
 docs/GetPostsQuotedPostsResponse.md
 docs/GetPostsRepostedByResponse.md
 docs/GetPostsRepostsResponse.md
+docs/GetRegionResponse.md
 docs/GetRuleCountsResponse.md
 docs/GetRuleCountsResponseData.md
 docs/GetRuleCountsResponseDataAllProjectClientApps.md
@@ -902,6 +907,7 @@ docs/UpdateSourceResponseData.md
 docs/UpdateUserBroadcastStateRequest.md
 docs/UpdateUserBroadcastStateResponse.md
 docs/UpdateUserBroadcastStateResponseData.md
+docs/UpdateUserBroadcastStateResponseDataBroadcast.md
 docs/UpdateUserSourceRequest.md
 docs/UpdateUserSourceResponse.md
 docs/UpdateUserSourceResponseData.md
@@ -1198,6 +1204,10 @@ src/models/create_scheduled_broadcast_response_data.rs
 src/models/create_source_request.rs
 src/models/create_source_response.rs
 src/models/create_source_response_data.rs
+src/models/create_user_broadcast_request.rs
+src/models/create_user_broadcast_response.rs
+src/models/create_user_broadcast_response_data.rs
+src/models/create_user_broadcast_response_data_broadcast.rs
 src/models/create_user_source_request.rs
 src/models/create_user_source_response.rs
 src/models/create_user_source_response_data.rs
@@ -1442,6 +1452,7 @@ src/models/get_posts_liking_users_response.rs
 src/models/get_posts_quoted_posts_response.rs
 src/models/get_posts_reposted_by_response.rs
 src/models/get_posts_reposts_response.rs
+src/models/get_region_response.rs
 src/models/get_rule_counts_response.rs
 src/models/get_rule_counts_response_data.rs
 src/models/get_rule_counts_response_data_all_project_client_apps.rs
@@ -1865,6 +1876,7 @@ src/models/update_source_response_data.rs
 src/models/update_user_broadcast_state_request.rs
 src/models/update_user_broadcast_state_response.rs
 src/models/update_user_broadcast_state_response_data.rs
+src/models/update_user_broadcast_state_response_data_broadcast.rs
 src/models/update_user_source_request.rs
 src/models/update_user_source_response.rs
 src/models/update_user_source_response_data.rs

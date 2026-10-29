@@ -13,19 +13,19 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UpdateUserBroadcastStateRequest {
-    /// Not allowed with `END`.
+    /// Who can chat: 0 default, 1 chat off, 2 everyone, 3 verified accounts, 4 accounts the host follows, 5 the host's subscribers, 6 accounts followed by an account the host follows. `PUBLISH` only.
     #[serde(rename = "chat_option", skip_serializing_if = "Option::is_none")]
     pub chat_option: Option<i32>,
-    /// Not allowed with `END`.
+    /// Broadcast language. `PUBLISH` only.
     #[serde(rename = "locale", skip_serializing_if = "Option::is_none")]
     pub locale: Option<String>,
-    /// Not allowed with `END`.
+    /// Skip the announcing Post. Unset keeps the broadcast's setting, which defaults to posting. `PUBLISH` only.
     #[serde(rename = "should_not_tweet", skip_serializing_if = "Option::is_none")]
     pub should_not_tweet: Option<bool>,
-    /// `END`. `PUBLISH` is not supported.
+    /// `PUBLISH` or `END`.
     #[serde(rename = "state")]
     pub state: String,
-    /// Not allowed with `END`.
+    /// Broadcast title. `PUBLISH` only.
     #[serde(rename = "title", skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
 }

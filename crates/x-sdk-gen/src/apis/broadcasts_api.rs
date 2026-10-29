@@ -32,6 +32,13 @@ pub struct CreateSourceParams {
     pub create_source_request: models::CreateSourceRequest
 }
 
+/// struct for passing parameters to the method [`create_user_broadcast`]
+#[derive(Clone, Debug)]
+pub struct CreateUserBroadcastParams {
+    pub id: String,
+    pub create_user_broadcast_request: models::CreateUserBroadcastRequest
+}
+
 /// struct for passing parameters to the method [`create_user_source`]
 #[derive(Clone, Debug)]
 pub struct CreateUserSourceParams {
@@ -299,6 +306,14 @@ pub enum CreateSourceError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`create_user_broadcast`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum CreateUserBroadcastError {
+    DefaultResponse(models::Error),
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`create_user_source`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -383,6 +398,14 @@ pub enum GetChatModeratorsError {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum GetChatMutedUsersError {
+    DefaultResponse(models::Error),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`get_region`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum GetRegionError {
     DefaultResponse(models::Error),
     UnknownValue(serde_json::Value),
 }
@@ -687,6 +710,51 @@ pub async fn create_source(configuration: &configuration::Configuration, params:
     } else {
         let content = resp.text().await?;
         let entity: Option<CreateSourceError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
+/// Creates a broadcast on one of the authenticated user's sources. `id` must be the authenticated user. The broadcast is `NOT_STARTED` and posts nothing until it is published with PUT /2/users/:id/broadcasts/:broadcast_id/state; one that is never published is deleted after 7 days. When the source already has a running broadcast, that broadcast is returned.
+pub async fn create_user_broadcast(configuration: &configuration::Configuration, params: CreateUserBroadcastParams) -> Result<models::CreateUserBroadcastResponse, Error<CreateUserBroadcastError>> {
+
+    let uri_str = format!("{}/2/users/{id}/broadcasts", configuration.base_path, id=crate::apis::urlencode(params.id));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
+    };
+    let _ = authorized;
+    req_builder = req_builder.json(&params.create_user_broadcast_request);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::CreateUserBroadcastResponse`"))),
+            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::CreateUserBroadcastResponse`")))),
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<CreateUserBroadcastError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
@@ -1247,6 +1315,50 @@ pub async fn get_chat_muted_users(configuration: &configuration::Configuration, 
     } else {
         let content = resp.text().await?;
         let entity: Option<GetChatMutedUsersError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
+/// Returns the ingest region nearest the server handling the request. Pass it as `region` when creating a stream source to ingest there.
+pub async fn get_region(configuration: &configuration::Configuration) -> Result<models::GetRegionResponse, Error<GetRegionError>> {
+
+    let uri_str = format!("{}/2/region", configuration.base_path);
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    // reqwest appends repeated headers, and X's edge rejects a second Authorization with a 400,
+    // so an operation that accepts several bearer-style schemes sends only the first token set.
+    #[allow(unused_mut)]
+    let mut authorized = false;
+    if !authorized && let Some(ref token) = configuration.oauth_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+        authorized = true;
+    };
+    let _ = authorized;
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::GetRegionResponse`"))),
+            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::GetRegionResponse`")))),
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<GetRegionError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
@@ -2129,7 +2241,7 @@ pub async fn update_source(configuration: &configuration::Configuration, params:
     }
 }
 
-/// Ends one of the authenticated user's broadcasts. `id` must be the authenticated user. Only `state: END` is supported. Deprecated: use PUT /2/broadcasts/:id/state.
+/// Publishes or ends one of the authenticated user's broadcasts. `id` must be the authenticated user. `PUBLISH` takes a broadcast created with POST /2/users/:id/broadcasts live once its source is receiving video, and posts it unless `should_not_tweet` is true. `END` ends the broadcast. Deprecated: use PUT /2/broadcasts/:id/state to end a broadcast.
 pub async fn update_user_broadcast_state(configuration: &configuration::Configuration, params: UpdateUserBroadcastStateParams) -> Result<models::UpdateUserBroadcastStateResponse, Error<UpdateUserBroadcastStateError>> {
 
     let uri_str = format!("{}/2/users/{id}/broadcasts/{broadcast_id}/state", configuration.base_path, id=crate::apis::urlencode(params.id), broadcast_id=crate::apis::urlencode(params.broadcast_id));

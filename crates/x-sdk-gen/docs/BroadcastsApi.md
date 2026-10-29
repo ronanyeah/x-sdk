@@ -7,6 +7,7 @@ Method | HTTP request | Description
 [**add_chat_moderator**](BroadcastsApi.md#add_chat_moderator) | **POST** /2/broadcasts/chat/moderators | Add a chat moderator
 [**create_scheduled_broadcast**](BroadcastsApi.md#create_scheduled_broadcast) | **POST** /2/broadcasts/scheduled | Create a scheduled broadcast
 [**create_source**](BroadcastsApi.md#create_source) | **POST** /2/sources | Create a stream source
+[**create_user_broadcast**](BroadcastsApi.md#create_user_broadcast) | **POST** /2/users/{id}/broadcasts | Create a broadcast on a user's source
 [**create_user_source**](BroadcastsApi.md#create_user_source) | **POST** /2/users/{id}/sources | Create a stream source for a user
 [**delete_broadcast**](BroadcastsApi.md#delete_broadcast) | **DELETE** /2/broadcasts/{id} | Delete a broadcast
 [**delete_broadcast_chat_message**](BroadcastsApi.md#delete_broadcast_chat_message) | **DELETE** /2/broadcasts/{id}/chat/{message_id} | Remove a chat message from a live broadcast
@@ -18,6 +19,7 @@ Method | HTTP request | Description
 [**get_broadcast_chat**](BroadcastsApi.md#get_broadcast_chat) | **GET** /2/broadcasts/{id}/chat | Get broadcast chat history
 [**get_chat_moderators**](BroadcastsApi.md#get_chat_moderators) | **GET** /2/broadcasts/chat/moderators | Get chat moderators
 [**get_chat_muted_users**](BroadcastsApi.md#get_chat_muted_users) | **GET** /2/broadcasts/chat/mutes | Get muted chat users
+[**get_region**](BroadcastsApi.md#get_region) | **GET** /2/region | Get the ingest region
 [**get_scheduled_broadcast**](BroadcastsApi.md#get_scheduled_broadcast) | **GET** /2/broadcasts/scheduled/{id} | Get a scheduled broadcast
 [**get_source**](BroadcastsApi.md#get_source) | **GET** /2/sources/{id} | Get a stream source
 [**get_user_broadcast**](BroadcastsApi.md#get_user_broadcast) | **GET** /2/users/{id}/broadcasts/{broadcast_id} | Get a user's broadcast
@@ -37,7 +39,7 @@ Method | HTTP request | Description
 [**update_broadcast_state**](BroadcastsApi.md#update_broadcast_state) | **PUT** /2/broadcasts/{id}/state | End a broadcast
 [**update_scheduled_broadcast**](BroadcastsApi.md#update_scheduled_broadcast) | **PUT** /2/broadcasts/scheduled/{id} | Update a scheduled broadcast
 [**update_source**](BroadcastsApi.md#update_source) | **PUT** /2/sources/{id} | Rename a stream source
-[**update_user_broadcast_state**](BroadcastsApi.md#update_user_broadcast_state) | **PUT** /2/users/{id}/broadcasts/{broadcast_id}/state | End a user's broadcast
+[**update_user_broadcast_state**](BroadcastsApi.md#update_user_broadcast_state) | **PUT** /2/users/{id}/broadcasts/{broadcast_id}/state | Publish or end a user's broadcast
 [**update_user_source**](BroadcastsApi.md#update_user_source) | **PUT** /2/users/{id}/sources/{source_id} | Rename a user's stream source
 
 
@@ -119,6 +121,37 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**models::CreateSourceResponse**](CreateSourceResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## create_user_broadcast
+
+> models::CreateUserBroadcastResponse create_user_broadcast(id, create_user_broadcast_request)
+Create a broadcast on a user's source
+
+Creates a broadcast on one of the authenticated user's sources. `id` must be the authenticated user. The broadcast is `NOT_STARTED` and posts nothing until it is published with PUT /2/users/:id/broadcasts/:broadcast_id/state; one that is never published is deleted after 7 days. When the source already has a running broadcast, that broadcast is returned.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **String** |  | [required] |
+**create_user_broadcast_request** | [**CreateUserBroadcastRequest**](CreateUserBroadcastRequest.md) |  | [required] |
+
+### Return type
+
+[**models::CreateUserBroadcastResponse**](CreateUserBroadcastResponse.md)
 
 ### Authorization
 
@@ -466,6 +499,33 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**models::GetChatMutedUsersResponse**](GetChatMutedUsersResponse.md)
+
+### Authorization
+
+[OAuth2UserToken](../README.md#OAuth2UserToken), [UserToken](../README.md#UserToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## get_region
+
+> models::GetRegionResponse get_region()
+Get the ingest region
+
+Returns the ingest region nearest the server handling the request. Pass it as `region` when creating a stream source to ingest there.
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**models::GetRegionResponse**](GetRegionResponse.md)
 
 ### Authorization
 
@@ -1065,9 +1125,9 @@ Name | Type | Description  | Required | Notes
 ## update_user_broadcast_state
 
 > models::UpdateUserBroadcastStateResponse update_user_broadcast_state(id, broadcast_id, update_user_broadcast_state_request)
-End a user's broadcast
+Publish or end a user's broadcast
 
-Ends one of the authenticated user's broadcasts. `id` must be the authenticated user. Only `state: END` is supported. Deprecated: use PUT /2/broadcasts/:id/state.
+Publishes or ends one of the authenticated user's broadcasts. `id` must be the authenticated user. `PUBLISH` takes a broadcast created with POST /2/users/:id/broadcasts live once its source is receiving video, and posts it unless `should_not_tweet` is true. `END` ends the broadcast. Deprecated: use PUT /2/broadcasts/:id/state to end a broadcast.
 
 ### Parameters
 

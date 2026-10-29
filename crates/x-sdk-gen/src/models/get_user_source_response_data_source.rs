@@ -33,7 +33,7 @@ pub struct GetUserSourceResponseDataSource {
     /// Owner's numeric user id. Exceeds the exact integer range of many JSON parsers.
     #[serde(rename = "owner_id", skip_serializing_if = "Option::is_none")]
     pub owner_id: Option<i32>,
-    /// Ingest region: `atla` or `pdxa` for on-prem sources, the AWS region (e.g. `us-east-1`) for sources created before the move to on-prem.
+    /// Ingest region as an AWS region name, e.g. `us-east-1` or `us-west-2`. Accepted as `region` when creating a source.
     #[serde(rename = "rtmp_region", skip_serializing_if = "Option::is_none")]
     pub rtmp_region: Option<String>,
     /// Stream key; equal to `id`.

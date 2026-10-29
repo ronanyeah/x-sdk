@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 **is_stream_active** | Option<**bool**> | Whether an encoder is currently sending video to the source. | [optional]
 **name** | Option<**String**> | Label for the source. | [optional]
 **owner_id** | Option<**i32**> | Owner's numeric user id. Exceeds the exact integer range of many JSON parsers. | [optional]
-**rtmp_region** | Option<**String**> | Ingest region: `atla` or `pdxa` for on-prem sources, the AWS region (e.g. `us-east-1`) for sources created before the move to on-prem. | [optional]
+**rtmp_region** | Option<**String**> | Ingest region as an AWS region name, e.g. `us-east-1` or `us-west-2`. Accepted as `region` when creating a source. | [optional]
 **rtmp_stream_key** | Option<**String**> | Stream key; equal to `id`. | [optional]
 **rtmp_url** | Option<**String**> | RTMP ingest URL. | [optional]
 **rtmps_url** | Option<**String**> | RTMPS ingest URL (port 443). | [optional]

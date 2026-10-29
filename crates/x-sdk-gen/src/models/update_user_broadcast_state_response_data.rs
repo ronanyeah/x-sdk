@@ -13,15 +13,22 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UpdateUserBroadcastStateResponseData {
-    /// Always `true` on success.
-    #[serde(rename = "success")]
-    pub success: bool,
+    #[serde(rename = "broadcast", skip_serializing_if = "Option::is_none")]
+    pub broadcast: Option<Box<models::UpdateUserBroadcastStateResponseDataBroadcast>>,
+    /// `true` once `END` succeeds.
+    #[serde(rename = "success", skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
+    /// Why the announcing Post failed, on `PUBLISH`. Omitted when the Post went out or `should_not_tweet` was true.
+    #[serde(rename = "tweet_error", skip_serializing_if = "Option::is_none")]
+    pub tweet_error: Option<String>,
 }
 
 impl UpdateUserBroadcastStateResponseData {
-    pub fn new(success: bool) -> UpdateUserBroadcastStateResponseData {
+    pub fn new() -> UpdateUserBroadcastStateResponseData {
         UpdateUserBroadcastStateResponseData {
-            success,
+            broadcast: None,
+            success: None,
+            tweet_error: None,
         }
     }
 }

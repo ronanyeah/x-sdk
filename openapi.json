@@ -10942,6 +10942,53 @@
         }
       }
     },
+    "/2/region": {
+      "get": {
+        "security": [
+          {
+            "OAuth2UserToken": [
+              "broadcast.read"
+            ]
+          },
+          {
+            "UserToken": []
+          }
+        ],
+        "tags": [
+          "Broadcasts"
+        ],
+        "summary": "Get the ingest region",
+        "description": "Returns the ingest region nearest the server handling the request. Pass it as `region` when creating a stream source to ingest there.",
+        "operationId": "getRegion",
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetRegionResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "The request has failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/2/sources": {
       "get": {
         "security": [
@@ -18044,6 +18091,73 @@
             }
           }
         }
+      },
+      "post": {
+        "security": [
+          {
+            "OAuth2UserToken": [
+              "broadcast.read",
+              "broadcast.write"
+            ]
+          },
+          {
+            "UserToken": []
+          }
+        ],
+        "tags": [
+          "Broadcasts"
+        ],
+        "summary": "Create a broadcast on a user's source",
+        "description": "Creates a broadcast on one of the authenticated user's sources. `id` must be the authenticated user. The broadcast is `NOT_STARTED` and posts nothing until it is published with PUT /2/users/:id/broadcasts/:broadcast_id/state; one that is never published is deleted after 7 days. When the source already has a running broadcast, that broadcast is returned.",
+        "operationId": "createUserBroadcast",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/UserId"
+            },
+            "style": "simple"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserBroadcastRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserBroadcastResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "The request has failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/2/users/{id}/broadcasts/{broadcast_id}": {
@@ -18197,8 +18311,8 @@
         "tags": [
           "Broadcasts"
         ],
-        "summary": "End a user's broadcast",
-        "description": "Ends one of the authenticated user's broadcasts. `id` must be the authenticated user. Only `state: END` is supported. Deprecated: use PUT /2/broadcasts/:id/state.",
+        "summary": "Publish or end a user's broadcast",
+        "description": "Publishes or ends one of the authenticated user's broadcasts. `id` must be the authenticated user. `PUBLISH` takes a broadcast created with POST /2/users/:id/broadcasts live once its source is receiving video, and posts it unless `should_not_tweet` is true. `END` ends the broadcast. Deprecated: use PUT /2/broadcasts/:id/state to end a broadcast.",
         "operationId": "updateUserBroadcastState",
         "parameters": [
           {
@@ -26246,6 +26360,176 @@
           }
         }
       },
+      "CreateUserBroadcastRequest": {
+        "type": "object",
+        "required": [
+          "source_id"
+        ],
+        "properties": {
+          "is_low_latency": {
+            "type": "boolean",
+            "description": "Ignored."
+          },
+          "region": {
+            "type": "string",
+            "description": "Ignored: the source sets the region."
+          },
+          "source_id": {
+            "type": "string",
+            "description": "The source's `rtmp_stream_key`.",
+            "pattern": "^[a-zA-Z0-9]{1,32}$"
+          }
+        }
+      },
+      "CreateUserBroadcastResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CreateUserBroadcastResponseData"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      },
+      "CreateUserBroadcastResponseData": {
+        "type": "object",
+        "required": [
+          "broadcast",
+          "video_access",
+          "share_url"
+        ],
+        "properties": {
+          "broadcast": {
+            "$ref": "#/components/schemas/CreateUserBroadcastResponseDataBroadcast"
+          },
+          "share_url": {
+            "type": "string",
+            "description": "The broadcast's watch page."
+          },
+          "video_access": {
+            "description": "Always empty.",
+            "$ref": "#/components/schemas/CreateUserBroadcastResponseDataVideoAccess"
+          }
+        }
+      },
+      "CreateUserBroadcastResponseDataBroadcast": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "available_for_replay": {
+            "type": "boolean",
+            "description": "Whether a replay is available."
+          },
+          "broadcast_id": {
+            "type": "string",
+            "description": "Broadcast id."
+          },
+          "chat_option": {
+            "type": "integer",
+            "description": "Who can chat: 0 default, 1 chat off, 2 everyone, 3 verified accounts, 4 accounts the host follows, 5 the host's subscribers, 6 accounts followed by an account the host follows."
+          },
+          "created_at_ms": {
+            "type": "string",
+            "description": "Creation time, milliseconds since Unix epoch (decimal string)."
+          },
+          "end_ms": {
+            "type": "string",
+            "description": "End time, milliseconds since Unix epoch (decimal string)."
+          },
+          "height": {
+            "type": "integer",
+            "description": "Video height in pixels."
+          },
+          "id": {
+            "type": "string",
+            "description": "Broadcast id; equal to `broadcast_id`."
+          },
+          "image_url": {
+            "type": "string",
+            "description": "Thumbnail URL."
+          },
+          "image_url_medium": {
+            "type": "string",
+            "description": "Medium thumbnail URL."
+          },
+          "image_url_small": {
+            "type": "string",
+            "description": "Small thumbnail URL."
+          },
+          "is_high_latency": {
+            "type": "boolean",
+            "description": "Whether the broadcast is high latency."
+          },
+          "language": {
+            "type": "string",
+            "description": "Broadcast language."
+          },
+          "media_id": {
+            "type": "string",
+            "description": "Numeric media id from `media_key`."
+          },
+          "media_key": {
+            "type": "string",
+            "description": "Media key of the broadcast's video."
+          },
+          "scheduled_end_ms": {
+            "type": "string",
+            "description": "Scheduled end time, milliseconds since Unix epoch (decimal string)."
+          },
+          "scheduled_start_ms": {
+            "type": "string",
+            "description": "Scheduled start time, milliseconds since Unix epoch (decimal string)."
+          },
+          "start_ms": {
+            "type": "string",
+            "description": "Start time, milliseconds since Unix epoch (decimal string)."
+          },
+          "state": {
+            "type": "string",
+            "description": "`NOT_STARTED`, `RUNNING`, `TIMED_OUT`, `ENDED`, `PRE_PUBLISHED` or `CANCELED`."
+          },
+          "status": {
+            "type": "string",
+            "description": "Broadcast title."
+          },
+          "total_watched": {
+            "type": "string",
+            "description": "Total viewers (decimal string)."
+          },
+          "total_watching": {
+            "type": "string",
+            "description": "Current viewers (decimal string)."
+          },
+          "tweet_id": {
+            "type": "string",
+            "description": "Id of the Post announcing the broadcast."
+          },
+          "twitter_user_id": {
+            "type": "string",
+            "description": "Owner's user id."
+          },
+          "updated_at_ms": {
+            "type": "string",
+            "description": "Last update time, milliseconds since Unix epoch (decimal string)."
+          },
+          "width": {
+            "type": "integer",
+            "description": "Video width in pixels."
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateUserBroadcastResponseDataVideoAccess": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
       "CreateUserSourceRequest": {
         "type": "object",
         "required": [
@@ -26326,7 +26610,7 @@
           },
           "rtmp_region": {
             "type": "string",
-            "description": "Ingest region: `atla` or `pdxa` for on-prem sources, the AWS region (e.g. `us-east-1`) for sources created before the move to on-prem."
+            "description": "Ingest region as an AWS region name, e.g. `us-east-1` or `us-west-2`. Accepted as `region` when creating a source."
           },
           "rtmp_stream_key": {
             "type": "string",
@@ -31235,6 +31519,22 @@
           }
         }
       },
+      "GetRegionResponse": {
+        "type": "object",
+        "required": [
+          "region"
+        ],
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "Ingest region. Pass it as `region` when creating a stream source.",
+            "enum": [
+              "us-east-1",
+              "us-west-2"
+            ]
+          }
+        }
+      },
       "GetRuleCountsResponse": {
         "type": "object",
         "properties": {
@@ -31962,7 +32262,7 @@
           },
           "rtmp_region": {
             "type": "string",
-            "description": "Ingest region: `atla` or `pdxa` for on-prem sources, the AWS region (e.g. `us-east-1`) for sources created before the move to on-prem."
+            "description": "Ingest region as an AWS region name, e.g. `us-east-1` or `us-west-2`. Accepted as `region` when creating a source."
           },
           "rtmp_stream_key": {
             "type": "string",
@@ -33988,7 +34288,7 @@
           },
           "rtmp_region": {
             "type": "string",
-            "description": "Ingest region: `atla` or `pdxa` for on-prem sources, the AWS region (e.g. `us-east-1`) for sources created before the move to on-prem."
+            "description": "Ingest region as an AWS region name, e.g. `us-east-1` or `us-west-2`. Accepted as `region` when creating a source."
           },
           "rtmp_stream_key": {
             "type": "string",
@@ -41343,23 +41643,23 @@
         "properties": {
           "chat_option": {
             "type": "integer",
-            "description": "Not allowed with `END`."
+            "description": "Who can chat: 0 default, 1 chat off, 2 everyone, 3 verified accounts, 4 accounts the host follows, 5 the host's subscribers, 6 accounts followed by an account the host follows. `PUBLISH` only."
           },
           "locale": {
             "type": "string",
-            "description": "Not allowed with `END`."
+            "description": "Broadcast language. `PUBLISH` only."
           },
           "should_not_tweet": {
             "type": "boolean",
-            "description": "Not allowed with `END`."
+            "description": "Skip the announcing Post. Unset keeps the broadcast's setting, which defaults to posting. `PUBLISH` only."
           },
           "state": {
             "type": "string",
-            "description": "`END`. `PUBLISH` is not supported."
+            "description": "`PUBLISH` or `END`."
           },
           "title": {
             "type": "string",
-            "description": "Not allowed with `END`."
+            "description": "Broadcast title. `PUBLISH` only."
           }
         }
       },
@@ -41379,15 +41679,129 @@
       },
       "UpdateUserBroadcastStateResponseData": {
         "type": "object",
-        "required": [
-          "success"
-        ],
         "properties": {
+          "broadcast": {
+            "description": "The published broadcast, on `PUBLISH`.",
+            "$ref": "#/components/schemas/UpdateUserBroadcastStateResponseDataBroadcast"
+          },
           "success": {
             "type": "boolean",
-            "description": "Always `true` on success."
+            "description": "`true` once `END` succeeds."
+          },
+          "tweet_error": {
+            "type": "string",
+            "description": "Why the announcing Post failed, on `PUBLISH`. Omitted when the Post went out or `should_not_tweet` was true."
           }
         }
+      },
+      "UpdateUserBroadcastStateResponseDataBroadcast": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "available_for_replay": {
+            "type": "boolean",
+            "description": "Whether a replay is available."
+          },
+          "broadcast_id": {
+            "type": "string",
+            "description": "Broadcast id."
+          },
+          "chat_option": {
+            "type": "integer",
+            "description": "Who can chat: 0 default, 1 chat off, 2 everyone, 3 verified accounts, 4 accounts the host follows, 5 the host's subscribers, 6 accounts followed by an account the host follows."
+          },
+          "created_at_ms": {
+            "type": "string",
+            "description": "Creation time, milliseconds since Unix epoch (decimal string)."
+          },
+          "end_ms": {
+            "type": "string",
+            "description": "End time, milliseconds since Unix epoch (decimal string)."
+          },
+          "height": {
+            "type": "integer",
+            "description": "Video height in pixels."
+          },
+          "id": {
+            "type": "string",
+            "description": "Broadcast id; equal to `broadcast_id`."
+          },
+          "image_url": {
+            "type": "string",
+            "description": "Thumbnail URL."
+          },
+          "image_url_medium": {
+            "type": "string",
+            "description": "Medium thumbnail URL."
+          },
+          "image_url_small": {
+            "type": "string",
+            "description": "Small thumbnail URL."
+          },
+          "is_high_latency": {
+            "type": "boolean",
+            "description": "Whether the broadcast is high latency."
+          },
+          "language": {
+            "type": "string",
+            "description": "Broadcast language."
+          },
+          "media_id": {
+            "type": "string",
+            "description": "Numeric media id from `media_key`."
+          },
+          "media_key": {
+            "type": "string",
+            "description": "Media key of the broadcast's video."
+          },
+          "scheduled_end_ms": {
+            "type": "string",
+            "description": "Scheduled end time, milliseconds since Unix epoch (decimal string)."
+          },
+          "scheduled_start_ms": {
+            "type": "string",
+            "description": "Scheduled start time, milliseconds since Unix epoch (decimal string)."
+          },
+          "start_ms": {
+            "type": "string",
+            "description": "Start time, milliseconds since Unix epoch (decimal string)."
+          },
+          "state": {
+            "type": "string",
+            "description": "`NOT_STARTED`, `RUNNING`, `TIMED_OUT`, `ENDED`, `PRE_PUBLISHED` or `CANCELED`."
+          },
+          "status": {
+            "type": "string",
+            "description": "Broadcast title."
+          },
+          "total_watched": {
+            "type": "string",
+            "description": "Total viewers (decimal string)."
+          },
+          "total_watching": {
+            "type": "string",
+            "description": "Current viewers (decimal string)."
+          },
+          "tweet_id": {
+            "type": "string",
+            "description": "Id of the Post announcing the broadcast."
+          },
+          "twitter_user_id": {
+            "type": "string",
+            "description": "Owner's user id."
+          },
+          "updated_at_ms": {
+            "type": "string",
+            "description": "Last update time, milliseconds since Unix epoch (decimal string)."
+          },
+          "width": {
+            "type": "integer",
+            "description": "Video width in pixels."
+          }
+        },
+        "additionalProperties": false
       },
       "UpdateUserSourceRequest": {
         "type": "object",
@@ -41464,7 +41878,7 @@
           },
           "rtmp_region": {
             "type": "string",
-            "description": "Ingest region: `atla` or `pdxa` for on-prem sources, the AWS region (e.g. `us-east-1`) for sources created before the move to on-prem."
+            "description": "Ingest region as an AWS region name, e.g. `us-east-1` or `us-west-2`. Accepted as `region` when creating a source."
           },
           "rtmp_stream_key": {
             "type": "string",
